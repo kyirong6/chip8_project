@@ -33,3 +33,16 @@ class CPU {
 
   }
 }
+
+
+  /*
+  This method executes a given opcode
+  */
+  execute(opcode) {
+    this._pc += 2
+
+    var x = (opcode & 0x0F00) >> 8; // isolate variable x from opcode
+    var y = (opcode & 0x00F0) >> 4; // isolate variable y from opcode
+
+    // TODO: add switch statements to process the opcode needed
+  }
