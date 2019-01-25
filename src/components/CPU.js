@@ -44,6 +44,7 @@ class CPU {
     var y = (opcode & 0x00F0) >> 4; // isolate variable y from opcode
 
     // TODO: add switch statements to process the opcode needed
+	//Jiho : 0NNN , 00E0, 00EE, 1NNN, 2NNN, 3XNN, 4XNN
   }
 
 }
