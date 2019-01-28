@@ -86,16 +86,19 @@ class CPU {
 		}
 		break;
 
+    //  5xy0; skips next instruction if Vx == Vy
     case 0x5000:
       if(this._v[x] == this._v[y]){
         this.pc += 2;
       }
       break;
-      
+
+    //  6xkk; Set Vx = kk
     case 0x6000:
       this._v[x] = opcode & 0xFF
       break;
 
+    //  7xkk; Set Vx = Vx + kk
     case 0x7000:
       var val = (opcode & 0xFF + this._v[x]);
       if (val > 255){ val -= 256;}
@@ -104,17 +107,21 @@ class CPU {
 
     case 0x8000:
       switch(opcode & 0x000f){
+        // 8xy0; Set Vx = Vy
         case 0x0000:
           this._v[x] = this._v[y];
           break;
 
+        // 8xy1; Set Vx = Vx OR Vy
         case 0x0001:
           this._v[x] |= this._v[y];
           break;
 
+        // 8xy2; Set Vx = Vx AND Vy
         case 0x0002:
           this._v[x] &= this._v[y];
 
+        // 8xy3; Set Vx = Vx XOR Vy
         case 0x0003:
           thisv.[x] ^= this._v[y];
       }
