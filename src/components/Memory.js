@@ -5,13 +5,13 @@ class Memory {
 	}
 
 
-	write(location, value) {
+	function writeTo(location, value) {
 		for (let i = 0; i < value.length; i++) {
 			this._mem[location + i] = value[i];
 		}
 	}
 
-	read(location) {
+	function readIn(location) {
 		return this._mem[location];
 	}
 }
