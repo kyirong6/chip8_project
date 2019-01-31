@@ -24,6 +24,28 @@ class CPU {
     This method resets the CPU.
     */
     reset() {
+        _pc     = 0x200;  // Reset program counter to start at 0x200
+        _opcode = 0;      // Reset current opcode	
+        _I      = 0;      // Reset index register
+        _sp     = 0;      // Reset stack pointer
+    
+        /*
+        defining new arrays so there is no need for the following:
+        // Clear display
+        // Clear stack
+        // clear register V0-VF
+        // clear memory
+        */
+        _display = new Display();
+        _stack = new Array(16);
+        _v = new Uint8Array(16);  
+        _memory = new Memory();
+       
+        //Load fontsets
+    
+    
+        //set Timers
+    
 
     }
 
@@ -128,6 +150,96 @@ class CPU {
                         this._v[x] ^= this._v[y];
                 }
 
+            // 8XY4
+            case 0x8004 & (opcode & 0x0F00) & (opcode & 0x00F0):
+                /*
+                    Adds VY to VX. 
+                    VF is set to 1 when there's a carry, 
+                    and to 0 when there isn't.
+                */
+                if ( _v[x] > 255){
+                    _v[0xF] = 1;
+                } else {
+                    _v[0xF] = 0;
+                }
+                _v[x] += _v[y];
+                pc += 2;
+                break;
+            
+         // 8XY5   
+            case 0x8005 & (opcode & 0x0F00) & (opcode & 0x00F0):
+                /*
+                    VY is subtracted from VX. 
+                    VF is set to 0 when there's a borrow, 
+                    and 1 when there isn't.
+                */
+                if ( _v[x] > _v[y]){
+                    _v[F] = 1;
+                } else {
+                    _v[F] = 0;
+                }
+                _v[x] -= _v[y];
+                pc += 2;
+                break;
+
+            //8XY6
+            case 0x8006 & (opcode & 0x0F00) & (opcode & 0x00F0):
+                /*
+                    Stores the least significant bit of VX in VF 
+                    and then shifts VX to the right by 1
+                */
+                _v[F] = _v[x] & 0x000F;
+                _v[x]>>1;
+                pc += 2;
+                break;
+
+            //8XY7
+            case 0x8007 & (opcode & 0x0F00) & (opcode & 0x00F0):
+                /*
+                    Sets VX to VY minus VX. 
+                    VF is set to 0 when there's a borrow, 
+                    and 1 when there isn't.
+                */
+                if ( _v[y] > _v[x]){
+                    _v[0xF] = 1;
+                } else {
+                    _v[0xF] = 0;
+                }
+                _v[x] = _v[y] - _v[x];
+                pc += 2;
+                break;
+
+            //8XYE
+            case 0x800E & (opcode & 0x0F00) & (opcode & 0x00F0):
+                /*
+                    Stores the most significant bit of VX in VF 
+                    and then shifts VX to the left by 1.
+                */
+                _v[0xF] = _v[x] & 0xF000;
+                _v[x]<<1;
+                pc += 2;
+                break;
+
+            // 9XY0
+            case 0x9000 & (opcode & 0x0F00) & (opcode & 0x00F0):
+                /*
+                    Skips the next instruction if VX doesn't equal VY. 
+                    (Usually the next instruction is a jump to skip a code block)
+                */
+                if(_v[x] != _v[y]){
+                    pc += 2;
+                }
+                pc += 2 ;
+                break;
+            
+            // ANNN
+            case 0xA000:
+                /*
+                Sets I to the address NNN.
+                */
+                I = opcode & 0x0FFF ; 
+                pc += 2 ;
+                break;
             
 
             case 0xB000://sets the pc to nnn + v0

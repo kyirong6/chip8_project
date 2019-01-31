@@ -1,0 +1,255 @@
+[1mdiff --cc src/components/CPU.js[m
+[1mindex 3c4c371,dfafa66..0000000[m
+[1m--- a/src/components/CPU.js[m
+[1m+++ b/src/components/CPU.js[m
+[36m@@@ -6,249 -6,239 +6,487 @@@[m [mTODO: define and implement all properti[m
+  class CPU {[m
+  [m
+  [m
+[32m++<<<<<<< HEAD[m
+[32m +  /*[m
+[32m +  Initializes the CPU[m
+[32m +  */[m
+[32m +  constructor(memory, input, display) {[m
+[32m +    this._memory = memory;[m
+[32m +    this._input = input;[m
+[32m +    this._display = display;[m
+[32m +    this._v = new Uint8Array(16);   //register[m
+[32m +    this._pc = 0x200;               //program counter [m
+[32m +	this._stack = new Array(16);    //is used for subroutine[m
+[32m +	this._sp = 0;					//stack pointer also for subroutine[m
+[32m +  }[m
+[32m +[m
+[32m +[m
+[32m +  /*[m
+[32m +  This method resets/initializes the CPU.[m
+[32m +  */[m
+[32m +  reset() {[m
+[32m +    _pc     = 0x200;  // Reset program counter to start at 0x200[m
+[32m +    _opcode = 0;      // Reset current opcode	[m
+[32m +    _I      = 0;      // Reset index register[m
+[32m +    _sp     = 0;      // Reset stack pointer[m
+[32m +[m
+[32m +    /*[m
+[32m +    defining new arrays so there is no need for the following:[m
+[32m +    // Clear display[m
+[32m +    // Clear stack[m
+[32m +    // clear register V0-VF[m
+[32m +    // clear memory[m
+[32m +    */[m
+[32m +    _display = new Display();[m
+[32m +    _stack = new Array(16);[m
+[32m +    _v = new Uint8Array(16);  [m
+[32m +    _memory = new Memory();[m
+[32m +   [m
+[32m +    //Load fontsets[m
+[32m +[m
+[32m +[m
+[32m +    //set Timers[m
+[32m +[m
+[32m +[m
+[32m +  }[m
+[32m +[m
+[32m +[m
+[32m +  /*[m
+[32m +  This method loads the program into the CPU[m
+[32m +  */[m
+[32m +  loadProgram() {[m
+[32m +[m
+[32m +  }[m
+[32m +[m
+[32m +[m
+[32m +  /*[m
+[32m +  This method executes a given opcode[m
+[32m +  */[m
+[32m +  execute(opcode) {[m
+[32m +    this._pc += 2[m
+[32m +[m
+[32m +    var x = (opcode & 0x0F00) >> 8; // isolate variable x from opcode[m
+[32m +    var y = (opcode & 0x00F0) >> 4; // isolate variable y from opcode[m
+[32m +[m
+[32m +	switch(opcode & 0xF000){ //grab the first nibble[m
+[32m +[m
+[32m +		case 0x0000:[m
+[32m +			switch(opcode){[m
+[32m +				//  0NNN (ignored by modern interpreters)[m
+[32m +				case 0x00E0: //	00E0 Clears Screen[m
+[32m +				//display.clear() to be added later[m
+[32m +				break;[m
+[32m +[m
+[32m +				case 0x00EE: //	00EE Returns from Subroutine[m
+[32m +				this._pc = this.stack[this._sp - 1];[m
+[32m +				break;[m
+[32m +			}[m
+[32m +		break;[m
+[32m +[m
+[32m +		//	1NNN Jumps to address NNN *Done*[m
+[32m +		case 0x1000:[m
+[32m +			this._pc = opcode & 0x0FFF;[m
+[32m +		break;[m
+[32m +[m
+[32m +		//  2NNN Calls subroutine at NNN[m
+[32m +		case 0x2000:[m
+[32m +			this._stack[this._sp] = this._pc; 	//saves pc in the stacks[m
+[32m +			this._sp++;						  	        	//add one to the stackpointer to avoid collision[m
+[32m +			this._pc = (opcode & 0x0FFF);		    //grab last 3 nibbles of the opcode[m
+[32m +		break;[m
+[32m +[m
+[32m +		//  3XNN Skips the next instruction if VX equals NN;[m
+[32m +		case 0x3000:[m
+[32m +			if(this._v[x] == (opcode & 0x00FF)){	//check if last 2 nibbles are equal to VX[m
+[32m +				this._pc += 2[m
+[32m +			}[m
+[32m +		break;[m
+[32m +[m
+[32m +		//	4XNN Skips the next instruction if VX doesn't equal NN[m
+[32m +		case 0x4000:[m
+[32m +		if(this._v[x] != (opcode & 0x00FF)){	//check if last 2 nibbles are NOT equal to VX[m
+[32m +			this._pc += 2[m
+[32m +		}[m
+[32m +		break;[m
+[32m +    [m
+[32m +    //5XY0[m
+[32m +    case 0x5000:[m
+[32m +      if(this._v[x] == this._v[y]){[m
+[32m +        this.pc += 2;[m
+[32m +      }[m
+[32m +      break;[m
+[32m +      [m
+[32m +    //6XNN[m
+[32m +    case 0x6000:[m
+[32m +      this._v[x] = opcode & 0xFF[m
+[32m +      break;[m
+[32m +    [m
+[32m +    //7XNN[m
+[32m +    case 0x7000:[m
+[32m +      var val = (opcode & 0xFF + this._v[x]);[m
+[32m +      if (val > 255){ val -= 256;}[m
+[32m +      this._v[x] = val;[m
+[32m +      break;[m
+[32m +    [m
+[32m +    [m
+[32m +    case 0x8000:[m
+[32m +      switch(opcode & 0x000F){[m
+[32m +        //8XY0[m
+[32m +        case 0x0000:[m
+[32m +          this._v[x] = this._v[y];[m
+[32m +          break;[m
+[32m +[m
+[32m +        //8XY1[m
+[32m +        case 0x0001:[m
+[32m +          this._v[x] |= this._v[y];[m
+[32m +          break;[m
+[32m +[m
+[32m +        //8XY2[m
+[32m +        case 0x0002:[m
+[32m +          this._v[x] &= this._v[y];[m
+[32m +          break;[m
+[32m +[m
+[32m +        //8XY3[m
+[32m +        case 0x0003:[m
+[32m +          thisv.[x] ^= this._v[y];[m
+[32m +          break;[m
+[32m +      }[m
+[32m +[m
+[32m +      // 8XY4[m
+[32m +      case 0x8004 & (opcode & 0x0F00) & (opcode & 0x00F0):[m
+[32m +      /*[m
+[32m +          Adds VY to VX. [m
+[32m +          VF is set to 1 when there's a carry, [m
+[32m +          and to 0 when there isn't.[m
+[32m +      */[m
+[32m +          if ( _v[x] > 255){[m
+[32m +              _v[0xF] = 1;[m
+[32m +          } else {[m
+[32m +              _v[0xF] = 0;[m
+[32m +          }[m
+[32m +          _v[x] += _v[y];[m
+[32m +          pc += 2;[m
+[32m +          break;[m
+[32m +          [m
+[32m +       // 8XY5   [m
+[32m +      case 0x8005 & (opcode & 0x0F00) & (opcode & 0x00F0):[m
+[32m +      /*[m
+[32m +          VY is subtracted from VX. [m
+[32m +          VF is set to 0 when there's a borrow, [m
+[32m +          and 1 when there isn't.[m
+[32m +      */[m
+[32m +          if ( _v[x] > _v[y]){[m
+[32m +              _v[F] = 1;[m
+[32m +          } else {[m
+[32m +              _v[F] = 0;[m
+[32m +          }[m
+[32m +          _v[x] -= _v[y];[m
+[32m +          pc += 2;[m
+[32m +          break;[m
+[32m +[m
+[32m +      //8XY6[m
+[32m +      case 0x8006 & (opcode & 0x0F00) & (opcode & 0x00F0):[m
+[32m +      /*[m
+[32m +          Stores the least significant bit of VX in VF [m
+[32m +          and then shifts VX to the right by 1[m
+[32m +      */[m
+[32m +          _v[F] = _v[x] & 0x000F;[m
+[32m +          _v[x]>>1;[m
+[32m +          pc += 2;[m
+[32m +          break;[m
+[32m +[m
+[32m +      //8XY7[m
+[32m +      case 0x8007 & (opcode & 0x0F00) & (opcode & 0x00F0):[m
+[32m +      /*[m
+[32m +          Sets VX to VY minus VX. [m
+[32m +          VF is set to 0 when there's a borrow, [m
+[32m +          and 1 when there isn't.[m
+[32m +      */[m
+[32m +          if ( _v[y] > _v[x]){[m
+[32m +              _v[0xF] = 1;[m
+[32m +          } else {[m
+[32m +              _v[0xF] = 0;[m
+[32m +          }[m
+[32m +          _v[x] = _v[y] - _v[x];[m
+[32m +          pc += 2;[m
+[32m +          break;[m
+[32m +[m
+[32m +      //8XYE[m
+[32m +      case 0x800E & (opcode & 0x0F00) & (opcode & 0x00F0):[m
+[32m +      /*[m
+[32m +          Stores the most significant bit of VX in VF [m
+[32m +          and then shifts VX to the left by 1.[m
+[32m +      */[m
+[32m +          _v[0xF] = _v[x] & 0xF000;[m
+[32m +          _v[x]<<1;[m
+[32m +          pc += 2;[m
+[32m +          break;[m
+[32m +[m
+[32m +      // 9XY0[m
+[32m +      case 0x9000 & (opcode & 0x0F00) & (opcode & 0x00F0):[m
+[32m +      /*[m
+[32m +          Skips the next instruction if VX doesn't equal VY. [m
+[32m +          (Usually the next instruction is a jump to skip a code block)[m
+[32m +      */[m
+[32m +          if(_v[x] != _v[y]){[m
+[32m +              pc += 2;[m
+[32m +          }[m
+[32m +          pc += 2 ;[m
+[32m +          break;[m
+[32m +          [m
+[32m +      // ANNN[m
+[32m +      case 0xA000:[m
+[32m +      /*[m
+[32m +          Sets I to the address NNN.[m
+[32m +      */[m
+[32m +          I = opcode & 0x0FFF ; [m
+[32m +          pc += 2 ;[m
+[32m +          break;[m
+[32m +[m
+[32m +  }[m
+[32m + [m
+[32m +	[m
+[32m +[m
+[32m +    // TODO: add switch statements to process the opcode needed[m
+[32m +[m
+[32m +[m
+[32m +[m
+[32m +[m
+[32m++=
