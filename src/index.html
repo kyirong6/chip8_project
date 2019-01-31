@@ -8,6 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="chip8.js"></script>
+    <script src="a.js"></script>
     <script src="components/CPU.js"></script>
     <script src="components/Input.js"></script>
     <script src="components/Display.js"></script>
@@ -23,13 +24,12 @@
   				var row = table.insertRow(-1);
   				for (var c = 0; c<cols; c++){
    					var cell = row.insertCell(-1);
-   					var div = document.createElement("div");
-   					div.setAttribute('class', 'content');
-    				div.setAttribute('id', "cell"+r+"-"+c );
-    				cell.appendChild(div);
+    				cell.setAttribute('id', "cell"+r+"-"+c );
     				
   				}
 			}
+		
+
 }
     </script>
       <style>
@@ -55,7 +55,6 @@
 
         #hold > *{
             display: inline;
-            height: auto;
             float: left;
         }
         #hold
@@ -63,12 +62,11 @@
          height: auto;
         }
         #tblHold{
-            width: 100%;
-            position: relative;
+            width: 100%;   
         }
 
         #tblHold > *{
-            margin: 0;
+            
             position: relative;
 
             left: 50%;
@@ -77,44 +75,31 @@
         }
 
 
-
         body{
             background-color: black;
         }
         table{
             width: 50%;
-
-
+            table-layout: fixed;
         }
+      	tr
 
          td{
              width: 1.5625%;
+             height: auto;
              position: relative;
-             border: 1px solid black;
-             background: blue;
+             
+            
 
         }
         td:after
         {
         	content: '';
         	display: block;
-        	margin-top: 100%
+        	padding-bottom:100%
+        	
         }
         
-        td .content 
-        {
-        	position: absolute;
-  			top: 0;
- 			bottom: 0;
-  			left: 0;
-  			right: 0;
-  			background: white;
-        }
-        #cell31-63{
-        	background: blue;
-        }
-      
-    
     
       
 
@@ -129,7 +114,7 @@
 
 
 
-<body onload="tableCreate()">
+<body onload="tableCreate(); construct();">
 ​
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">

@@ -16,7 +16,8 @@ class CPU {
         this._v = new Uint8Array(16);        //register
         this._pc = 0x200;                    //program counter
         this._stack = new Array(16);	     //is used for subroutine
-        this._sp = 0;						 // stack pointer also for subroutine
+        this._sp = 0;	
+        this.execute(0xF065);					 // stack pointer also for subroutine
     }
 
 
@@ -54,7 +55,7 @@ class CPU {
     This method loads the program into the CPU
     */
     loadProgram() {
-
+		
     }
 
 
@@ -338,10 +339,10 @@ class CPU {
                         writeTo(this._i, data);
                         break;
                     case 0x0065://stores memory in v0 to vx
-                        for(let i = 0; i <= x; i++ )
+                       /* for(let i = 0; i <= x; i++ )
                         {
-                            this._v[i] = readIn(this._i + i);
-                        }
+                            this._v[i] = this._memory.readIn(this._i + i);
+                        }*/
 
                         break;
 
