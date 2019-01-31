@@ -25,7 +25,7 @@
    					var cell = row.insertCell(-1);
    					var div = document.createElement("div");
    					div.setAttribute('class', 'content');
-    				div.setAttribute('id', "cell"+r+""+c );
+    				div.setAttribute('id', "cell"+r+"-"+c );
     				cell.appendChild(div);
     				
   				}
@@ -34,33 +34,57 @@
     </script>
       <style>
         #log{
-             width: 80%;
-             height: 22%;
-             background-color: black;
-             float: left;
+             width: 25%;
+             background-color: green;
              color: white;
+
 
 
         }
         #mem{
-            width: 20%;
-            height: 22%;
-            background-color: black;
-            float: left;
+            width: 25%;
+            background-color: red;
             color: white;
-
+        }
+        #con{
+            width: 50%;
+            background-color: purple;
+            color: white;
         }
 
 
         #hold > *{
             display: inline;
+            height: auto;
+            float: left;
         }
+        #hold
+        {
+         height: auto;
+        }
+        #tblHold{
+            width: 100%;
+            position: relative;
+        }
+
+        #tblHold > *{
+            margin: 0;
+            position: relative;
+
+            left: 50%;
+            -ms-transform: translate(-50%);
+            transform: translate(-50%);
+        }
+
+
 
         body{
             background-color: black;
         }
         table{
-            width: 80%;
+            width: 50%;
+
+
         }
 
          td{
@@ -86,7 +110,7 @@
   			right: 0;
   			background: white;
         }
-        #cell3163{
+        #cell31-63{
         	background: blue;
         }
       
@@ -128,8 +152,9 @@
 
 <div id="hold">
 
-    <div id="log">Andrew</div>
-    <div id="mem">Mem</div>
+    <div id="log"><p>Andrew<br>a<br></p></div>
+    <div id="con">con</div>
+    <div id="mem"><p>Mem</p></div>
 </div>
 
 
