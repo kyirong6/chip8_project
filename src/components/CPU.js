@@ -16,7 +16,7 @@ class CPU {
         this._v = new Uint8Array(16);        //register
         this._pc = 0x200;                    //program counter
         this._stack = new Array(16);	     //is used for subroutine
-        this._sp = 0;	
+        this._sp = 0;
         this.execute(0xF065);					 // stack pointer also for subroutine
     }
 
@@ -26,10 +26,10 @@ class CPU {
     */
     reset() {
         _pc     = 0x200;  // Reset program counter to start at 0x200
-        _opcode = 0;      // Reset current opcode	
+        _opcode = 0;      // Reset current opcode
         _I      = 0;      // Reset index register
         _sp     = 0;      // Reset stack pointer
-    
+
         /*
         defining new arrays so there is no need for the following:
         // Clear display
@@ -39,14 +39,14 @@ class CPU {
         */
         _display = new Display();
         _stack = new Array(16);
-        _v = new Uint8Array(16);  
+        _v = new Uint8Array(16);
         _memory = new Memory();
-       
+
         //Load fontsets
-    
-    
+
+
         //set Timers
-    
+
 
     }
 
@@ -55,7 +55,7 @@ class CPU {
     This method loads the program into the CPU
     */
     loadProgram() {
-		
+
     }
 
 
@@ -124,10 +124,10 @@ class CPU {
             //  7xkk; Set Vx = Vx + kk
             case 0x7000:
                 var val = (opcode & 0xFF + this._v[x]);
-                if (val > 255) {
+                while (val > 255) {
                     val -= 256;
                 }
-                this._v[x] = val;
+                this._v[x] += val;
                 break;
 
             case 0x8000:
@@ -154,8 +154,8 @@ class CPU {
             // 8XY4
             case 0x8004 & (opcode & 0x0F00) & (opcode & 0x00F0):
                 /*
-                    Adds VY to VX. 
-                    VF is set to 1 when there's a carry, 
+                    Adds VY to VX.
+                    VF is set to 1 when there's a carry,
                     and to 0 when there isn't.
                 */
                 if ( _v[x] > 255){
@@ -166,12 +166,12 @@ class CPU {
                 _v[x] += _v[y];
                 pc += 2;
                 break;
-            
-         // 8XY5   
+
+         // 8XY5
             case 0x8005 & (opcode & 0x0F00) & (opcode & 0x00F0):
                 /*
-                    VY is subtracted from VX. 
-                    VF is set to 0 when there's a borrow, 
+                    VY is subtracted from VX.
+                    VF is set to 0 when there's a borrow,
                     and 1 when there isn't.
                 */
                 if ( _v[x] > _v[y]){
@@ -186,7 +186,7 @@ class CPU {
             //8XY6
             case 0x8006 & (opcode & 0x0F00) & (opcode & 0x00F0):
                 /*
-                    Stores the least significant bit of VX in VF 
+                    Stores the least significant bit of VX in VF
                     and then shifts VX to the right by 1
                 */
                 _v[F] = _v[x] & 0x000F;
@@ -197,8 +197,8 @@ class CPU {
             //8XY7
             case 0x8007 & (opcode & 0x0F00) & (opcode & 0x00F0):
                 /*
-                    Sets VX to VY minus VX. 
-                    VF is set to 0 when there's a borrow, 
+                    Sets VX to VY minus VX.
+                    VF is set to 0 when there's a borrow,
                     and 1 when there isn't.
                 */
                 if ( _v[y] > _v[x]){
@@ -213,7 +213,7 @@ class CPU {
             //8XYE
             case 0x800E & (opcode & 0x0F00) & (opcode & 0x00F0):
                 /*
-                    Stores the most significant bit of VX in VF 
+                    Stores the most significant bit of VX in VF
                     and then shifts VX to the left by 1.
                 */
                 _v[0xF] = _v[x] & 0xF000;
@@ -224,7 +224,7 @@ class CPU {
             // 9XY0
             case 0x9000 & (opcode & 0x0F00) & (opcode & 0x00F0):
                 /*
-                    Skips the next instruction if VX doesn't equal VY. 
+                    Skips the next instruction if VX doesn't equal VY.
                     (Usually the next instruction is a jump to skip a code block)
                 */
                 if(_v[x] != _v[y]){
@@ -232,16 +232,16 @@ class CPU {
                 }
                 pc += 2 ;
                 break;
-            
+
             // ANNN
             case 0xA000:
                 /*
                 Sets I to the address NNN.
                 */
-                I = opcode & 0x0FFF ; 
+                I = opcode & 0x0FFF ;
                 pc += 2 ;
                 break;
-            
+
 
             case 0xB000://sets the pc to nnn + v0
                 this._pc =((opcode) & 0x0FFF) + this._v[0];
