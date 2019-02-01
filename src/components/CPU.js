@@ -15,7 +15,7 @@ class CPU {
         this._display = display;
         this._v = new Uint8Array(16);        //register
         this._pc = 0x200;                    //program counter
-        this._stack = new Array(16);	     //is used for subroutine
+        this._stack = new Unit16Array(16);	     //is used for subroutine
         this._sp = 0;
         this.execute(0xF065);					 // stack pointer also for subroutine
     }
