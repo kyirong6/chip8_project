@@ -1,8 +1,7 @@
-
-//import CPU from 'components/CPU'
-//import Memory from 'components/Memory'
-//import Display from 'components/Display'
-//import Input from 'components/Input'
+import CPU from 'components/CPU'
+import Memory from 'components/Memory'
+import Display from 'components/Display'
+import Input from 'components/Input'
 
 
 /*
@@ -14,16 +13,16 @@ The components are: CPU, Memory, Display, and Input.
 TODO: implement methods, add methods, solidify design
 */
 
+class chip8 {
 
   /*
   Initializes the emulator
   */
- function construct() {
-	this._memory = new Memory();
+ constructor() {
+	  this._memory = new Memory();
     this._display = new Display();
     this._input = new Input();
     this._cpu = new CPU(this._memory, this._input, this._display);
-
   }
 
 
@@ -65,4 +64,4 @@ TODO: implement methods, add methods, solidify design
   function stepBackward() {
 
   }
-
+}

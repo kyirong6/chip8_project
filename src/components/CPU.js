@@ -15,9 +15,10 @@ class CPU {
         this._display = display;
         this._v = new Uint8Array(16);        //register
         this._pc = 0x200;                    //program counter
-        this._stack = new Array(16);	     //is used for subroutine
-        this._sp = 0;	
-        this.execute(0xF065);				 //stack pointer also for subroutine
+        this._stack = new Unit16Array(16);	 //is used for subroutine
+        this._sp = 0;
+        this.execute(0xF065);	             //stack pointer also for subroutine
+        this._I = 0;
     }
 
 
@@ -26,10 +27,10 @@ class CPU {
     */
     reset() {
         _pc     = 0x200;  // Reset program counter to start at 0x200
-        _opcode = 0;      // Reset current opcode	
+        _opcode = 0;      // Reset current opcode
         _I      = 0;      // Reset index register
         _sp     = 0;      // Reset stack pointer
-    
+
         /*
         defining new arrays so there is no need for the following:
         // Clear display
@@ -39,14 +40,14 @@ class CPU {
         */
         _display = new Display();
         _stack = new Array(16);
-        _v = new Uint8Array(16);  
+        _v = new Uint8Array(16);
         _memory = new Memory();
-       
+
         //Load fontsets
-    
-    
+
+
         //set Timers
-    
+
 
     }
 
@@ -55,7 +56,7 @@ class CPU {
     This method loads the program into the CPU
     */
     loadProgram() {
-		
+
     }
 
 
@@ -125,10 +126,10 @@ class CPU {
             //  7xkk; Set Vx = Vx + kk
             case 0x7000:
                 var val = (opcode & 0xFF + this._v[x]);
-                if (val > 255) {
+                while (val > 255) {
                     val -= 256;
                 }
-                this._v[x] = val;
+                this._v[x] += val;
                 break;
 
             case 0x8000:
@@ -224,7 +225,7 @@ class CPU {
                 // 9XY0 Skip next instruction if Vx != Vy.
                 case 0x9000:
                 /*
-                    Skips the next instruction if VX doesn't equal VY. 
+                    Skips the next instruction if VX doesn't equal VY.
                     (Usually the next instruction is a jump to skip a code block)
                 */
                 if(_v[x] != _v[y]){
