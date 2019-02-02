@@ -9,12 +9,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="chip8.js"></script>
     <script src="a.js"></script>
-    <script src="components/CPU.js"></script>
-    <script src="components/Input.js"></script>
-    <script src="components/Display.js"></script>
-    <script src="components/Memory.js"></script>
-  
-   
+
+
     <script>
     	function tableCreate(){
     		var rows =32;
@@ -25,10 +21,10 @@
   				for (var c = 0; c<cols; c++){
    					var cell = row.insertCell(-1);
     				cell.setAttribute('id', "cell"+r+"-"+c );
-    				
+
   				}
 			}
-		
+
 
 }
     </script>
@@ -62,11 +58,11 @@
          height: auto;
         }
         #tblHold{
-            width: 100%;   
+            width: 100%;
         }
 
         #tblHold > *{
-            
+
             position: relative;
 
             left: 50%;
@@ -88,8 +84,8 @@
              width: 1.5625%;
              height: auto;
              position: relative;
-             
-            
+
+
 
         }
         td:after
@@ -97,11 +93,11 @@
         	content: '';
         	display: block;
         	padding-bottom:100%
-        	
+
         }
-        
-    
-      
+
+
+
 
 
 
