@@ -17,7 +17,7 @@ class CPU {
         this._pc = 0x200;                    //program counter
         this._stack = new Array(16);	     //is used for subroutine
         this._sp = 0;	
-        this.execute(0xF065);					 // stack pointer also for subroutine
+        this.execute(0xF065);				 //stack pointer also for subroutine
     }
 
 
@@ -77,7 +77,8 @@ class CPU {
                         //display.clear() to be added later
                         break;
 
-                    case 0x00EE: //	00EE Returns from Subroutine
+                    //	00EE Returns from Subroutine   
+                    case 0x00EE: 
                         this._pc = this.stack[this._sp - 1];
                         break;
                 }
@@ -131,7 +132,7 @@ class CPU {
                 break;
 
             case 0x8000:
-                switch (opcode & 0x000f) {
+                switch (opcode & 0x000F) {
                     // 8xy0; Set Vx = Vy
                     case 0x0000:
                         this._v[x] = this._v[y];
@@ -145,84 +146,83 @@ class CPU {
                     // 8xy2; Set Vx = Vx AND Vy
                     case 0x0002:
                         this._v[x] &= this._v[y];
+                        break;
 
                     // 8xy3; Set Vx = Vx XOR Vy
                     case 0x0003:
                         this._v[x] ^= this._v[y];
+                        break;
+
+                    // 8XY4 Set Vx = Vx + Vy, set VF = carry.
+                    case 0x8004:
+                        /*
+                            Adds VY to VX. 
+                            VF is set to 1 when there's a carry, 
+                            and to 0 when there isn't.
+                        */
+                        if ( _v[x] > 255){
+                            _v[0xF] = 1;
+                        } else {
+                            _v[0xF] = 0;
+                        }
+                        _v[x] += _v[y];
+                        break;
+
+                    // 8XY5 Set Vx = Vx - Vy, set VF = NOT borrow.
+                    case 0x8005:
+                        /*
+                            VY is subtracted from VX. 
+                            VF is set to 0 when there's a borrow, 
+                            and 1 when there isn't.
+                        */
+                        if ( _v[x] > _v[y]){
+                            _v[F] = 1;
+                        } else {
+                            _v[F] = 0;
+                        }
+                        _v[x] -= _v[y];
+                        break;
+
+                     //8XY6 Set Vx = Vx SHR 1.
+                    case 0x8006:
+                        /*
+                            Stores the least significant bit of VX in VF 
+                            and then shifts VX to the right by 1
+                        */
+                        _v[F] = _v[x] & 0x000F;
+                        _v[x]>>1;
+                        break;
+
+                    //8XY7 Set Vx = Vy - Vx, set VF = NOT borrow.
+                    case 0x8007:
+                        /*
+                            Sets VX to VY minus VX. 
+                            VF is set to 0 when there's a borrow, 
+                            and 1 when there isn't.
+                        */
+                        if ( _v[y] > _v[x]){
+                            _v[0xF] = 1;
+                        } else {
+                            _v[0xF] = 0;
+                        }
+                        _v[x] = _v[y] - _v[x];
+                        break;
+
+                    //8XYE Set Vx = Vx SHL 1.
+                    case 0x800E:
+                        /*
+                            Stores the most significant bit of VX in VF 
+                            and then shifts VX to the left by 1.
+                        */
+                        _v[0xF] = _v[x] & 0xF000;
+                        _v[x]<<1;
+                        break;
+
                 }
-
-            // 8XY4
-            case 0x8004 & (opcode & 0x0F00) & (opcode & 0x00F0):
-                /*
-                    Adds VY to VX. 
-                    VF is set to 1 when there's a carry, 
-                    and to 0 when there isn't.
-                */
-                if ( _v[x] > 255){
-                    _v[0xF] = 1;
-                } else {
-                    _v[0xF] = 0;
-                }
-                _v[x] += _v[y];
-                pc += 2;
-                break;
-            
-         // 8XY5   
-            case 0x8005 & (opcode & 0x0F00) & (opcode & 0x00F0):
-                /*
-                    VY is subtracted from VX. 
-                    VF is set to 0 when there's a borrow, 
-                    and 1 when there isn't.
-                */
-                if ( _v[x] > _v[y]){
-                    _v[F] = 1;
-                } else {
-                    _v[F] = 0;
-                }
-                _v[x] -= _v[y];
-                pc += 2;
                 break;
 
-            //8XY6
-            case 0x8006 & (opcode & 0x0F00) & (opcode & 0x00F0):
-                /*
-                    Stores the least significant bit of VX in VF 
-                    and then shifts VX to the right by 1
-                */
-                _v[F] = _v[x] & 0x000F;
-                _v[x]>>1;
-                pc += 2;
-                break;
-
-            //8XY7
-            case 0x8007 & (opcode & 0x0F00) & (opcode & 0x00F0):
-                /*
-                    Sets VX to VY minus VX. 
-                    VF is set to 0 when there's a borrow, 
-                    and 1 when there isn't.
-                */
-                if ( _v[y] > _v[x]){
-                    _v[0xF] = 1;
-                } else {
-                    _v[0xF] = 0;
-                }
-                _v[x] = _v[y] - _v[x];
-                pc += 2;
-                break;
-
-            //8XYE
-            case 0x800E & (opcode & 0x0F00) & (opcode & 0x00F0):
-                /*
-                    Stores the most significant bit of VX in VF 
-                    and then shifts VX to the left by 1.
-                */
-                _v[0xF] = _v[x] & 0xF000;
-                _v[x]<<1;
-                pc += 2;
-                break;
-
-            // 9XY0
-            case 0x9000 & (opcode & 0x0F00) & (opcode & 0x00F0):
+                // 9XY0 Skip next instruction if Vx != Vy.
+                case 0x9000:
                 /*
                     Skips the next instruction if VX doesn't equal VY. 
                     (Usually the next instruction is a jump to skip a code block)
@@ -230,26 +230,29 @@ class CPU {
                 if(_v[x] != _v[y]){
                     pc += 2;
                 }
-                pc += 2 ;
                 break;
             
-            // ANNN
+            // ANNN Set I = nnn.
             case 0xA000:
                 /*
-                Sets I to the address NNN.
+                    Sets I to the address NNN.
                 */
                 I = opcode & 0x0FFF ; 
-                pc += 2 ;
                 break;
             
-
-            case 0xB000://sets the pc to nnn + v0
+            // BNNN sets the pc to nnn + v0
+            case 0xB000:
                 this._pc =((opcode) & 0x0FFF) + this._v[0];
                 break;
-            case 0xC000://generates random number between 0 and 255
+            
+            //Cxkk generates random number between 0 and 255 
+            case 0xC000:
                 let rand =Math.floor(Math.random() * Math.floor(256));
                 this._v[x] = (rand & (opcode & 0x00FF));
-            case 0xD000://draws display; todo:come back to this
+                break;
+            
+            //Dxyn draws display; todo:come back to this
+            case 0xD000:
                 var row;
                 var cell;
                 var mem;
@@ -273,11 +276,12 @@ class CPU {
                     }
 
                 }
+                break;
+
             case 0xE000:
-
                 switch (opcode & 0x000F) {
-
-                    case 0x000E: //	skips next instruction if key found at vx todo:once rest is running
+                    //Ex9E skips next instruction if key found at vx todo:once rest is running
+                    case 0x000E: 
                         document.onKeyPress = function(evt)
                         {
                             evt = evt || window.event;
@@ -287,11 +291,10 @@ class CPU {
                                 this._pc++;
                             }
                         }
-
-
                         break;
 
-                    case 0x0001: //checks if key is stored skips if not todo:once rest is running
+                    //ExA1 checks if key is stored skips if not todo:once rest is running
+                    case 0x0001: 
                         document.onKeyPress = function(evt)
                         {
                             evt = evt || window.event;
@@ -304,33 +307,49 @@ class CPU {
                         break;
                 }
                 break;
+
             case 0xF000:
                 switch(opcode & 0x00FF)
                 {
-                    case 0x0007://sets vx to delay timer
+                    //Fx07 sets vx to delay timer
+                    case 0x0007:
                         this._v[x] = this._delayTimer;
                         break;
-                    case 0x000A://todo: wait for keypress
+
+                    //Fx0A todo: wait for keypress
+                    case 0x000A:
                         break;
-                    case 0x0015://sets delay timer to value of vx
+                    
+                    //Fx15 sets delay timer to value of vx
+                    case 0x0015:
                         this._delayTimer = this._v[x];
                         break;
-                    case 0x0018://sets sound timer to value of vx
+
+                    //Fx18 sets sound timer to value of vx
+                    case 0x0018:
                         this._soundTimer = this._v[x];
                         break;
-                    case 0x001E:// I to value of I + vx
+
+                    //Fx1E I to value of I + vx
+                    case 0x001E:
                         this._i += this._v[x];
                         break;
-                    case 0x0029:// sets I to location of sprite todo: create sprites
+
+                    //Fx29 sets I to location of sprite todo: create sprites
+                    case 0x0029:
                         this._i = this._v[x];
                         break;
-                    case 0x0033://converts binary to decimal then stores the three digits
+
+                    //Fx33 converts binary to decimal then stores the three digits
+                    case 0x0033:
                         let bin = this._v[x];
                         let dec = parseInt(bin, 2);
                         let list = [dec.charAt(0),dec.charAt(1),dec.charAt(2)];
                         writeTo(this._i,list );
                         break;
-                    case 0x0055://stores v0 to vx in memory
+
+                    //Fx55 stores v0 to vx in memory
+                    case 0x0055:
                         let data = [];
                         for(let i = 0; i <= x; i++ )
                         {
@@ -338,15 +357,14 @@ class CPU {
                         }
                         writeTo(this._i, data);
                         break;
-                    case 0x0065://stores memory in v0 to vx
+
+                    //Fx65 stores memory in v0 to vx
+                    case 0x0065:
                        /* for(let i = 0; i <= x; i++ )
                         {
                             this._v[i] = this._memory.readIn(this._i + i);
                         }*/
-
                         break;
-
-
                 }
                 break;
 
