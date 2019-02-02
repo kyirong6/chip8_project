@@ -372,7 +372,6 @@ class CPU {
         }
 
         // TODO: add switch statements to process the opcode needed
-
-
+        
     }
 }
