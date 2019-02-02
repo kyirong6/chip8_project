@@ -1,7 +1,7 @@
-import CPU from 'components/CPU'
-import Memory from 'components/Memory'
-import Display from 'components/Display'
-import Input from 'components/Input'
+//import CPU from 'components/CPU'
+//import Memory from 'components/Memory'
+//import Display from 'components/Display'
+//import Input from 'components/Input'
 
 
 /*
@@ -19,7 +19,7 @@ class chip8 {
   Initializes the emulator
   */
  constructor() {
-	  this._memory = new Memory();
+	this._memory = new Memory();
     this._display = new Display();
     this._input = new Input();
     this._cpu = new CPU(this._memory, this._input, this._display);
@@ -29,7 +29,7 @@ class chip8 {
     /*
     A method to load the chip8 program
     */
-  function loadProgram(program) {
+   loadProgram(program) {
 
   }
 
@@ -37,7 +37,7 @@ class chip8 {
   /*
   A method to start the emulator
   */
-  function start() {
+  start() {
 
   }
 
@@ -45,7 +45,7 @@ class chip8 {
   /*
   A method to pause the emulator
   */
-  function pause() {
+   pause() {
 
   }
 
@@ -53,7 +53,7 @@ class chip8 {
   /*
   A method to step the emulator forward
   */
-  function stepForward() {
+   stepForward() {
 
   }
 
@@ -61,7 +61,7 @@ class chip8 {
   /*
   A method to step the emulator backward
   */
-  function stepBackward() {
+  stepBackward() {
 
   }
 }

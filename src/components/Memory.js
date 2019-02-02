@@ -15,10 +15,11 @@ class Memory {
 		return this._mem[location];
 	}
 	
-	getName()
+	memDump()
 	{
-		alert("working");
+		return this._mem;
 	}
+
 
 		
 }
