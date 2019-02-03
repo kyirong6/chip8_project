@@ -11,16 +11,15 @@ class CPU {
     */
     constructor(memory, input, display) {
 
-        this._memory = memory;
+        this._memory = new ArrayBuffer[0x1000]; //raw binary data, each are a byte
         this._input = input;
         this._display = display;
         this._v = new Uint8Array(16);        //register
         this._pc = 0x200;                    //program counter
         this._stack = new Uint16Array(16);	 //is used for subroutine
-        this._sp = 0;
-        this.execute(0xF065);	             //stack pointer also for subroutine
+        this._sp = 0;                       //stack pointer also for subroutine
         this._I = 0;
-
+        this.Counter = 0;                     //Will be used to get out of perm iteration until op code is all done
     }
 
 
@@ -43,7 +42,7 @@ class CPU {
         _display = new Display();
         _stack = new Array(16);
         _v = new Uint8Array(16);
-        _memory = new Memory();
+        _memory = new ArrayBuffer[0x1000];
 
         //Load fontsets
 
@@ -59,8 +58,22 @@ class CPU {
     /*
     This method loads the program into the CPU
     */
-    loadProgram() {
+    loadProgram() {//currently will always only load CONNECT4 for demo/testing purpose
+        var fs = require('fs');
+        var program = fs.readFileSync("connect4");
+        for(var i = 0; i < program.length; i ++){
+            memory[0x200 + i] = program[i]; //each array is a byte and will hold two bits of hexadecimal
+            Counter ++; //TO BE DELETED IN THE FUTURE
+        }
+        cycle();
+    }
 
+    cycle(){
+        //Every first and the second array are to be together to create opcode
+        //so we move the first one by 8bits and let the second one stay to get 0xFFFF;
+        //e.g. 12 32 42 52 63 77 = 0x1232 on the first opcode, 0x4252 on the second opcode etc..
+        this.opcode = this._memory[this.pc] << 8 | this._memory[this.pc + 1]; 
+        execute(opcode);        
     }
 
 
@@ -69,7 +82,7 @@ class CPU {
     */
     execute(opcode) {
         this._pc += 2
-
+        
         var x = (opcode & 0x0F00) >> 8; // isolate variable x from opcode
         var y = (opcode & 0x00F0) >> 4; // isolate variable y from opcode
 
@@ -79,12 +92,12 @@ class CPU {
                 switch (opcode) {
                     //  0NNN (ignored by modern interpreters)
                     case 0x00E0: //	00E0 Clears Screen
-                        //display.clear() to be added later
+                       
                         break;
 
                     //	00EE Returns from Subroutine   
                     case 0x00EE: 
-                        this._pc = this.stack[this._sp - 1];
+                        this._pc = this.stack[this._sp --];
                         break;
                 }
                 break;
@@ -375,7 +388,14 @@ class CPU {
 
         }
 
-        // TODO: add switch statements to process the opcode needed
+        _display.dispOp(opcode); //displays the opcode on index.html?
         
+        //For Counter:
+        //TO BE DELETED WHEN ALL OP CODE IS DONE/ RUN FUNCTION WORKING
+        //CURRENTLY USED TO TEST AND GET OUT PERM ITERATION  
+        
+        if(this._pc < Counter + 0x200){
+        cycle();
+        }
     }
 }
