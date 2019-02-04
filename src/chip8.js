@@ -1,7 +1,7 @@
-//import CPU from 'components/CPU'
-//import Memory from 'components/Memory'
-//import Display from 'components/Display'
-//import Input from 'components/Input'
+import CPU from 'components/CPU'
+import Memory from 'components/Memory'
+import Display from 'components/Display'
+import Input from 'components/Input'
 
 
 /*
@@ -65,3 +65,5 @@ class chip8 {
 
   }
 }
+
+module.exports = chip8; // this is for the jest testing

@@ -1,2 +1,9 @@
 # OS Generated Files
 .DS_Store
+
+# node modules
+node_modules
+
+# yarn 
+yarn.lock
+yarn-error.log
