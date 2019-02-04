@@ -3,6 +3,7 @@ class Display {
 	constructor() {
 		this._disp = this.buildArray();
 		this.displayChange();
+
 	}
 	
 	buildArray()
@@ -75,7 +76,8 @@ class Display {
 		{
 			let block = document.getElementById("inMem");
 
-			let text = document.createTextNode(mem[i]);
+			let text = document.createTextNode(i.toString()+": "+mem[i] );
+
 			block.appendChild(text);
 			let breakLine = document.createElement('br');
 			block.appendChild(breakLine);

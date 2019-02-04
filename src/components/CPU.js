@@ -11,7 +11,7 @@ class CPU {
     */
     constructor(memory, input, display) {
 
-        this._memory = new ArrayBuffer[0x1000]; //raw binary data, each are a byte
+        this._memory = memory; //raw binary data, each are a byte
         this._input = input;
         this._display = display;
         this._v = new Uint8Array(16);        //register
@@ -21,6 +21,8 @@ class CPU {
         this._I = 0;
         this.Counter = 0;   //Will be used to get out of perm iteration until op code is all done
         this.id = "";
+        this.loadProgram()
+        this._display.dispMem(this._memory.memDump());
     }
 
 
