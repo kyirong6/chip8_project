@@ -17,7 +17,7 @@ class CPU {
         this._v = new Uint8Array(16);        //register
         this._pc = 0x200;                    //program counter
         this._stack = new Uint16Array(16);	 //is used for subroutine
-        this._sp = 0;                       //stack pointer also for subroutine
+        this._sp = 0;                        //stack pointer also for subroutine
         this._I = 0;
         this.Counter = 0;   //Will be used to get out of perm iteration until op code is all done
         this.id = "";
@@ -94,10 +94,12 @@ class CPU {
         this._display.displayChange();
         id = requestAnimationFrame(cycle);
 
-        //Update timers
+        //Update delay timer
         if(this._delayTimer > 0){
             --this._delayTimerr;
         }
+
+        //Update sound timer
         if(this._soundTimer > 0){
             if(this.sound_timer== 1){
                 //have it to print BEEP for now
