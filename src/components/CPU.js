@@ -21,6 +21,8 @@ class CPU {
         this._I = 0;
         this.Counter = 0;   //Will be used to get out of perm iteration until op code is all done
         this.id = "";
+        this._delayTimer = 0;
+        this._soundTimer = 0;
     }
 
 
@@ -46,10 +48,11 @@ class CPU {
         _memory = new ArrayBuffer[0x1000];
 
         //Load fontsets
-
+        
 
         //set Timers
-
+        this._delayTimer = 0;
+        this._soundTimer = 0;
 
     }
 
@@ -90,8 +93,20 @@ class CPU {
         execute(opcode);
         this._display.displayChange();
         id = requestAnimationFrame(cycle);
-    }
 
+        //Update timers
+        if(this._delayTimer > 0){
+            --this._delayTimerr;
+        }
+        if(this._soundTimer > 0){
+            if(this.sound_timer== 1){
+                //have it to print BEEP for now
+                printf("BEEP!\n");          
+            }
+                --this._soundTimer;
+        }
+        
+    }   
 
     /*
     This method executes a given opcode
