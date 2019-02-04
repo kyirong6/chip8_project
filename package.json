@@ -1,0 +1,29 @@
+{
+  "name": "chip8_project",
+  "version": "1.0.0",
+  "description": "A chip8 emulator implemented in javascript",
+  "main": "index.html",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kyirong6/chip8_project.git"
+  },
+  "keywords": [
+    "emulator",
+    "chip8",
+    "javascript",
+    "games",
+    "8-bit"
+  ],
+  "author": "Choenden, Jack, Andrew, Jiho, Gabriel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kyirong6/chip8_project/issues"
+  },
+  "homepage": "https://github.com/kyirong6/chip8_project#readme",
+  "devDependencies": {
+    "jest": "^24.0.0"
+  }
+}
