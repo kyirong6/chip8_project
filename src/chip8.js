@@ -19,12 +19,16 @@ class chip8 {
 
 
 	constructor() {
-		this._memory = new Memory();
-		this._display = new Display();
-		this._input = new Input();
-		this._cpu = new CPU(this._memory, this._input, this._display);		
+		this._memory = new Memory.constructor();
+		this._display = new Display.constructor();
+		this._input = new Input.constructor();
+		this._cpu = new CPU.constructor(this._memory, this._input, this._display);
 	}
-	
+
+
+	sum(a,b) {
+		return a + b;
+	}
 
     /*
     A method to load the chip8 program
