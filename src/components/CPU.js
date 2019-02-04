@@ -19,7 +19,8 @@ class CPU {
         this._stack = new Uint16Array(16);	 //is used for subroutine
         this._sp = 0;                       //stack pointer also for subroutine
         this._I = 0;
-        this.Counter = 0;                     //Will be used to get out of perm iteration until op code is all done
+        this.Counter = 0;   //Will be used to get out of perm iteration until op code is all done
+        this.id = "";
     }
 
 
@@ -53,7 +54,9 @@ class CPU {
     }
 
 
-
+    pause() {
+      cancelAnimationFrame(id);
+    }
 
     /*
     This method loads the program into the CPU
@@ -68,12 +71,14 @@ class CPU {
         cycle();
     }
 
-    cycle(){
+
+    cycle() {
         //Every first and the second array are to be together to create opcode
         //so we move the first one by 8bits and let the second one stay to get 0xFFFF;
         //e.g. 12 32 42 52 63 77 = 0x1232 on the first opcode, 0x4252 on the second opcode etc..
-        this.opcode = this._memory[this.pc] << 8 | this._memory[this.pc + 1]; 
-        execute(opcode);        
+        this.opcode = this._memory[this.pc] << 8 | this._memory[this.pc + 1];
+        execute(opcode);
+        //id = requestAnimationFrame(cycle);
     }
 
 
@@ -82,7 +87,7 @@ class CPU {
     */
     execute(opcode) {
         this._pc += 2
-        
+
         var x = (opcode & 0x0F00) >> 8; // isolate variable x from opcode
         var y = (opcode & 0x00F0) >> 4; // isolate variable y from opcode
 
@@ -92,11 +97,11 @@ class CPU {
                 switch (opcode) {
                     //  0NNN (ignored by modern interpreters)
                     case 0x00E0: //	00E0 Clears Screen
-                       
+
                         break;
 
-                    //	00EE Returns from Subroutine   
-                    case 0x00EE: 
+                    //	00EE Returns from Subroutine
+                    case 0x00EE:
                         this._pc = this.stack[this._sp --];
                         break;
                 }
@@ -174,8 +179,8 @@ class CPU {
                     // 8XY4 Set Vx = Vx + Vy, set VF = carry.
                     case 0x8004:
                         /*
-                            Adds VY to VX. 
-                            VF is set to 1 when there's a carry, 
+                            Adds VY to VX.
+                            VF is set to 1 when there's a carry,
                             and to 0 when there isn't.
                         */
                         if ( _v[x] > 255){
@@ -189,8 +194,8 @@ class CPU {
                     // 8XY5 Set Vx = Vx - Vy, set VF = NOT borrow.
                     case 0x8005:
                         /*
-                            VY is subtracted from VX. 
-                            VF is set to 0 when there's a borrow, 
+                            VY is subtracted from VX.
+                            VF is set to 0 when there's a borrow,
                             and 1 when there isn't.
                         */
                         if ( _v[x] > _v[y]){
@@ -204,7 +209,7 @@ class CPU {
                      //8XY6 Set Vx = Vx SHR 1.
                     case 0x8006:
                         /*
-                            Stores the least significant bit of VX in VF 
+                            Stores the least significant bit of VX in VF
                             and then shifts VX to the right by 1
                         */
                         _v[F] = _v[x] & 0x000F;
@@ -214,8 +219,8 @@ class CPU {
                     //8XY7 Set Vx = Vy - Vx, set VF = NOT borrow.
                     case 0x8007:
                         /*
-                            Sets VX to VY minus VX. 
-                            VF is set to 0 when there's a borrow, 
+                            Sets VX to VY minus VX.
+                            VF is set to 0 when there's a borrow,
                             and 1 when there isn't.
                         */
                         if ( _v[y] > _v[x]){
@@ -229,7 +234,7 @@ class CPU {
                     //8XYE Set Vx = Vx SHL 1.
                     case 0x800E:
                         /*
-                            Stores the most significant bit of VX in VF 
+                            Stores the most significant bit of VX in VF
                             and then shifts VX to the left by 1.
                         */
                         _v[0xF] = _v[x] & 0xF000;
@@ -249,26 +254,26 @@ class CPU {
                     pc += 2;
                 }
                 break;
-            
+
             // ANNN Set I = nnn.
             case 0xA000:
                 /*
                     Sets I to the address NNN.
                 */
-                I = opcode & 0x0FFF ; 
+                I = opcode & 0x0FFF ;
                 break;
-            
+
             // BNNN sets the pc to nnn + v0
             case 0xB000:
                 this._pc =((opcode) & 0x0FFF) + this._v[0];
                 break;
-            
-            //Cxkk generates random number between 0 and 255 
+
+            //Cxkk generates random number between 0 and 255
             case 0xC000:
                 let rand =Math.floor(Math.random() * Math.floor(256));
                 this._v[x] = (rand & (opcode & 0x00FF));
                 break;
-            
+
             //Dxyn draws display; todo:come back to this
             case 0xD000:
                 var row;
@@ -299,7 +304,7 @@ class CPU {
             case 0xE000:
                 switch (opcode & 0x000F) {
                     //Ex9E skips next instruction if key found at vx todo:once rest is running
-                    case 0x000E: 
+                    case 0x000E:
                         document.onKeyPress = function(evt)
                         {
                             evt = evt || window.event;
@@ -312,7 +317,7 @@ class CPU {
                         break;
 
                     //ExA1 checks if key is stored skips if not todo:once rest is running
-                    case 0x0001: 
+                    case 0x0001:
                         document.onKeyPress = function(evt)
                         {
                             evt = evt || window.event;
@@ -337,7 +342,7 @@ class CPU {
                     //Fx0A todo: wait for keypress
                     case 0x000A:
                         break;
-                    
+
                     //Fx15 sets delay timer to value of vx
                     case 0x0015:
                         this._delayTimer = this._v[x];
@@ -389,11 +394,11 @@ class CPU {
         }
 
         _display.dispOp(opcode); //displays the opcode on index.html?
-        
+
         //For Counter:
         //TO BE DELETED WHEN ALL OP CODE IS DONE/ RUN FUNCTION WORKING
-        //CURRENTLY USED TO TEST AND GET OUT PERM ITERATION  
-        
+        //CURRENTLY USED TO TEST AND GET OUT PERM ITERATION
+
         if(this._pc < Counter + 0x200){
         cycle();
         }

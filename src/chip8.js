@@ -19,7 +19,7 @@ class chip8 {
   Initializes the emulator
   */
  constructor() {
-	this._memory = new Memory();
+	  this._memory = new Memory();
     this._display = new Display();
     this._input = new Input();
     this._cpu = new CPU(this._memory, this._input, this._display);
@@ -30,7 +30,7 @@ class chip8 {
     A method to load the chip8 program
     */
    loadProgram(program) {
-
+     //this._cpu.loadProgram(program);
   }
 
 
@@ -38,7 +38,8 @@ class chip8 {
   A method to start the emulator
   */
   start() {
-
+    this._cpu.cycle();
+    this._diplay.displayChange();
   }
 
 
@@ -46,7 +47,7 @@ class chip8 {
   A method to pause the emulator
   */
    pause() {
-
+     this._cpu.pause();
   }
 
 
