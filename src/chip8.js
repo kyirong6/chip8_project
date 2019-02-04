@@ -1,7 +1,7 @@
-import CPU from 'components/CPU'
-import Memory from 'components/Memory'
-import Display from 'components/Display'
-import Input from 'components/Input'
+let CPU = require("./components/CPU.js");
+let Memory = require("./components/Memory.js");
+let Display = require("./components/Display.js");
+let Input = require("./components/Input.js");
 
 
 /*
@@ -15,16 +15,16 @@ TODO: implement methods, add methods, solidify design
 
 class chip8 {
 
-  /*
-  Initializes the emulator
-  */
- constructor() {
-	  this._memory = new Memory();
-    this._display = new Display();
-    this._input = new Input();
-    this._cpu = new CPU(this._memory, this._input, this._display);
-  }
 
+
+
+	constructor() {
+		this._memory = new Memory();
+		this._display = new Display();
+		this._input = new Input();
+		this._cpu = new CPU(this._memory, this._input, this._display);		
+	}
+	
 
     /*
     A method to load the chip8 program

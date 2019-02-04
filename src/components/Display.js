@@ -85,3 +85,5 @@ class Display {
 
 
 }
+
+module.exports.Display = Display;

@@ -430,3 +430,5 @@ class CPU {
         }
     }
 }
+
+module.exports.CPU = CPU;
