@@ -58,6 +58,16 @@ class CPU {
       cancelAnimationFrame(id);
     }
 
+
+    stepBackward() {
+
+    }
+
+
+    setForward() {
+      
+    }
+
     /*
     This method loads the program into the CPU
     */
