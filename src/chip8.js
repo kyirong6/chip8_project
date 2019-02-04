@@ -39,7 +39,6 @@ class chip8 {
   */
   start() {
     this._cpu.cycle();
-    this._diplay.displayChange();
   }
 
 

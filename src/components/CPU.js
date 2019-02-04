@@ -78,7 +78,8 @@ class CPU {
         //e.g. 12 32 42 52 63 77 = 0x1232 on the first opcode, 0x4252 on the second opcode etc..
         this.opcode = this._memory[this.pc] << 8 | this._memory[this.pc + 1];
         execute(opcode);
-        //id = requestAnimationFrame(cycle);
+        this._display.displayChange();
+        id = requestAnimationFrame(cycle);
     }
 
 
