@@ -77,13 +77,35 @@ class CPU {
     This method loads the program into the CPU
     */
     loadProgram() {//currently will always only load CONNECT4 for demo/testing purpose
-        var fs = require('fs');
-        var program = fs.readFileSync("connect4");
+        
+        window.onload=function(){
+
+            const input = document.querySelector('input[type="file"');
+            input.addEventListener('change', function (e){
+                console.log(input.files)
+            
+                const reader = new FileReader();
+            
+                reader.onload = function(){      
+                    for(var i = 0; i < reader.result.length; i ++){
+                        memory[0x200 + i] = program[i]; //each array is a byte and will hold two bits of hexadecimal
+                        Counter ++; //TO BE DELETED IN THE FUTURE
+                    }  
+                    console.log(reader.result);
+                }
+
+                reader.readAsArrayBuffer(input.files[0]);
+            }, false)
+            
+        }
+        cycle();
+        /*
         for(var i = 0; i < program.length; i ++){
             memory[0x200 + i] = program[i]; //each array is a byte and will hold two bits of hexadecimal
             Counter ++; //TO BE DELETED IN THE FUTURE
         }
         cycle();
+        */
     }
 
 
