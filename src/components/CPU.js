@@ -312,7 +312,7 @@ class CPU {
                 /*
                     Sets I to the address NNN.
                 */
-                I = opcode & 0x0FFF ;
+                this._I = opcode & 0x0FFF ;
                 break;
 
             // BNNN sets the pc to nnn + v0
@@ -328,29 +328,25 @@ class CPU {
 
             //Dxyn draws display; todo:come back to this
             case 0xD000:
-                var row;
-                var cell;
-                var mem;
-                for(var i = 0; i < (opcode & 0x000f); i++ )
+                let binDig = 0;
+                let height = this._v[y];
+                this._memory.writeTo(this._I, [0b10101010] );
+                this._display.dispMem(this._memory.memDump());
+                this._v[16] = 0
+                let h = opcode & 0x000f;
+
+                for(let i = 0; i < h ; i++)
                 {
-                    mem = this._i + i;
-                    for(var j = 0; j < 8; j++)
-                    {
-                        row = document.getElementById(this._v[x] + i);
-                        cell = row.getElementById(this._v[y] + j);
 
-                        if(mem.charAt(j) == 1)
-                        {
-                            cell.bgColor = "black";
-                        }
-                        else
-                        {
-
-                        }
-
-                    }
+                    height++;
+                    if(height > 31)
+                        height = 0;
+                    binDig = this._memory.readIn(this._I + i);
+                    if( this._display.modDisp(this._v[x], height, binDig))
+                        this._v[16] = 1;
 
                 }
+
                 break;
 
             case 0xE000:

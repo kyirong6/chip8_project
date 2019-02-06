@@ -84,6 +84,46 @@ class Display {
 		}
 	}
 
+    modDisp(x, y, val)
+    {
+
+        for(let i =0; i < 8; i++ )
+        {
+
+
+            if(x > 63)
+            {
+                x = 0;
+            }
+            if((val & 0x80 ) > 0)
+            {
+
+
+                if(this._disp[y][x]==1)
+                {
+                    this._disp[y][x] = 1;
+                    return true;
+                }
+                else
+                {
+                    this._disp[y][x] = 1;
+                }
+
+            }
+            else
+            {
+
+                this._disp[y][x] = 0;
+
+            }
+            val <<= 1;
+            x++;
+        }
+        this.displayChange();
+
+
+    }
+
 
 
 }
