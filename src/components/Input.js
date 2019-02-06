@@ -2,4 +2,4 @@ class Input {
 
 }
 
-module.exports.Input = Input;
+// module.exports.Input = Input;

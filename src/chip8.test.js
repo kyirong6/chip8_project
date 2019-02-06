@@ -1,6 +1,7 @@
-const chip8 = require('./chip8');
+function assert(value, expected) {
+    return value == expected;
+}
 
-test('Testing an instance of chip8 class for its properties and functions', () => {
-	let chip8_1 = new chip8();	
-	expect(chip8_1.sum(1,2)).toBe(3);
-});
+function testLengthOfOpcode(opcode, n) {
+    console.log(assert(opcode.length, n));
+}  

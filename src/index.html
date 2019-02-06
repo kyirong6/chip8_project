@@ -12,6 +12,7 @@
     <script src="components/Input.js"></script>
     <script src="components/Display.js"></script>
     <script src="components/CPU.js"></script>
+    <script src="chip8.test.js"></script>
 
 
     <script>
@@ -37,7 +38,7 @@
     {
     let chip = new chip8();
     }
-    	
+
     </script>
       <style>
         #log{
@@ -121,7 +122,7 @@
 
 
 
-<body onload="tableCreate(); test();">
+<body onload="tableCreate(); test(); ">
 ​
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
@@ -131,7 +132,7 @@
         <ul class="nav navbar-nav">
             <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">File <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><input type="file" /></li>
+                    <li><input type="file" on /></li>
                     <li><a href="#">Reset Place Holder</a></li>
                 </ul>
             </li>

@@ -21,10 +21,12 @@ class CPU {
         this._I = 0;
         this.Counter = 0;   //Will be used to get out of perm iteration until op code is all done
         this.id = "";
-        this.loadProgram()
+        // this.loadProgram()
         this._display.dispMem(this._memory.memDump());
+        testLengthOfOpcode('andrew', 6);
         this._delayTimer = 0;
         this._soundTimer = 0;
+
     }
 
 
@@ -50,7 +52,7 @@ class CPU {
         _memory = new ArrayBuffer[0x1000];
 
         //Load fontsets
-        
+
 
         //set Timers
         this._delayTimer = 0;
@@ -70,35 +72,36 @@ class CPU {
 
 
     setForward() {
-      
+
     }
 
     /*
     This method loads the program into the CPU
     */
-    loadProgram() {//currently will always only load CONNECT4 for demo/testing purpose
-        
-        window.onload=function(){
+     loadProgram() {//currently will always only load CONNECT4 for demo/testing purpose
 
+      // window.onload=function(){
+            console.log("boop");
             const input = document.querySelector('input[type="file"');
             input.addEventListener('change', function (e){
                 console.log(input.files)
-            
+
                 const reader = new FileReader();
-            
-                reader.onload = function(){      
+
+                reader.onload = function(){
                     for(var i = 0; i < reader.result.length; i ++){
+
                         memory[0x200 + i] = program[i]; //each array is a byte and will hold two bits of hexadecimal
                         Counter ++; //TO BE DELETED IN THE FUTURE
-                    }  
+                    }
                     console.log(reader.result);
                 }
 
                 reader.readAsArrayBuffer(input.files[0]);
             }, false)
-            
-        }
-        cycle();
+
+       }
+        // this.cycle();
         /*
         for(var i = 0; i < program.length; i ++){
             memory[0x200 + i] = program[i]; //each array is a byte and will hold two bits of hexadecimal
@@ -106,17 +109,18 @@ class CPU {
         }
         cycle();
         */
-    }
+    // }
 
 
     cycle() {
         //Every first and the second array are to be together to create opcode
         //so we move the first one by 8bits and let the second one stay to get 0xFFFF;
         //e.g. 12 32 42 52 63 77 = 0x1232 on the first opcode, 0x4252 on the second opcode etc..
-        this.opcode = this._memory[this.pc] << 8 | this._memory[this.pc + 1];
-        execute(opcode);
+        let opcode = this._memory[this._pc] << 8 | this._memory[this._pc + 1];
+        chip8.testLengthOfOpcode(opcode, 16);
+        this.execute(opcode);
         this._display.displayChange();
-        id = requestAnimationFrame(cycle);
+        id = requestAnimationFrame(this.cycle);
 
         //Update delay timer
         if(this._delayTimer > 0){
@@ -127,12 +131,12 @@ class CPU {
         if(this._soundTimer > 0){
             if(this.sound_timer== 1){
                 //have it to print BEEP for now
-                printf("BEEP!\n");          
+                printf("BEEP!\n");
             }
                 --this._soundTimer;
         }
-        
-    }   
+
+    }
 
     /*
     This method executes a given opcode
@@ -441,16 +445,16 @@ class CPU {
 
         }
 
-        _display.dispOp(opcode); //displays the opcode on index.html?
+        this._display.dispOp(opcode); //displays the opcode on index.html?
 
         //For Counter:
         //TO BE DELETED WHEN ALL OP CODE IS DONE/ RUN FUNCTION WORKING
         //CURRENTLY USED TO TEST AND GET OUT PERM ITERATION
 
-        if(this._pc < Counter + 0x200){
-        cycle();
+        if(this._pc < this.Counter + 0x200){
+        this.cycle();
         }
     }
 }
 
-module.exports.CPU = CPU;
+// module.exports.CPU = CPU;

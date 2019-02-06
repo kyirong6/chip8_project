@@ -14,18 +14,18 @@ class Memory {
 	 readIn(location) {
 		return this._mem[location];
 	}
-	
+
 	memDump()
 	{
 		return this._mem;
 	}
 
 
-		
+
 }
 
 
-module.exports.Memory = Memory;
+// module.exports.Memory = Memory;
 //4096 (0x1000)memory locations
 //chip8 emulator will occupy first 512 bytes
 //most program will begin at 512 (0x1FF)
