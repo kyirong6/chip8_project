@@ -34,10 +34,10 @@ class CPU {
     This method resets the CPU.
     */
     reset() {
-        _pc     = 0x200;  // Reset program counter to start at 0x200
-        _opcode = 0;      // Reset current opcode
-        _I      = 0;      // Reset index register
-        _sp     = 0;      // Reset stack pointer
+        this._pc     = 0x200;  // Reset program counter to start at 0x200
+        this._opcode = 0;      // Reset current opcode
+        this._I      = 0;      // Reset index register
+        this._sp     = 0;      // Reset stack pointer
 
         /*
         defining new arrays so there is no need for the following:
@@ -46,10 +46,10 @@ class CPU {
         // clear register V0-VF
         // clear memory
         */
-        _display = new Display();
-        _stack = new Array(16);
-        _v = new Uint8Array(16);
-        _memory = new ArrayBuffer[0x1000];
+        this._display = new Display();
+        this._stack = new Array(16);
+        this._v = new Uint8Array(16);
+        this._memory = new ArrayBuffer[0x1000];
 
         //Load fontsets
 
