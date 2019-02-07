@@ -120,7 +120,6 @@ class CPU {
         chip8.testLengthOfOpcode(opcode, 16);
         this.execute(opcode);
         this._display.displayChange();
-        id = requestAnimationFrame(this.cycle);
 
         //Update delay timer
         if(this._delayTimer > 0){
@@ -136,6 +135,7 @@ class CPU {
                 --this._soundTimer;
         }
 
+        id = requestAnimationFrame(this.cycle); // this needs to stay at the bottome of cycle() for the emulator to constantly run
     }
 
     /*
