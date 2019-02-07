@@ -21,11 +21,9 @@ class CPU {
         this._I = 0;
         this.Counter = 0;   //Will be used to get out of perm iteration until op code is all done
         this.id = "";
-        this.loadProgram();
-
-        testLengthOfOpcode('andrew', 6);
         this._delayTimer = 0;
         this._soundTimer = 0;
+        this._check = false;
 
     }
 
@@ -80,47 +78,41 @@ class CPU {
     */
      loadProgram() {//currently will always only load CONNECT4 for demo/testing purpose
 
-      // window.onload=function(){
-         let program;
          const input = document.querySelector('input[type="file"');
          const reader = new FileReader();
+         let program;
          reader.readAsArrayBuffer(input.files[0]);
-         reader.onload = function(){
-
-
+         reader.onloadend = () =>{
              program = new Uint8Array(reader.result);
-             console.log(program[0]);
-             this._memory.writeTo(0, program);
+             this._memory.writeTo(0x200, program);
+             this._display.dispMem( this._memory.memDump());
+             //this.cycle();
 
-             this._memory.writeTo(this._I, [0b10101010] );
-             this._display.dispMem(this._memory.memDump());
 
          }
-
-
-
-
        }
-        // this.cycle();
-        /*
-        for(var i = 0; i < program.length; i ++){
-            memory[0x200 + i] = program[i]; //each array is a byte and will hold two bits of hexadecimal
-            Counter ++; //TO BE DELETED IN THE FUTURE
-        }
-        cycle();
-        */
-    // }
+
+
+
+
+
+
+
+
+
+
 
 
     cycle() {
         //Every first and the second array are to be together to create opcode
         //so we move the first one by 8bits and let the second one stay to get 0xFFFF;
         //e.g. 12 32 42 52 63 77 = 0x1232 on the first opcode, 0x4252 on the second opcode etc..
+        console.log(this._pc);
         let opcode = this._memory[this._pc] << 8 | this._memory[this._pc + 1];
-        chip8.testLengthOfOpcode(opcode, 16);
+        testLengthOfOpcode(opcode, 16);
         this.execute(opcode);
         this._display.displayChange();
-        id = requestAnimationFrame(this.cycle);
+        this.id = requestAnimationFrame(this.cycle);
 
         //Update delay timer
         if(this._delayTimer > 0){
@@ -456,5 +448,10 @@ class CPU {
         }
     }
 }
+
+
+
+
+
 
 // module.exports.CPU = CPU;

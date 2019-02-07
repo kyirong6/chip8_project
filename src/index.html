@@ -37,6 +37,7 @@
     function load()
     {
         let chip =new chip8();
+        chip.loadProgram();
 
     }
 
@@ -44,7 +45,6 @@
       <style>
         #log{
              width: 25%;
-             background-color: green;
              color: white;
 
 
@@ -52,12 +52,12 @@
         }
         #mem{
             width: 25%;
-            background-color: red;
+            height: 40vh;
+            overflow: scroll;
             color: white;
         }
         #con{
             width: 50%;
-            background-color: purple;
             color: white;
         }
 
@@ -88,6 +88,7 @@
             background-color: black;
         }
         table{
+            border: 1px solid red;
             width: 50%;
             table-layout: fixed;
         }
@@ -146,9 +147,9 @@
 
 <div id="hold">
 
-    <div id="log"><p id = "inLog"></p></div>
-    <div id="con">con</div>
-    <div id="mem"><p id="inMem">Mem</p></div>
+    <div id="log"><p id = "inLog">log</p></div>
+    <div id="con">controls</div>
+    <div id="mem"><p id="inMem"></p></div>
 </div>
 
 

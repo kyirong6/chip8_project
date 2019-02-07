@@ -71,12 +71,16 @@ class Display {
 
 	dispMem(mem)
 	{
+		let holder;
 
 		for(let i = 0; i <= mem.byteLength; i++)
 		{
 			let block = document.getElementById("inMem");
+			holder = i.toString(16)
+				holder = '0x' + holder;
 
-			let text = document.createTextNode(i.toString()+": "+mem[i] );
+
+			let text = document.createTextNode(holder+": "+mem[i] );
 
 			block.appendChild(text);
 			let breakLine = document.createElement('br');
