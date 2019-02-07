@@ -29,8 +29,9 @@ class chip8 {
     /*
     A method to load the chip8 program
     */
-   loadProgram(program) {
-     //this._cpu.loadProgram(program);
+   loadProgram() {
+
+     this._cpu.loadProgram();
   }
 
 

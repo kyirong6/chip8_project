@@ -21,8 +21,8 @@ class CPU {
         this._I = 0;
         this.Counter = 0;   //Will be used to get out of perm iteration until op code is all done
         this.id = "";
-        // this.loadProgram()
-        this._display.dispMem(this._memory.memDump());
+        this.loadProgram();
+
         testLengthOfOpcode('andrew', 6);
         this._delayTimer = 0;
         this._soundTimer = 0;
@@ -81,24 +81,24 @@ class CPU {
      loadProgram() {//currently will always only load CONNECT4 for demo/testing purpose
 
       // window.onload=function(){
-            console.log("boop");
-            const input = document.querySelector('input[type="file"');
-            input.addEventListener('change', function (e){
-                console.log(input.files)
+         let program;
+         const input = document.querySelector('input[type="file"');
+         const reader = new FileReader();
+         reader.readAsArrayBuffer(input.files[0]);
+         reader.onload = function(){
 
-                const reader = new FileReader();
 
-                reader.onload = function(){
-                    for(var i = 0; i < reader.result.length; i ++){
+             program = new Uint8Array(reader.result);
+             console.log(program[0]);
+             this._memory.writeTo(0, program);
 
-                        memory[0x200 + i] = program[i]; //each array is a byte and will hold two bits of hexadecimal
-                        Counter ++; //TO BE DELETED IN THE FUTURE
-                    }
-                    console.log(reader.result);
-                }
+             this._memory.writeTo(this._I, [0b10101010] );
+             this._display.dispMem(this._memory.memDump());
 
-                reader.readAsArrayBuffer(input.files[0]);
-            }, false)
+         }
+
+
+
 
        }
         // this.cycle();
