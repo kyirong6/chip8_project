@@ -62,8 +62,7 @@ class Display {
 	dispOp(opcode)
 	{
 		let block = document.getElementById("inLog");
-
-		let text = document.createTextNode(opcode);
+		let text = document.createTextNode(opcode.toString(16));
 		block.appendChild(text);
 		let breakLine = document.createElement('br');
 		block.appendChild(breakLine);
