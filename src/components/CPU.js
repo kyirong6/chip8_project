@@ -86,6 +86,7 @@ class CPU {
              program = new Uint8Array(reader.result);
              this._memory.writeTo(0x200, program);
              this._display.dispMem( this._memory.memDump());
+             this.Counter = program.byteLength + 0x200;
              this.cycle();
 
 
@@ -107,12 +108,12 @@ class CPU {
         //Every first and the second array are to be together to create opcode
         //so we move the first one by 8bits and let the second one stay to get 0xFFFF;
         //e.g. 12 32 42 52 63 77 = 0x1232 on the first opcode, 0x4252 on the second opcode etc..
+
         let opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
-        testLengthOfOpcode(opcode.toString(), 4);
+        testLengthOfOpcode(opcode.toString(16), 4);
         this.execute(opcode);
         this._display.displayChange();
 
-        this.id = requestAnimationFrame(this.cycle);
 
 
         //Update delay timer
@@ -129,7 +130,7 @@ class CPU {
                 --this._soundTimer;
         }
 
-        this.id = requestAnimationFrame(this.cycle); // this needs to stay at the bottome of cycle() for the emulator to constantly run
+      //  this.id = requestAnimationFrame(this.cycle); // this needs to stay at the bottome of cycle() for the emulator to constantly run
     }
 
     /*
@@ -137,7 +138,7 @@ class CPU {
     */
     execute(opcode) {
         this._pc += 2;
-
+        console.log(opcode.toString(16));
         var x = (opcode & 0x0F00) >> 8; // isolate variable x from opcode
         var y = (opcode & 0x00F0) >> 4; // isolate variable y from opcode
 
@@ -159,6 +160,7 @@ class CPU {
 
             //	1NNN Jumps to address NNN *Done*
             case 0x1000:
+
                 this._pc = opcode & 0x0FFF;
                 break;
 
@@ -424,7 +426,7 @@ class CPU {
                         {
                             data[i] = this._v[i];
                         }
-                        writeTo(this._i, data);
+                        this._memory.writeTo(this._i, data);
                         break;
 
                     //Fx65 stores memory in v0 to vx
@@ -445,7 +447,8 @@ class CPU {
         //TO BE DELETED WHEN ALL OP CODE IS DONE/ RUN FUNCTION WORKING
         //CURRENTLY USED TO TEST AND GET OUT PERM ITERATION
 
-        if(this._pc < this.Counter + 0x200){
+        if(this._pc < this.Counter ){
+            console.log(this._pc);
         this.cycle();
         }
     }
