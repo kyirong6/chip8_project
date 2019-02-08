@@ -14,7 +14,7 @@ class chip8 {
 	constructor() {
 		this._memory = new Memory();
 		this._display = new Display();
-		this._input = new Input();
+		this._input = new Input(); 
 		this._cpu = new CPU(this._memory, this._input, this._display);
 
 	}

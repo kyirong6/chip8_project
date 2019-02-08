@@ -23,7 +23,9 @@ class CPU {
         this.id = "";
         this._delayTimer = 0;
         this._soundTimer = 0;
-        this._check = false;
+
+        //cehck flags 
+        this._isProgramLoaded = false; // gets set whenever a key is pressed
 
     }
 
@@ -43,11 +45,17 @@ class CPU {
         // Clear stack
         // clear register V0-VF
         // clear memory
+        // clear keyboard buffer
         */
         this._display = new Display();
         this._stack = new Array(16);
         this._v = new Uint8Array(16);
         this._memory = new ArrayBuffer[0x1000];
+        this._keyBoardBuffer = new Uint8Array(16);
+
+        //Reset check flags
+        this._isKeyPressed = false; 
+        this._isProgramLoaded = false; 
 
         //Load fontsets
 
