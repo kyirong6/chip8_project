@@ -74,36 +74,36 @@ function testOpcode(opcode, v, display, pc, stack, sp, I, Memory){ //making sure
             console.log(assert(v[x], (v[x] ^= v[y])));
             break;
           case 0x0004:
-            if v[0xF] == 1 {
-              console.log(greaterassert((1, (v[x] - v[y])));
+            if (v[0xF] == 1) {
+              console.log(greaterassert(1, (v[x] - v[y])));
               break;
             }
-            if v[0xF] == 0 {
+            if (v[0xF] == 0) {
               console.log(greaterassert((v[x] - v[y]), 0));
               break;
             }
           case 0x0005:
-            if v[0xF] == 1{
+            if (v[0xF] == 1) {
               console.log(greaterassert(256, (v[x] + v[y])));
               break;
             }
-            if v[0xF] == 0{
+            if (v[0xF] == 0) {
               console.log(greaterassert((v[x] + v[y]), 255));
               break;
             }
           case 0x0006:
-            if v[0xF] != 1 || 0 {
+            if (v[0xF] != 1 || 0) {
               console.log("False");
               break;
             }
           case 0x0007:
-            if v[0xF] == 1{
+            if (v[0xF] == 1) {
               console.log(greaterassert((v[y] - v[x]), -1));
               break;
             }
         }
       case 0x9000:
-        if v[x] != v[y]{
+        if (v[x] != v[y]) {
           console.log(_assert(0x200, pc));
           break;
         }

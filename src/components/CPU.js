@@ -125,7 +125,7 @@ class CPU {
         if(this._soundTimer > 0){
             if(this.sound_timer== 1){
                 //have it to print BEEP for now
-                printf("BEEP!\n");
+                console.log("BEEP!\n");
             }
                 --this._soundTimer;
         }
