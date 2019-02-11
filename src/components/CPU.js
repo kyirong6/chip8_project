@@ -24,7 +24,7 @@ class CPU {
         this._keyBoardBuffer = new Uint16Array(16); // keyboard buffer
         this._isKeyPressed = false; // gets set whenever a key is pressed
 
-        //fentsets
+        //fontsets
         this._fontsets = [
             0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
             0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -43,7 +43,7 @@ class CPU {
             0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
             0xF0, 0x80, 0xF0, 0x80, 0x80  // F
         ]
-        
+
     }
 
 
@@ -71,11 +71,11 @@ class CPU {
         this._keyBoardBuffer = new Uint8Array(16);
 
         //Reset check flags
-        this._isKeyPressed = false;  
+        this._isKeyPressed = false;
 
         //Load fontsets
         for (i = 0 ; i<this._fontsets.length ; i++){
-            this._memory[i] = this._fontsets[i]; 
+            this._memory[i] = this._fontsets[i];
         }
 
         //set Timers
