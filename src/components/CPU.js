@@ -71,8 +71,7 @@ class CPU {
         this._keyBoardBuffer = new Uint8Array(16);
 
         //Reset check flags
-        this._isKeyPressed = false; 
-        this._isProgramLoaded = false; 
+        this._isKeyPressed = false;  
 
         //Load fontsets
         for (i = 0 ; i<this._fontsets.length ; i++){
