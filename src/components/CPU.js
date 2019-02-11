@@ -12,7 +12,7 @@ class CPU {
     constructor(memory, input, display) {
 
         this._memory = memory; //raw binary data, each are a byte
-        this._input = input;
+        this._input = input(this._keyBoardBuffer,this._isKeyPressed);
         this._display = display;
         this._v = new Uint8Array(16);        //register
         this._pc = 0x200;                    //program counter
@@ -23,10 +23,9 @@ class CPU {
         this.id = "";
         this._delayTimer = 0;
         this._soundTimer = 0;
-
-        //cehck flags 
-        this._isProgramLoaded = false; // gets set whenever a key is pressed
-
+        this._keyBoardBuffer = new Uint16Array(16); // keyboard buffer
+        this._isKeyPressed = false; // gets set whenever a key is pressed
+        
     }
 
 
@@ -64,6 +63,8 @@ class CPU {
         this._delayTimer = 0;
         this._soundTimer = 0;
 
+        document.onkeyup = document.onkeydown = this.OnKey; // Hook into the keyboard
+
     }
 
 
@@ -96,21 +97,15 @@ class CPU {
              this._display.dispMem( this._memory.memDump());
              this.Counter = program.byteLength + 0x200;
              this.cycle();
-
-
          }
+
+
+
        }
 
 
 
-
-
-
-
-
-
-
-
+       
 
     cycle() {
         //Every first and the second array are to be together to create opcode
