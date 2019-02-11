@@ -1,7 +1,8 @@
 class Input {
 
     /*
-        not sure if this is right, just a bery rough idea 
+        not sure if this is right, just a very rough idea 
+        CHANGE WHOLE CODE CODE IF MUST !!!!
         Refference from:
         https://www.raduangelescu.com/chip8emulatorjavascript.html
     */
@@ -31,7 +32,7 @@ class Input {
                 'Z': 0xA,'X':0x0,'C': 0xB, 'V':0xF,
             }[charStr];
 
-        if(idx !== undefined){
+        if(index !== undefined){
             this._keyBoardBuffer[index] = value;
         }
 
