@@ -1,8 +1,8 @@
 class Input {
 
     /*
-        not sure if this is right, just a very rough idea 
-        CHANGE WHOLE CODE CODE IF MUST !!!!
+        not sure if this is right, just a very rough idea to get started with
+        CHANGE WHOLE CODE CODE IF YOU WISH !!!! there could be a better was for us 
         Refference from:
         https://www.raduangelescu.com/chip8emulatorjavascript.html
     */
