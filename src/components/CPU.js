@@ -102,6 +102,7 @@ class CPU {
         let opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
         testLengthOfOpcode(opcode.toString(16), 4);
         this.execute(opcode);
+        testOpcode(opcode, this._v, this._display, this._pc, this._stack, this._sp, this._I, this._Memory);
         this._display.displayChange();
 
 
