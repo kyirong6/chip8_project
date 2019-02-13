@@ -21,8 +21,6 @@ class CPU {
         this.id = "";
         this._delayTimer = 0;
         this._soundTimer = 0;
-        this._keyBoardBuffer = new Uint16Array(16); // keyboard buffer
-        this._isKeyPressed = false; // gets set whenever a key is pressed
 
     }
 
@@ -48,11 +46,7 @@ class CPU {
         this._stack = new Array(16);
         this._v = new Uint8Array(16);
         this._memory = new ArrayBuffer[0x1000];
-        this._keyBoardBuffer = new Uint8Array(16);
-
-        //Reset check flags
-        this._isKeyPressed = false;
-
+        this._keyBoardBuffer = new Uint8Array(16);;
 
         //set Timers
         this._delayTimer = 0;
@@ -427,10 +421,10 @@ class CPU {
 
                     //Fx65 stores memory in v0 to vx
                     case 0x0065:
-                       /* for(let i = 0; i <= x; i++ )
+                       for(let i = 0; i <= x; i++ )
                         {
                             this._v[i] = this._memory.readIn(this._i + i);
-                        }*/
+                        }
                         break;
                 }
                 break;
