@@ -8,9 +8,9 @@ class CPU {
     Initializes the CPU
     */
     constructor(memory, input, display) {
-
+;
         this._memory = memory; //raw binary data, each are a byte
-        this._input = input(this._keyBoardBuffer,this._isKeyPressed);
+        this._input = input;
         this._display = display;
         this._v = new Uint8Array(16);        //register
         this._pc = 0x200;                    //program counter
@@ -23,26 +23,6 @@ class CPU {
         this._soundTimer = 0;
         this._keyBoardBuffer = new Uint16Array(16); // keyboard buffer
         this._isKeyPressed = false; // gets set whenever a key is pressed
-
-        //fontsets
-        this._fontsets = [
-            0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
-            0x20, 0x60, 0x20, 0x20, 0x70, // 1
-            0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
-            0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3
-            0x90, 0x90, 0xF0, 0x10, 0x10, // 4
-            0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5
-            0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6
-            0xF0, 0x10, 0x20, 0x40, 0x40, // 7
-            0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8
-            0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
-            0xF0, 0x90, 0xF0, 0x90, 0x90, // A
-            0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
-            0xF0, 0x80, 0x80, 0x80, 0xF0, // C
-            0xE0, 0x90, 0x90, 0x90, 0xE0, // D
-            0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
-            0xF0, 0x80, 0xF0, 0x80, 0x80  // F
-        ]
 
     }
 
@@ -73,10 +53,6 @@ class CPU {
         //Reset check flags
         this._isKeyPressed = false;
 
-        //Load fontsets
-        for (i = 0 ; i<this._fontsets.length ; i++){
-            this._memory[i] = this._fontsets[i];
-        }
 
         //set Timers
         this._delayTimer = 0;

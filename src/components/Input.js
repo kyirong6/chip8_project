@@ -7,10 +7,10 @@ class Input {
         https://www.raduangelescu.com/chip8emulatorjavascript.html
     */
 
-    constructor(_keyBoardBuffer, _isKeyPressed){
+    constructor(){
 
-        this._keyBoardBuffer = _keyBoardBuffer; // keyboard buffer (new Uint16Array(16);)
-        this._isKeyPressed = _isKeyPressed; // gets set whenever a key is pressed (boolean)
+        this._keyBoardBuffer = new Uint16Array(16) // keyboard buffer (new Uint16Array(16);)
+        this._isKeyPressed = false // gets set whenever a key is pressed (boolean)
         
     }
 
