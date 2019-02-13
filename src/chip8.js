@@ -36,7 +36,7 @@ class chip8 {
       0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
       0xF0, 0x80, 0xF0, 0x80, 0x80  // F
   ];
-  this._memory.writeTo(0,this._fontsets);
+  this._memory.writeTo(0,this._fontsets); // load fontsets
 
 	}
 
