@@ -6,8 +6,9 @@ class Memory {
 
 
 	 writeTo(location, value) {
-		for (let i = 0; i < value.byteLength; i++) {
+		for (let i = 0; i < value.length; i++) {
 			this._mem[location + i] = value[i];
+			console.log(value[i]);
 		}
 	}
 

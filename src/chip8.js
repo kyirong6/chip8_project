@@ -16,7 +16,7 @@ class chip8 {
 		this._display = new Display();
 		this._input = new Input();
     this._cpu = new CPU(this._memory, this._input, this._display);
-    
+
     //fontsets
     this._fontsets = [
       0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
@@ -37,7 +37,6 @@ class chip8 {
       0xF0, 0x80, 0xF0, 0x80, 0x80  // F
   ];
   this._memory.writeTo(0,this._fontsets);
-
 	}
 
 
