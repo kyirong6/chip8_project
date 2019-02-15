@@ -81,7 +81,7 @@ class CPU {
          reader.onloadend = () =>{
              program = new Uint8Array(reader.result);
              this._memory.writeTo(0x200, program);
-             this._display.dispMem( this._memory.memDump();
+             this._display.dispMem( this._memory.memDump());
              this.Counter = program.byteLength + 0x200;
              this.cycle();
          }
