@@ -14,7 +14,7 @@ function testLengthOfOpcode(opcode, n) { //checking the length of the opcode
     console.log(assert(opcode.length, n));
 }
 
-function testOpcode(opcode, v, display, pc, stack, sp, I, Memory){ //making sure each opcode performs the correct operation
+function testOpcode(opcode, v, display, pc, stack, sp, I, Memory, delaytimer, soundtimer){ //making sure each opcode performs the correct operation
   var x = (opcode & 0x0F00) >> 8; // isolate variable x from opcode
   var y = (opcode & 0x00F0) >> 4; // isolate   variable y from opcode
 
@@ -59,6 +59,9 @@ function testOpcode(opcode, v, display, pc, stack, sp, I, Memory){ //making sure
       case 0x6000:
         console.log(assert(v[x], opcode & 0xFF));
         break;
+      case 0x7000:
+        console.log(greaterassert(256, v[x]));
+        break;
       case 0x8000:
         switch (opcode & 0x000F){
           case 0x0000:
@@ -101,6 +104,9 @@ function testOpcode(opcode, v, display, pc, stack, sp, I, Memory){ //making sure
               console.log(greaterassert((v[y] - v[x]), -1));
               break;
             }
+          case 0x000E:
+            console.log(greaterassert(256, v[x]));
+            break;
         }
       case 0x9000:
         if (v[x] != v[y]) {
@@ -108,10 +114,59 @@ function testOpcode(opcode, v, display, pc, stack, sp, I, Memory){ //making sure
           break;
         }
       case 0xA000:
-        console.log(assert(I, opcode & 0x0FFF));
+        console.log(asert(I, opcode & 0x0FFF));
         break;
       case 0xB000:
         console.log(assert((opcode & 0x0FFF), (pc - v[0])));
         break;
+      case 0xC000:
+        console.log(greaterassert(256, v[x]));
+        break;
+      case 0xD000:
+        console.log("true");
+      case 0xE000:
+        switch (opcode & 0x000F){
+          case 0x000E:
+          console.log("true");
+          break;
+          case 0x0001:
+          console.log("true");
+          break;
+        }
+      case 0xF000:
+        switch(opcode & 0x00FF){
+          case 0x0007:
+            console.log(assert(v[x], delaytimer));
+          case 0x000A:
+            console.log("true");
+          case 0x0015:
+            console.log(assert(v[x], delaytimer));
+          case 0x0018:
+            console.log(assert(v[x], soundtimer));
+          case 0x001E:
+            console.log(greaterassert((I-v[x]), 0));
+          case 0x0029:
+            console.log(assert(I, v[x]));
+          case 0x0033:
+            console.log("true");
+          case 0x0055:
+            let flag = 0;
+            for(let i = 0; i <= x, i++){
+              if (v[i] != I[i]){
+                flag = 1;
+              }
+            }
+            if(flag == 1){console.log("false");}
+            if(flag == 0){console.log(true);}
+          case 0x0065:
+            let flag = 0;
+            for(let i = 0; i <= x, i++){
+              if (v[i] != I[i]){
+                flag = 1;
+              }
+            }
+            if(flag == 1){console.log("false");}
+            if(flag == 0){console.log(true);}
+        }
     }
 }

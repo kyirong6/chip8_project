@@ -30,7 +30,6 @@ class CPU {
     */
     reset() {
         this._pc     = 0x200;  // Reset program counter to start at 0x200
-        this._opcode = 0;      // Reset current opcode
         this._I      = 0;      // Reset index register
         this._sp     = 0;      // Reset stack pointer
 
@@ -102,13 +101,14 @@ class CPU {
         let opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
         testLengthOfOpcode(opcode.toString(16), 4);
         this.execute(opcode);
+        testOpcode(opcode, this._v, this._display, this._pc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer);
         this._display.displayChange();
 
 
 
         //Update delay timer
         if(this._delayTimer > 0){
-            --this._delayTimerr;
+            --this._delayTimer;
         }
 
         //Update sound timer
@@ -193,7 +193,7 @@ class CPU {
                 while (val > 255) {
                     val -= 256;
                 }
-                this._v[x] += val;
+                this._v[x] = val;
                 break;
 
             case 0x8000:
@@ -393,12 +393,12 @@ class CPU {
 
                     //Fx1E I to value of I + vx
                     case 0x001E:
-                        this._i += this._v[x];
+                        this._I += this._v[x];
                         break;
 
                     //Fx29 sets I to location of sprite todo: create sprites
                     case 0x0029:
-                        this._i = this._v[x];
+                        this._I = this._v[x];
                         break;
 
                     //Fx33 converts binary to decimal then stores the three digits
@@ -406,7 +406,7 @@ class CPU {
                         let bin = this._v[x];
                         let dec = parseInt(bin, 2);
                         let list = [dec.charAt(0),dec.charAt(1),dec.charAt(2)];
-                        writeTo(this._i,list );
+                        writeTo(this._I,list );
                         break;
 
                     //Fx55 stores v0 to vx in memory
@@ -416,14 +416,14 @@ class CPU {
                         {
                             data[i] = this._v[i];
                         }
-                        this._memory.writeTo(this._i, data);
+                        this._memory.writeTo(this._I, data);
                         break;
 
                     //Fx65 stores memory in v0 to vx
                     case 0x0065:
                        for(let i = 0; i <= x; i++ )
                         {
-                            this._v[i] = this._memory.readIn(this._i + i);
+                            this._v[i] = this._memory.readIn(this._I + i);
                         }
                         break;
                 }
