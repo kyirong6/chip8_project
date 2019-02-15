@@ -14,7 +14,7 @@ class Input {
         
     }
 
-    setKeys(){
+    setKeys(){ // might not be a good function name 
          /*
             receive a key pressed or released event and then map it to CHIP-8 keyboard “space”,
             store it in the keyboard buffer and update our KEY_PRESSED variable 

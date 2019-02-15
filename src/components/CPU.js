@@ -81,7 +81,7 @@ class CPU {
          reader.onloadend = () =>{
              program = new Uint8Array(reader.result);
              this._memory.writeTo(0x200, program);
-
+             this._display.dispMem( this._memory.memDump();
              this.Counter = program.byteLength + 0x200;
              this.cycle();
          }
@@ -102,9 +102,7 @@ class CPU {
         let opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
         testLengthOfOpcode(opcode.toString(16), 4);
         this.execute(opcode);
-        testOpcode(opcode, this._v, this._display, this._pc, this._stack, this._sp, this._I, this._Memory);
         this._display.displayChange();
-        this._display.dispMem( this._memory.memDump());
 
 
 
@@ -120,11 +118,6 @@ class CPU {
                 console.log("BEEP!\n");
             }
                 --this._soundTimer;
-        }
-
-        if(this._pc < 568 ){
-            setTimeout(() => this.cycle(), 100);
-
         }
 
       //  this.id = requestAnimationFrame(this.cycle); // this needs to stay at the bottome of cycle() for the emulator to constantly run
@@ -444,7 +437,10 @@ class CPU {
         //TO BE DELETED WHEN ALL OP CODE IS DONE/ RUN FUNCTION WORKING
         //CURRENTLY USED TO TEST AND GET OUT PERM ITERATION
 
-
+        if(this._pc < this.Counter ){
+            console.log(this._pc);
+        this.cycle();
+        }
     }
 }
 
