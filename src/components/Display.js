@@ -71,10 +71,12 @@ class Display {
 	dispMem(mem)
 	{
 		let holder;
-
+		let block = document.getElementById("inMem");
+		block.innerHTML = "";
 		for(let i = 0; i <= mem.byteLength; i++)
 		{
-			let block = document.getElementById("inMem");
+
+
 			holder = i.toString(16)
 				holder = '0x' + holder;
 

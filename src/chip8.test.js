@@ -108,7 +108,7 @@ function testOpcode(opcode, v, display, pc, stack, sp, I, Memory){ //making sure
           break;
         }
       case 0xA000:
-        console.log(asert(I, opcode & 0x0FFF));
+        console.log(assert(I, opcode & 0x0FFF));
         break;
       case 0xB000:
         console.log(assert((opcode & 0x0FFF), (pc - v[0])));
