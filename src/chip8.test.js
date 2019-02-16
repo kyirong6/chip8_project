@@ -53,9 +53,8 @@ function testOpcode(opcode, v, display, pc, stack, sp, I, Memory, delaytimer, so
       case 0x5000:
         if (v[x] == v[y]){
           let testopcode = memory.readIn(pc) << 8 | memory.readIn(pc + 1);
-          console.log(_assert(opcode, testopcode));
-      }
-        break;
+          console.log(_assert(opcode, testopcode));}
+          break;
       case 0x6000:
         console.log(assert(v[x], opcode & 0xFF));
         break;
@@ -151,7 +150,7 @@ function testOpcode(opcode, v, display, pc, stack, sp, I, Memory, delaytimer, so
             console.log("true");
           case 0x0055:
             let flag = 0;
-            for(let i = 0; i <= x, i++){
+            for(let i = 0; i <= x; i++){
               if (v[i] != I[i]){
                 flag = 1;
               }
@@ -160,7 +159,7 @@ function testOpcode(opcode, v, display, pc, stack, sp, I, Memory, delaytimer, so
             if(flag == 0){console.log(true);}
           case 0x0065:
             let flag = 0;
-            for(let i = 0; i <= x, i++){
+            for(let i = 0; i <= x; i++){
               if (v[i] != I[i]){
                 flag = 1;
               }
