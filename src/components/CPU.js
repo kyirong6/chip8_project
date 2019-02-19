@@ -55,7 +55,7 @@ class CPU {
 
 
     pause() {
-      cancelAnimationFrame(id);
+      cancelAnimationFrame(this.id);
     }
 
 
@@ -80,11 +80,19 @@ class CPU {
              this._memory.writeTo(0x200, program);
              this._display.dispMem( this._memory.memDump());
              this.Counter = program.byteLength + 0x200;
-             this.cycle();
+             this.loop();
          }
        }
 
 
+    loop() {
+      let self = this;
+      requestAnimationFrame(function run() {
+            self.cycle();
+            self.id = requestAnimationFrame(run);
+
+      });
+    }
 
 
 
@@ -96,7 +104,7 @@ class CPU {
         let opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
         testLengthOfOpcode(opcode.toString(16), 4);
         this.execute(opcode);
-        testOpcode(opcode, this._v, this._display, this._pc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer);
+        //testOpcode(opcode, this._v, this._display, this._pc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer);
         this._display.displayChange();
 
 
@@ -115,7 +123,7 @@ class CPU {
                 --this._soundTimer;
         }
 
-      //  this.id = requestAnimationFrame(this.cycle); // this needs to stay at the bottome of cycle() for the emulator to constantly run
+        //this.id = requestAnimationFrame(this.cycle); // this needs to stay at the bottome of cycle() for the emulator to constantly run
     }
 
     /*
@@ -431,11 +439,12 @@ class CPU {
         //For Counter:
         //TO BE DELETED WHEN ALL OP CODE IS DONE/ RUN FUNCTION WORKING
         //CURRENTLY USED TO TEST AND GET OUT PERM ITERATION
-
+        /*
         if(this._pc < this.Counter ){
             console.log(this._pc);
         this.cycle();
         }
+        */
     }
 }
 

@@ -40,7 +40,7 @@
           return;
         }
         game = games[0];
-        let chip = new chip8();
+        window.chip = new chip8();
         chip.loadProgram(game);
       }
 
@@ -49,7 +49,7 @@
     <script type="text/javascript">
 
       function pause() {
-
+        chip.pause();
       }
 
     </script>
