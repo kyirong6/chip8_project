@@ -50,8 +50,8 @@ class chip8 {
     /*
     A method to load the chip8 program
     */
-   loadProgram() {
-     this._cpu.loadProgram();
+   loadProgram(game) {
+     this._cpu.loadProgram(game);
   }
 
 

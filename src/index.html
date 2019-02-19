@@ -30,18 +30,30 @@
 			}
 }
     </script>
-    <script>
 
+    <script type="text/javascript">
 
-
-    function load()
-    {
-        let chip =new chip8();
-        chip.loadProgram();
-
-    }
+      function start() {
+        const games = document.getElementById('game').files;
+        if (games.length == 0) {
+          alert("Please Select A Game");
+          return;
+        }
+        game = games[0];
+        let chip = new chip8();
+        chip.loadProgram(game);
+      }
 
     </script>
+
+    <script type="text/javascript">
+
+      function pause() {
+
+      }
+
+    </script>
+
       <style>
         #log{
              width: 25%;
@@ -126,6 +138,18 @@
 
 <body onload="tableCreate(); ">
 ​
+
+<input type="file" id="game" name="myFile">
+
+<button onclick="start()">START</button>
+<button onclick="pause()">PAUSE</button>
+
+
+
+
+
+
+<!--
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -141,6 +165,7 @@
         </ul>
     </div>
 </nav>
+-->
 
 <div id="tblHold"><table id="tbl"></table></div>
 

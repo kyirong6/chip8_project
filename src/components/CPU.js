@@ -71,12 +71,10 @@ class CPU {
     /*
     This method loads the program into the CPU
     */
-     loadProgram() {//currently will always only load CONNECT4 for demo/testing purpose
-
-         const input = document.querySelector('input[type="file"');
+     loadProgram() {
          const reader = new FileReader();
          let program;
-         reader.readAsArrayBuffer(input.files[0]);
+         reader.readAsArrayBuffer(game);
          reader.onloadend = () =>{
              program = new Uint8Array(reader.result);
              this._memory.writeTo(0x200, program);
@@ -84,9 +82,6 @@ class CPU {
              this.Counter = program.byteLength + 0x200;
              this.cycle();
          }
-
-
-
        }
 
 
