@@ -15,7 +15,7 @@ class Display {
 			arr[i] = new Array(32);
 			for(let j = 0; j < 64; j++)
 			{
-				arr[i][j] = 1;
+				arr[i][j] = 0;
 
 			}
 		}
@@ -91,6 +91,7 @@ class Display {
 
     modDisp(x, y, val)
     {
+
 
         for(let i =0; i < 8; i++ )
         {

@@ -80,6 +80,8 @@ class CPU {
              this._memory.writeTo(0x200, program);
              this._display.dispMem( this._memory.memDump());
              this.Counter = program.byteLength + 0x200;
+             this._v[0] = 0;
+             this._v[1] = 0;
              this.loop();
          }
        }
@@ -103,6 +105,7 @@ class CPU {
 
         let opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
         testLengthOfOpcode(opcode.toString(16), 4);
+
         this.execute(opcode);
         //testOpcode(opcode, this._v, this._display, this._pc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer);
         this._display.displayChange();
@@ -192,7 +195,8 @@ class CPU {
 
             //  7xkk; Set Vx = Vx + kk
             case 0x7000:
-                var val = (opcode & 0xFF + this._v[x]);
+                var val = (opcode & 0x00FF);
+                val += this._v[x];
                 while (val > 255) {
                     val -= 256;
                 }
@@ -323,7 +327,6 @@ class CPU {
             case 0xD000:
                 let binDig = 0;
                 let height = this._v[y];
-                this._memory.writeTo(this._I, [0b10101010] );
                 this._display.dispMem(this._memory.memDump());
                 this._v[16] = 0
                 let h = opcode & 0x000f;
@@ -331,12 +334,13 @@ class CPU {
                 for(let i = 0; i < h ; i++)
                 {
 
-                    height++;
+
                     if(height > 31)
                         height = 0;
                     binDig = this._memory.readIn(this._I + i);
                     if( this._display.modDisp(this._v[x], height, binDig))
                         this._v[16] = 1;
+                    height++;
 
                 }
 
@@ -382,6 +386,20 @@ class CPU {
 
                     //Fx0A todo: wait for keypress
                     case 0x000A:
+
+                        let press = false;
+                        press = this._input.check();
+                        if(!press)
+                            this._pc -= 2;
+                        else
+                        {
+
+                        }
+
+
+
+
+
                         break;
 
                     //Fx15 sets delay timer to value of vx

@@ -11,35 +11,77 @@ class Input {
 
         this._keyBoardBuffer = new Uint16Array(16) // keyboard buffer (new Uint16Array(16);)
         this._isKeyPressed = false // gets set whenever a key is pressed (boolean)
-        
-    }
-
-    setKeys(){ // might not be a good function name 
-         /*
-            receive a key pressed or released event and then map it to CHIP-8 keyboard “space”,
-            store it in the keyboard buffer and update our KEY_PRESSED variable 
-            (this notes if there have been any key presses):
-        */
-
-        let charStr = String.fromCharCode(evt.which);
-        let value   = (evt.type == 'keydown') ? true : false;
-
-        index =
+        this._keyPressed = 0;
+        document.addEventListener('keydown', (event)=>
+        {
+            switch (event.keyCode)
             {
-                '1': 0x1,'2': 0x2,'3': 0x3,'4': 0x4,
-                'Q': 0x4,'W':0x5,'E': 0x6,'R': 0xD,
-                'A': 0x7,'S':0x8,'D': 0x9,'F': 0xE,
-                'Z': 0xA,'X':0x0,'C': 0xB, 'V':0xF,
-            }[charStr];
+                case 49://1
+                    this._keyPressed = 49;
+                    break;
+                case 50://2
+                    this._keyPressed = 50;
+                    break;
+                case 51://3
+                    this._keyPressed = 51;
+                    break;
+                case 52://4
+                    this._keyPressed = 52;
+                    break;
+                case 81://Q
+                    this._keyPressed = 81;
+                    break;
+                case 87://W
+                    this._keyPressed = 87;
+                    break;
+                case 69://E
+                    this._keyPressed = 69;
+                    break;
+                case 82://R
+                    this._keyPressed = 82;
+                    break;
+                case 65://A
+                    this._keyPressed = 65;
+                    break;
+                case 83://S
+                    this._keyPressed = 83;
+                    break;
+                case 68://D
+                    this._keyPressed = 68;
+                    break;
+                case 70://F
+                    this._keyPressed = 70;
+                    break;
+                case 90://Z
+                    this._keyPressed = 90;
+                    break;
+                case 88://X
+                    this._keyPressed = 88;
+                    break;
+                case 67://C
+                    this._keyPressed = 67;
+                    break;
+                case 86://V
+                    this._keyPressed = 86;
+                    break;
+                default:
+                    this._keyPressed = 0;
 
-        if(index !== undefined){
-            this._keyBoardBuffer[index] = value;
-        }
-
-        this._isKeyPressed = this._keyBoardBuffer.reduce( ((prevValue,currentValue) => (prevValue | currentValue)) )
-
+            }
+            console.log("check");
+            this.isKeyPressed = true;
+        });
     }
 
+  check()
+  {
+      return this.isKeyPressed;
+  }
+  clear()
+  {
+      this.isKeyPressed = false;
+  }
 }
+
 
 // module.exports.Input = Input;
