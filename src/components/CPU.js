@@ -67,6 +67,20 @@ class CPU {
     setForward() {
 
     }
+    opcodetest(_opcode) {
+      _opcode = parseInt(_opcode);
+       testLengthOfOpcode(_opcode.toString(16), 4);
+       let test = new Uint8Array(2);
+       test[0] = _opcode >> 8;
+       test[1] = _opcode;
+       this._memory.writeTo(0x200, test);
+       this._display.dispMem( this._memory.memDump());
+       this.Counter = test.byteLength + 0x200;
+       this._v[0] = 0;
+       this._v[1] = 0;
+       this.loop();
+       // this.reset();
+    }
 
     /*
     This method loads the program into the CPU

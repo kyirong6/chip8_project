@@ -113,7 +113,7 @@ function testOpcode(opcode, v, display, pc, stack, sp, I, Memory, delaytimer, so
           break;
         }
       case 0xA000:
-        console.log(asert(I, opcode & 0x0FFF));
+        console.log(assert(I, opcode & 0x0FFF));
         break;
       case 0xB000:
         console.log(assert((opcode & 0x0FFF), (pc - v[0])));
@@ -158,14 +158,14 @@ function testOpcode(opcode, v, display, pc, stack, sp, I, Memory, delaytimer, so
             if(flag == 1){console.log("false");}
             if(flag == 0){console.log(true);}
           case 0x0065:
-            flag = 0;
+            let flag1 = 0;
             for(let i = 0; i <= x; i++){
               if (v[i] != I[i]){
-                flag = 1;
+                flag1 = 1;
               }
             }
-            if(flag == 1){console.log("false");}
-            if(flag == 0){console.log(true);}
+            if(flag1 == 1){console.log("false");}
+            if(flag1 == 0){console.log(true);}
         }
     }
 }

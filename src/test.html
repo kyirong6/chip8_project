@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chip-8-test</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="chip8.js"></script>
+    <script src="components/Memory.js"></script>
+    <script src="components/Input.js"></script>
+    <script src="components/Display.js"></script>
+    <script src="components/CPU.js"></script>
+    <script src="chip8.test.js"></script>
+
+
+    <script>
+    	function tableCreate(){
+    		let rows =32;
+            let cols=64;
+            let table = document.getElementById('tbl');
+			for (let r = 0; r<rows; r++){
+                let row = table.insertRow(-1);
+  				for (let c = 0; c<cols; c++){
+                    let cell = row.insertCell(-1);
+    				cell.setAttribute('id', "cell"+r+"-"+c );
+
+  				}
+			}
+}
+    </script>
+
+    <script type="text/javascript">
+
+      function start() {
+        var opcode = prompt("Enter an testing opcode:");
+        window.chip = new chip8();
+        chip.opcodetest(opcode);
+      }
+
+    </script>
+
+    <script type="text/javascript">
+
+      function pause() {
+        chip.pause();
+      }
+
+    </script>
+
+      <style>
+        #log{
+             width: 25%;
+             color: white;
+
+
+
+        }
+        #mem{
+            width: 25%;
+            height: 40vh;
+            overflow: scroll;
+            color: white;
+        }
+        #con{
+            width: 50%;
+            color: white;
+        }
+
+
+        #hold > *{
+            display: inline;
+            float: left;
+        }
+        #hold
+        {
+         height: auto;
+        }
+        #tblHold{
+            width: 100%;
+        }
+
+        #tblHold > *{
+
+            position: relative;
+
+            left: 50%;
+            -ms-transform: translate(-50%);
+            transform: translate(-50%);
+        }
+
+
+        body{
+            background-color: black;
+        }
+        table{
+            border: 1px solid red;
+            width: 50%;
+            table-layout: fixed;
+        }
+      	tr
+
+         td{
+             width: 1.5625%;
+             height: auto;
+             position: relative;
+
+
+
+        }
+        td:after
+        {
+        	content: '';
+        	display: block;
+        	padding-bottom:100%
+
+        }
+
+
+
+
+
+
+
+
+
+
+    </style>
+</head>
+
+
+
+<body onload="tableCreate(); ">
+​
+
+
+<button onclick="start()">START</button>
+<button onclick="pause()">PAUSE</button>
+
+
+
+
+
+
+<!--
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Chip-8</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">File <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li oninput="load();"><input type="file" on /></li>
+                    <li><a href="#">Reset Place Holder</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+-->
+
+<div id="tblHold"><table id="tbl"></table></div>
+
+
+<div id="hold">
+
+    <div id="log"><p id = "inLog">log</p></div>
+    <div id="con">controls</div>
+    <div id="mem"><p id="inMem"></p></div>
+</div>
+
+
+
+</body>
+</html>
+​

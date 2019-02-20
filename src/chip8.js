@@ -45,7 +45,9 @@ class chip8 {
 		return a + b;
 	}
 
-
+	 opcodetest(_opcode){
+			this._cpu.opcodetest(_opcode);
+		}
 
     /*
     A method to load the chip8 program
