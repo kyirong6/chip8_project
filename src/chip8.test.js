@@ -25,7 +25,7 @@ function testOpcode(opcode, v, display, pc, stack, sp, I, Memory, delaytimer, so
       switch(opcode){
 
         case 0x00E0://check if the display was cleared
-          if (!Array.display(array) || !display.length) {
+          if (display == undefined || display.length == 0) {
             console.log("True");
             break;
           }
@@ -158,7 +158,7 @@ function testOpcode(opcode, v, display, pc, stack, sp, I, Memory, delaytimer, so
             if(flag == 1){console.log("false");}
             if(flag == 0){console.log(true);}
           case 0x0065:
-            let flag = 0;
+            flag = 0;
             for(let i = 0; i <= x; i++){
               if (v[i] != I[i]){
                 flag = 1;
