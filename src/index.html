@@ -33,7 +33,7 @@
 
     <script type="text/javascript">
       function onLoad() {
-        alert("loaded");
+        alert("page loaded");
         window.chip = new chip8();
       }
 
@@ -70,6 +70,11 @@
     <script type="text/javascript">
 
       function pause() {
+        const games = document.getElementById('game').files;
+        if (games.length == 0) {
+          alert("No Game To Pause");
+          return;
+        }
         chip.pause();
       }
 
@@ -79,7 +84,26 @@
     <script type="text/javascript">
 
       function restart() {
+        const games = document.getElementById('game').files;
+        if (games.length == 0) {
+          alert("No Game To Restart");
+          return;
+        }
         chip.restart();
+      }
+    </script>
+
+
+    <script type="text/javascript">
+      function forward() {
+        alert("placeholder");
+      }
+    </script>
+
+
+    <script type="text/javascript">
+      function backward() {
+        alert("placeholder");
       }
     </script>
 
@@ -174,6 +198,8 @@
 <button onclick="start()">START</button>
 <button onclick="pause()">PAUSE</button>
 <button onclick="restart()">RESTART</button>
+<button onclick="forward()">STEP FORWARD</button>
+<button onclick="backward()">STEP BACKWARD</button>
 
 
 
