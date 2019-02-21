@@ -61,7 +61,7 @@ class chip8 {
   A method to start the emulator
   */
   start() {
-    this._cpu.cycle();
+    this._cpu.loop();
   }
 
 
@@ -71,6 +71,14 @@ class chip8 {
    pause() {
      this._cpu.pause();
   }
+
+
+	/*
+  A method to restart the emulator
+  */
+	restart() {
+		this._cpu.reset();
+	}
 
 
   /*

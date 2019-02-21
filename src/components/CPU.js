@@ -21,7 +21,7 @@ class CPU {
         this.id = "";
         this._delayTimer = 0;
         this._soundTimer = 0;
-
+        this._isRunning = false;
     }
 
 
@@ -29,6 +29,7 @@ class CPU {
     This method resets the CPU.
     */
     reset() {
+
         this._pc     = 0x200;  // Reset program counter to start at 0x200
         this._I      = 0;      // Reset index register
         this._sp     = 0;      // Reset stack pointer
@@ -41,21 +42,23 @@ class CPU {
         // clear memory
         // clear keyboard buffer
         */
-        this._display = new Display();
-        this._stack = new Array(16);
+        this._display.clearDisp();
+        this._stack = new Uint16Array(16);
         this._v = new Uint8Array(16);
-        this._memory = new ArrayBuffer[0x1000];
+        this._memory = new Memory();
         this._keyBoardBuffer = new Uint8Array(16);;
 
         //set Timers
         this._delayTimer = 0;
         this._soundTimer = 0;
+        this._isRunning = false;
 
     }
 
 
     pause() {
-      cancelAnimationFrame(this.id);
+      this._isRunning = false;
+      //cancelAnimationFrame(this.id);
     }
 
 
@@ -85,7 +88,7 @@ class CPU {
     /*
     This method loads the program into the CPU
     */
-     loadProgram() {
+     loadProgram(game) {
          const reader = new FileReader();
          let program;
          reader.readAsArrayBuffer(game);
@@ -96,17 +99,19 @@ class CPU {
              this.Counter = program.byteLength + 0x200;
              this._v[0] = 0;
              this._v[1] = 0;
-             this.loop();
+             //this.loop();
          }
        }
 
 
     loop() {
       let self = this;
+      this._isRunning = true;
       requestAnimationFrame(function run() {
+            if (self._isRunning) {
             self.cycle();
             self.id = requestAnimationFrame(run);
-
+          }
       });
     }
 

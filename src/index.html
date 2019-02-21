@@ -32,6 +32,27 @@
     </script>
 
     <script type="text/javascript">
+      function onLoad() {
+        alert("loaded");
+        window.chip = new chip8();
+      }
+
+
+    </script>
+
+
+    <script type="text/javascript">
+      function onSelection() {
+        alert("selected");
+        const games = document.getElementById('game').files;
+        game = games[0];
+        chip.restart();
+        chip.loadProgram(game);
+      }
+    </script>
+
+
+    <script type="text/javascript">
 
       function start() {
         const games = document.getElementById('game').files;
@@ -39,12 +60,12 @@
           alert("Please Select A Game");
           return;
         }
-        game = games[0];
-        window.chip = new chip8();
-        chip.loadProgram(game);
+        chip.start();
       }
 
+
     </script>
+
 
     <script type="text/javascript">
 
@@ -53,6 +74,15 @@
       }
 
     </script>
+
+
+    <script type="text/javascript">
+
+      function restart() {
+        chip.restart();
+      }
+    </script>
+
 
       <style>
         #log{
@@ -136,13 +166,14 @@
 
 
 
-<body onload="tableCreate(); ">
+<body onload="tableCreate(); onLoad();">
 ​
 
-<input type="file" id="game" name="myFile">
+<input type="file" id="game" name="myFile" oninput="onSelection();">
 
 <button onclick="start()">START</button>
 <button onclick="pause()">PAUSE</button>
+<button onclick="restart()">RESTART</button>
 
 
 
