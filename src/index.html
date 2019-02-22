@@ -2,9 +2,11 @@
 <html>
 <head>
     <title>Chip-8</title>
+    <h2 id="heading" align=center>CHIP-8 EMULATOR IN JAVASCRIPT</h2>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="styles.css" media="screen" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="chip8.js"></script>
@@ -33,7 +35,6 @@
 
     <script type="text/javascript">
       function onLoad() {
-        alert("page loaded");
         window.chip = new chip8();
       }
 
@@ -85,11 +86,14 @@
 
       function restart() {
         const games = document.getElementById('game').files;
+        game = games[0];
         if (games.length == 0) {
           alert("No Game To Restart");
           return;
         }
         chip.restart();
+        chip.loadProgram(game);
+        chip.start();
       }
     </script>
 
@@ -106,101 +110,18 @@
         alert("placeholder");
       }
     </script>
-
-
-      <style>
-        #log{
-             width: 25%;
-             color: white;
-
-
-
-        }
-        #mem{
-            width: 25%;
-            height: 40vh;
-            overflow: scroll;
-            color: white;
-        }
-        #con{
-            width: 50%;
-            color: white;
-        }
-
-
-        #hold > *{
-            display: inline;
-            float: left;
-        }
-        #hold
-        {
-         height: auto;
-        }
-        #tblHold{
-            width: 100%;
-        }
-
-        #tblHold > *{
-
-            position: relative;
-
-            left: 50%;
-            -ms-transform: translate(-50%);
-            transform: translate(-50%);
-        }
-
-
-        body{
-            background-color: black;
-        }
-        table{
-            border: 1px solid red;
-            width: 50%;
-            table-layout: fixed;
-        }
-      	tr
-
-         td{
-             width: 1.5625%;
-             height: auto;
-             position: relative;
-
-
-
-        }
-        td:after
-        {
-        	content: '';
-        	display: block;
-        	padding-bottom:100%
-
-        }
-
-
-
-
-
-
-
-
-
-
-    </style>
 </head>
 
 
-
 <body onload="tableCreate(); onLoad();">
-​
-
+  <!---
 <input type="file" id="game" name="myFile" oninput="onSelection();">
-
-<button onclick="start()">START</button>
-<button onclick="pause()">PAUSE</button>
-<button onclick="restart()">RESTART</button>
-<button onclick="forward()">STEP FORWARD</button>
-<button onclick="backward()">STEP BACKWARD</button>
-
+<button id="start" onclick="start()">START</button>
+<button id="pause" onclick="pause()">PAUSE</button>
+<button id="restart" onclick="restart()">RESTART</button>
+<button id="backward" onclick="backward()">STEP BACKWARD</button>
+<button id="forward" onclick="forward()">STEP FORWARD</button>
+-->
 
 
 
@@ -224,7 +145,17 @@
 </nav>
 -->
 
-<div id="tblHold"><table id="tbl"></table></div>
+<div id="tblHold">
+  <table id="tbl"></table>
+  <div style="text-align:center;">
+    <input type="file" id="game" name="myFile" oninput="onSelection();">
+    <button id="start" onclick="start()">START</button>
+    <button id="pause" onclick="pause()">PAUSE</button>
+    <button id="restart" onclick="restart()">RESTART</button>
+    <button id="backward" onclick="backward()">STEP BACKWARD</button>
+    <button id="forward" onclick="forward()">STEP FORWARD</button>
+  </div>
+</div>
 
 
 <div id="hold">
@@ -233,9 +164,5 @@
     <div id="con">controls</div>
     <div id="mem"><p id="inMem"></p></div>
 </div>
-
-
-
 </body>
 </html>
-​

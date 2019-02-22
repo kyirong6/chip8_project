@@ -52,8 +52,6 @@ class CPU {
         this._delayTimer = 0;
         this._soundTimer = 0;
         this._isRunning = false;
-        //this.loop();
-
     }
 
 
@@ -72,7 +70,7 @@ class CPU {
 
     }
 
-    
+
     opcodetest(_opcode) {
       _opcode = parseInt(_opcode);
        testLengthOfOpcode(_opcode.toString(16), 4);

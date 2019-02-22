@@ -1,0 +1,123 @@
+@import 'https://fonts.googleapis.com/css?family=Press+Start+2P';
+
+#log {
+  width: 25%;
+  color: white;
+}
+
+#mem {
+  width: 25%;
+  height: 40vh;
+  overflow: scroll;
+  color: white;
+}
+
+#con {
+  width: 50%;
+  color: white;
+}
+
+#hold > *{
+  display: inline;
+  float: left;
+}
+
+#hold {
+  height: auto;
+}
+
+#tblHold {
+  width: 100%;
+}
+
+#tblHold > *{
+
+  position: relative;
+
+  left: 50%;
+  -ms-transform: translate(-50%);
+  transform: translate(-50%);
+}
+
+#heading {
+  color: white;
+  font-family: 'Press Start 2P', cursive;
+}
+
+#start {
+  background-color: blue;
+  border-color: blue;
+  color: white;
+  border: none;
+}
+
+#pause {
+  background-color: blue;
+  border-color: blue;
+  color: white;
+  border: none;
+}
+
+#restart {
+  background-color: blue;
+  border-color: blue;
+  color: white;
+  border: none;
+}
+
+#backward {
+  background-color: blue;
+  border-color: blue;
+  color: white;
+  border: none;
+}
+
+#forward {
+  background-color: blue;
+  border-color: blue;
+  color: white;
+  border: none;
+}
+
+#start:hover {
+  box-shadow: 0px 0px 5px #777;
+}
+
+#pause:hover {
+  box-shadow: 0px 0px 5px #777;
+}
+
+#restart:hover {
+  box-shadow: 0px 0px 5px #777;
+}
+
+#backward:hover {
+  box-shadow: 0px 0px 5px #777;
+}
+
+#forward:hover {
+  box-shadow: 0px 0px 5px #777;
+}
+
+body {
+  background-color: black;
+}
+
+table {
+  border: 1px solid red;
+  width: 50%;
+  table-layout: fixed;
+}
+tr
+
+td {
+   width: 1.5625%;
+   height: auto;
+   position: relative;
+}
+
+td:after {
+  content: '';
+  display: block;
+  padding-bottom:100%
+}
