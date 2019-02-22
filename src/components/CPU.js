@@ -100,8 +100,15 @@ class CPU {
              this._memory.writeTo(0x200, program);
              this._display.dispMem( this._memory.memDump());
              this.Counter = program.byteLength + 0x200;
-             this._v[0] = 0;
-             this._v[1] = 0;
+             let a = this;
+             let holder = function()
+             {
+                 a.execute(0xE32E);
+                 setTimeout(holder, 1000);
+             }
+             holder();
+
+
              //this.loop();
          }
        }
@@ -198,6 +205,7 @@ class CPU {
 
             //	4XNN Skips the next instruction if VX doesn't equal NN
             case 0x4000:
+                console.log((opcode & 0x00FF));
                 if (this._v[x] != (opcode & 0x00FF)) {	//check if last 2 nibbles are NOT equal to VX
                     this._pc += 2
                 }
@@ -322,7 +330,7 @@ class CPU {
                     (Usually the next instruction is a jump to skip a code block)
                 */
                 if(_v[x] != _v[y]){
-                    pc += 2;
+                    this._pc += 2;
                 }
                 break;
 
@@ -372,28 +380,31 @@ class CPU {
                 switch (opcode & 0x000F) {
                     //Ex9E skips next instruction if key found at vx todo:once rest is running
                     case 0x000E:
-                        document.onKeyPress = function(evt)
+                        if(this._input.isPressed())
                         {
-                            evt = evt || window.event;
-                            let charCode = evt.keyCode || evt.which;
-                            if(charCode == this._v[x])
+                            let key = this._input.getCode();
+                            if(key == this._v[x] )
                             {
-                                this._pc++;
+                                this._pc += 2;
                             }
+
                         }
+
+
                         break;
 
                     //ExA1 checks if key is stored skips if not todo:once rest is running
                     case 0x0001:
-                        document.onKeyPress = function(evt)
+                        if(this._input.isPressed())
                         {
-                            evt = evt || window.event;
-                            let charCode = evt.keyCode || evt.which;
-                            if(charCode != this._v[x])
+                            let key = this._input.getCode();
+                            if(key != this._v[x] )
                             {
-                                this._pc++;
+                                this._pc += 2;
                             }
+
                         }
+
                         break;
                 }
                 break;
@@ -406,18 +417,30 @@ class CPU {
                         this._v[x] = this._delayTimer;
                         break;
 
-                    //Fx0A todo: wait for keypress
-                    case 0x000A:
 
+                    case 0x000A://pauses program until key is pressed
+                        this.pause();
+                        this._input.clear();
                         let press = false;
-                        press = this._input.check();
-                        if(!press)
-                            this._pc -= 2;
-                        else
+                        let a = this;
+                        let pos = (opcode & 0x0F00);
+
+                        let hold =  function()
                         {
+                            if(press)
+                            {
+                                a._v[x] = a._input.getCode();
+                                console.log(a._v[0xc]);
+
+
+                                a.loop();
+                                return;
+                            }
+                            press = a._input.check();
+                            setTimeout(hold, 10);
 
                         }
-
+                        hold();
 
 
 
