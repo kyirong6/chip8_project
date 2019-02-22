@@ -1,4 +1,7 @@
-@import 'https://fonts.googleapis.com/css?family=Press+Start+2P';
+@font-face {
+  font-family: 'arcade';
+  src: url('PressStart2P-Regular.ttf')  format('truetype');
+}
 
 #log {
   width: 25%;
@@ -41,7 +44,7 @@
 
 #heading {
   color: white;
-  font-family: 'Press Start 2P', cursive;
+  font-family: 'arcade';
 }
 
 #start {
