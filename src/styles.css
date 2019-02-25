@@ -5,13 +5,15 @@
 
 #log {
   width: 25%;
+  height: 30vh;
+  overflow-y: auto;
   color: white;
 }
 
 #mem {
   width: 25%;
-  height: 40vh;
-  overflow: scroll;
+  overflow-y: auto;
+  height: 30vh;
   color: white;
 }
 

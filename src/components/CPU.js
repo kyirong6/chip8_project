@@ -29,10 +29,11 @@ class CPU {
     This method resets the CPU.
     */
     reset() {
-
         this._pc     = 0x200;  // Reset program counter to start at 0x200
         this._I      = 0;      // Reset index register
         this._sp     = 0;      // Reset stack pointer
+        document.getElementById("inMem").innerHTML = "";
+        document.getElementById("inLog").innerHTML = "";
 
         /*
         defining new arrays so there is no need for the following:
