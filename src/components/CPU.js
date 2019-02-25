@@ -139,6 +139,8 @@ class CPU {
         this.execute(opcode);
         //testOpcode(opcode, this._v, this._display, this._pc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer);
         this._display.displayChange();
+        this._display.dispReg( this._v);
+        this._display.dispMem( this._memory.memDump());
 
 
 
@@ -174,7 +176,7 @@ class CPU {
                 switch (opcode) {
                     //  0NNN (ignored by modern interpreters)
                     case 0x00E0: //	00E0 Clears Screen
-
+                        this._display.clearDisp();
                         break;
 
                     //	00EE Returns from Subroutine

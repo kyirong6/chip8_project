@@ -67,6 +67,30 @@ class Display {
 		let breakLine = document.createElement('br');
 		block.appendChild(breakLine);
 	}
+	dispReg(reg)
+	{
+		let holder;
+		let block = document.getElementById("inCon");
+		block.innerHTML = "";
+		for(let i = 0; i <= reg.length; i++)
+		{
+
+			holder = i.toString(16)
+			holder = '0x' + holder;
+
+
+			let text = document.createTextNode(holder+": "+reg[i] );
+			if(reg[i] != null)
+			{
+				block.appendChild(text);
+				let breakLine = document.createElement('br');
+				block.appendChild(breakLine);
+			}
+
+
+		}
+	}
+
 
 	dispMem(mem)
 	{
