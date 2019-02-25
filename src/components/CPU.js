@@ -29,6 +29,7 @@ class CPU {
     This method resets the CPU.
     */
     reset() {
+        this._isRunning = false;
         this._pc     = 0x200;  // Reset program counter to start at 0x200
         this._I      = 0;      // Reset index register
         this._sp     = 0;      // Reset stack pointer
@@ -119,7 +120,7 @@ class CPU {
       let self = this;
       this._isRunning = true;
       requestAnimationFrame(function run() {
-            if (self._isRunning) {
+            if (self._isRunning && self._pc < self.Counter) {
             self.cycle();
             self.id = requestAnimationFrame(run);
           }
