@@ -15,7 +15,7 @@ class chip8 {
 		this._memory = new Memory();
 		this._display = new Display();
 		this._input = new Input();
-    this._cpu = new CPU(this._memory, this._input, this._display);
+        this._cpu = new CPU(this._memory, this._input, this._display);
 
     //fontsets
     this._fontsets = [

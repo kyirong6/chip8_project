@@ -82,10 +82,14 @@ class Display {
 
 
 			let text = document.createTextNode(holder+": "+mem[i] );
+            if(mem[i] != null)
+            {
+                block.appendChild(text);
+                let breakLine = document.createElement('br');
+                block.appendChild(breakLine);
+            }
 
-			block.appendChild(text);
-			let breakLine = document.createElement('br');
-			block.appendChild(breakLine);
+
 		}
 	}
 
