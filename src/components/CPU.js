@@ -98,6 +98,7 @@ class CPU {
              this._memory.writeTo(0x200, program);
              this._display.dispMem( this._memory.memDump());
              this.Counter = program.byteLength + 0x200;
+             /*
              let a = this;
              let holder = function()
              {
@@ -105,6 +106,7 @@ class CPU {
                  setTimeout(holder, 1000);
              }
              holder();
+             */
 
 
              //this.loop();
