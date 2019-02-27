@@ -26,5 +26,11 @@ We created a file called "test.html", which will take one opcode as an input to 
  *CONNECT4 USED FOR TESTING PURPOSES FOUND AT https://www.zophar.net/pdroms/chip8.html*
 4. Program will then load and display memory usage on bottom right of screen if succesful
 
+#Running Editor
+1. open Editor.html
+2. click on choose file 
+3. Select any Chip 8 program
+4. Right click in the web browser, and click inspect to see the console
+5. The opcode will be displayed in sentence form
 
 *this is just a generic readme. we will update and be more specific as we go along...*
