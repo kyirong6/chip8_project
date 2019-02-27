@@ -119,7 +119,7 @@ class Display {
 
     modDisp(x, y, val)
     {
-
+		let flag  = false;
 
         for(let i =0; i < 8; i++ )
         {
@@ -135,8 +135,8 @@ class Display {
 
                 if(this._disp[y][x]==1)
                 {
-                    this._disp[y][x] = 1;
-                    return true;
+                    this._disp[y][x] = 0;
+                    flag = true;
                 }
                 else
                 {
@@ -146,14 +146,19 @@ class Display {
             }
             else
             {
+				if(this._disp[y][x] != 1)
+				{
+					this._disp[y][x] = 0;
+				}
 
-                this._disp[y][x] = 0;
+
 
             }
             val <<= 1;
             x++;
         }
         this.displayChange();
+        return flag;
 
 
     }

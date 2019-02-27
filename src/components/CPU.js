@@ -209,7 +209,6 @@ class CPU {
 
             //	4XNN Skips the next instruction if VX doesn't equal NN
             case 0x4000:
-                console.log((opcode & 0x00FF));
                 if (this._v[x] != (opcode & 0x00FF)) {	//check if last 2 nibbles are NOT equal to VX
                     this._pc += 2
                 }
@@ -361,7 +360,6 @@ class CPU {
             case 0xD000:
                 let binDig = 0;
                 let height = this._v[y];
-                this._display.dispMem(this._memory.memDump());
                 this._v[16] = 0
                 let h = opcode & 0x000f;
 

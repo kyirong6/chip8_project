@@ -15,7 +15,6 @@ class Input {
         document.addEventListener('keyup', (event)=>
         {
             this._isKeyPressed = false;
-            console.log(this._isKeyPressed);
         }
         );
         document.addEventListener('keydown', (event)=>
