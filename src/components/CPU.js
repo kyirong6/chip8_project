@@ -22,6 +22,27 @@ class CPU {
         this._delayTimer = 0;
         this._soundTimer = 0;
         this._isRunning = false;
+
+        //fontsets
+        this._fontsets = [
+            0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
+            0x20, 0x60, 0x20, 0x20, 0x70, // 1
+            0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
+            0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3
+            0x90, 0x90, 0xF0, 0x10, 0x10, // 4
+            0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5
+            0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6
+            0xF0, 0x10, 0x20, 0x40, 0x40, // 7
+            0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8
+            0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
+            0xF0, 0x90, 0xF0, 0x90, 0x90, // A
+            0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
+            0xF0, 0x80, 0x80, 0x80, 0xF0, // C
+            0xE0, 0x90, 0x90, 0x90, 0xE0, // D
+            0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
+            0xF0, 0x80, 0xF0, 0x80, 0x80  // F
+        ];
+
     }
 
 
@@ -96,18 +117,10 @@ class CPU {
          reader.readAsArrayBuffer(game);
          reader.onloadend = () =>{
              program = new Uint8Array(reader.result);
+             this._memory.writeTo(0,this._fontsets); // load fontsets
              this._memory.writeTo(0x200, program);
              this._display.dispMem( this._memory.memDump());
              this.Counter = program.byteLength + 0x200;
-             /*
-             let a = this;
-             let holder = function()
-             {
-                 a.execute(0xE32E);
-                 setTimeout(holder, 1000);
-             }
-             holder();
-             */
 
 
              //this.loop();
@@ -166,7 +179,7 @@ class CPU {
     */
     execute(opcode) {
         this._pc += 2;
-        console.log(opcode.toString(16));
+        console.log(opcode.toString(16).toUpperCase());
         var x = (opcode & 0x0F00) >> 8; // isolate variable x from opcode
         var y = (opcode & 0x00F0) >> 4; // isolate variable y from opcode
 
@@ -428,17 +441,14 @@ class CPU {
 
                         let hold =  function()
                         {
+                            press = a._input.check();
                             if(press)
                             {
                                 a._v[x] = a._input.getCode();
-                                console.log(a._v[0xc]);
-
-
                                 a.loop();
                                 return;
                             }
-                            press = a._input.check();
-                            setTimeout(hold, 10);
+                            setTimeout(hold, 1);
 
                         }
                         hold();

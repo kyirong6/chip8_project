@@ -62,7 +62,7 @@ class Display {
 	dispOp(opcode)
 	{
 		let block = document.getElementById("inLog");
-		let text = document.createTextNode(opcode.toString(16));
+		let text = document.createTextNode(opcode.toString(16).toUpperCase() );
 		block.appendChild(text);
 		let breakLine = document.createElement('br');
 		block.appendChild(breakLine);
@@ -71,6 +71,8 @@ class Display {
 	{
 		let holder;
 		let block = document.getElementById("inCon");
+		let text;
+		let breakLine;
 		block.innerHTML = "";
 		for(let i = 0; i <= reg.length; i++)
 		{
@@ -79,11 +81,12 @@ class Display {
 			holder = '0x' + holder;
 
 
-			let text = document.createTextNode(holder+": "+reg[i] );
+
 			if(reg[i] != null)
 			{
+				text = document.createTextNode(holder+": "+reg[i].toString(16).toUpperCase() );
 				block.appendChild(text);
-				let breakLine = document.createElement('br');
+				breakLine = document.createElement('br');
 				block.appendChild(breakLine);
 			}
 
@@ -96,6 +99,8 @@ class Display {
 	{
 		let holder;
 		let block = document.getElementById("inMem");
+		let text;
+		let breakLine;
 		block.innerHTML = "";
 		for(let i = 0; i <= mem.byteLength; i++)
 		{
@@ -105,9 +110,9 @@ class Display {
 				holder = '0x' + holder;
 
 
-			let text = document.createTextNode(holder+": "+mem[i] );
             if(mem[i] != null)
             {
+				text = document.createTextNode(holder+": "+mem[i].toString(16).toUpperCase() );
                 block.appendChild(text);
                 let breakLine = document.createElement('br');
                 block.appendChild(breakLine);
