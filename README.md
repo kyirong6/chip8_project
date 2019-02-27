@@ -13,11 +13,11 @@ This project consists of building a **chip8 emulator**, a **visualizer** that sh
 
 
 # Testing Manual
-We created a file called "chip8.test.js", which has the assertion function for testing the length of opcode, however, our opcode is not fully implemented, here's a detailed step on how the testing works:
-1. Open index.html file.
-2. right click, and click "Inspect".
-3. click on "Console".
-4. if it shows "true", then the test passes, otherwise it does not.
+We created a file called "test.html", which will take one opcode as an input to the emulator, here's a detailed step on how the testing works:
+1. Open test.html file.
+2. click on "Start".
+3. Enter an opcode with prefix "0x".
+4. the screen will then display the opcode, what has changed to the register and memory.
 
 #Running Emulator
 1. Open index.html file

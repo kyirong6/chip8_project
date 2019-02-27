@@ -16,6 +16,7 @@ class chip8 {
 		this._display = new Display();
 		this._input = new Input();
         this._cpu = new CPU(this._memory, this._input, this._display);
+        this._assembler = new Assembler(this._memory, this._input, this._display);
 
     //fontsets
     this._fontsets = [
@@ -56,7 +57,15 @@ class chip8 {
      this._cpu.loadProgram(game);
   }
 
+  readProgram(game) {
+    this._assembler.readProgram(game);
+  }
+  //read it in assembler, used only by Editor.html
 
+  startRead(){
+    this._assembler.cycle();
+  }
+  
   /*
   A method to start the emulator
   */
