@@ -56,7 +56,15 @@ class chip8 {
      this._cpu.loadProgram(game);
   }
 
+  readProgram(game) {
+    this._assembler.readProgram(game);
+  }
+  //read it in assembler, used only by Editor.html
 
+  startRead(){
+    this._assembler.cycle();
+  }
+  
   /*
   A method to start the emulator
   */

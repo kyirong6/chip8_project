@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chip-8</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="chip8.js"></script>
+    <script src="components/Memory.js"></script>
+    <script src="components/Input.js"></script>
+    <script src="components/Display.js"></script>
+    <script src="components/CPU.js"></script>
+    <script src="components/Sequence.js"></script>
+    <script src="components/Assembler.js"></script>
+    <script src="chip8.test.js"></script>
+
+
+    <script>
+    	function tableCreate(){
+    		let rows =32;
+            let cols=64;
+            let table = document.getElementById('tbl');
+			for (let r = 0; r<rows; r++){
+                let row = table.insertRow(-1);
+  				for (let c = 0; c<cols; c++){
+                    let cell = row.insertCell(-1);
+    				cell.setAttribute('id', "cell"+r+"-"+c );
+
+  				}
+			}
+}
+    </script>
+
+    <script type="text/javascript">
+      function onLoad() {
+        alert("page loaded");
+        window.chip = new chip8();
+      }
+
+
+    </script>
+
+
+    <script type="text/javascript">
+      function onSelection() {
+        alert("selected");
+        const games = document.getElementById('game').files;
+        game = games[0];
+        chip.restart();
+        chip.readProgram(game);
+        setTimeout(function(){chip.startRead(); },1000);
+
+      }
+    </script>
+
+      
+</head>
+
+
+
+<body onload="tableCreate(); onLoad();">
+​<input type="file" id="game" name="myFile" oninput="onSelection();">
+
+
+<div id="tblHold"><table id="tbl"></table></div>
+
+
+<div id="hold">  
+    <div id="mem"><p id="inMem"></p></div>
+</div>
+
+
+
+</body>
+</html>
+​
