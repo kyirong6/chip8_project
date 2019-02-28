@@ -20,11 +20,18 @@ We created a file called "test.html", which will take one opcode as an input to 
 4. the screen will then display the opcode, what has changed to the register and memory.
 
 #Running Emulator
-1. Open index.html file
-2. Click on File in top left corner and select Choose File
-3. Navigate to Chip8 file default game 'CONNECT4' stored in chip8_project\src\components 
+1. Open index.html file.
+2. Click on File in top left corner and select Choose File.
+3. Navigate to Chip8 file games 'CONNECT4' stored in chip8_project\src\components\games 
+4. Program will then load and display memory usage on bottom right of screen if succesful.
+5. Click start button to begin game.
+
+#Connect 4 2 Player game
  *CONNECT4 USED FOR TESTING PURPOSES FOUND AT https://www.zophar.net/pdroms/chip8.html*
-4. Program will then load and display memory usage on bottom right of screen if succesful
+ 1.Align 4 of your tokens to win.
+ 2.Turns will alternate between solid and empty.
+ 3.Q to move left and E to move right.
+ 4.W to place token.
 
 #Running Editor
 1. open Editor.html
