@@ -1,12 +1,5 @@
 class Input {
 
-    /*
-        not sure if this is right, just a very rough idea to get started with
-        CHANGE WHOLE CODE CODE IF YOU WISH !!!! there could be a better was for us 
-        Refference from:
-        https://www.raduangelescu.com/chip8emulatorjavascript.html
-    */
-
     constructor(){
 
         this._keyBoardBuffer = new Uint16Array(16) // keyboard buffer (new Uint16Array(16);)
