@@ -46,11 +46,10 @@ function testOpcode(opcode, v, display, pc, stack, sp, I, Memory, delaytimer, so
         if (v[x] == (opcode & 0x00FF)){console.log(assert(pc, 516))}
           break;
       case 0x4000:
-        if (v[x] != (opcode & 0x00FF)){console.log(asert(pc, 516));}
+        if (v[x] != (opcode & 0x00FF)){console.log(asert(pc, 516))}
           break;
       case 0x5000:
-        if (v[x] == v[y]){
-          console.log(assert());}
+        if (v[x] == v[y]){console.log(assert(pc, 516))}
           break;
       case 0x6000:
         console.log(assert(v[x], opcode & 0xFF));
