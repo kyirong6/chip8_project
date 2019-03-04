@@ -51,9 +51,9 @@ class CPU {
     */
     reset() {
         this._isRunning = false;
-        this._pc     = 0x200;  // Reset program counter to start at 0x200
-        this._I      = 0;      // Reset index register
-        this._sp     = 0;      // Reset stack pointer
+        this._pc = 0x200;  // Reset program counter to start at 0x200
+        this._I = 0;      // Reset index register
+        this._sp = 0;      // Reset stack pointer
         document.getElementById("inMem").innerHTML = "";
         document.getElementById("inLog").innerHTML = "";
 
@@ -100,12 +100,18 @@ class CPU {
        let test = new Uint8Array(2);
        test[0] = _opcode >> 8;
        test[1] = _opcode;
+       this._memory.writeTo(0, this._fontsets);
        this._memory.writeTo(0x200, test);
        this._display.dispMem( this._memory.memDump());
        this.Counter = test.byteLength + 0x200;
-       // this._v[0] = 0;
-       // this._v[1] = 0;
-       this.loop();
+       this._isRunning = true;
+       this._pc = 0x200;
+       _opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
+       this.execute(_opcode);
+       this._display.displayChange();
+       this._display.dispReg( this._v);
+       this._display.dispMem( this._memory.memDump());
+       testOpcode(_opcode, this._v, this._display, this._pc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer);
     }
 
     /*
@@ -235,7 +241,7 @@ class CPU {
 
             //  6xkk; Set Vx = kk
             case 0x6000:
-                this._v[x] = opcode & 0xFF
+                this._v[x] = opcode & 0xFF;
                 break;
 
             //  7xkk; Set Vx = Vx + kk

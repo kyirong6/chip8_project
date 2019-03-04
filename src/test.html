@@ -45,10 +45,14 @@
 
     </script>
 
-    <script type="text/javascript">
+    <script>
 
-      function pause() {
-        chip.pause();
+      function _continue() {
+        var opcode = prompt("Enter an testing opcode:");
+        while (opcode.length != 6){
+          opcode = prompt("Enter an valid opcode:")
+        }
+        chip.opcodetest(opcode);
       }
 
     </script>
@@ -139,8 +143,8 @@
 ​
 
 
-<button onclick="start()">START</button>
-<button onclick="pause()">PAUSE</button>
+<button onclick="start()">START NEW EMULATOR</button>
+<button onclick="_continue()">CONTINUE NEXT OPCODE</button>
 
 
 

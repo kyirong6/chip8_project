@@ -38,22 +38,19 @@ function testOpcode(opcode, v, display, pc, stack, sp, I, Memory, delaytimer, so
         console.log(assert(pc, opcode & 0x0FFF));
         break;
       case 0x2000:
-        console.log(assert(pc, opcode & 0x0FFF));
+        let result = (assert(pc, opcode & 0x0FFF));
+        if (result == true){console.log(assert(stack[sp-1], 514))}
+        else(console.log("false"));
         break;
       case 0x3000:
-        if (v[x] == (opcode & 0x00FF)){
-          let testopcode = memory.readIn(pc) << 8 | memory.readIn(pc + 1);
-          console.log(_assert(opcode, testopcode));}
+        if (v[x] == (opcode & 0x00FF)){console.log(assert(pc, 516))}
           break;
       case 0x4000:
-        if (v[x] != (opcode & 0x00FF)){
-          let testopcode = memory.readIn(pc) << 8 | memory.readIn(pc + 1);
-          console.log(_assert(opcode, testopcode));}
+        if (v[x] != (opcode & 0x00FF)){console.log(asert(pc, 516));}
           break;
       case 0x5000:
         if (v[x] == v[y]){
-          let testopcode = memory.readIn(pc) << 8 | memory.readIn(pc + 1);
-          console.log(_assert(opcode, testopcode));}
+          console.log(assert());}
           break;
       case 0x6000:
         console.log(assert(v[x], opcode & 0xFF));
