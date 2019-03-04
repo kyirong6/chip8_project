@@ -62,7 +62,7 @@ class Display {
 	dispOp(opcode)
 	{
 		let block = document.getElementById("inLog");
-		let text = document.createTextNode(opcode.toString(16));
+		let text = document.createTextNode(opcode.toString(16).toUpperCase() );
 		block.appendChild(text);
 		let breakLine = document.createElement('br');
 		block.appendChild(breakLine);
@@ -71,6 +71,8 @@ class Display {
 	{
 		let holder;
 		let block = document.getElementById("inCon");
+		let text;
+		let breakLine;
 		block.innerHTML = "";
 		for(let i = 0; i <= reg.length; i++)
 		{
@@ -79,11 +81,12 @@ class Display {
 			holder = '0x' + holder;
 
 
-			let text = document.createTextNode(holder+": "+reg[i] );
+
 			if(reg[i] != null)
 			{
+				text = document.createTextNode(holder+": "+reg[i].toString(16).toUpperCase() );
 				block.appendChild(text);
-				let breakLine = document.createElement('br');
+				breakLine = document.createElement('br');
 				block.appendChild(breakLine);
 			}
 
@@ -96,67 +99,74 @@ class Display {
 	{
 		let holder;
 		let block = document.getElementById("inMem");
+		let text;
+		let breakLine;
 		block.innerHTML = "";
 		for(let i = 0; i <= mem.byteLength; i++)
 		{
 
 
 			holder = i.toString(16)
-				holder = '0x' + holder;
+			holder = '0x' + holder;
 
 
-			let text = document.createTextNode(holder+": "+mem[i] );
-            if(mem[i] != null)
-            {
-                block.appendChild(text);
-                let breakLine = document.createElement('br');
-                block.appendChild(breakLine);
-            }
+			if(mem[i] != null)
+			{
+				text = document.createTextNode(holder+": "+mem[i].toString(16).toUpperCase() );
+				block.appendChild(text);
+				let breakLine = document.createElement('br');
+				block.appendChild(breakLine);
+			}
 
 
 		}
 	}
 
-    modDisp(x, y, val)
-    {
+	modDisp(x, y, val)
+	{
+		let flag  = false;
+
+		for(let i =0; i < 8; i++ )
+		{
 
 
-        for(let i =0; i < 8; i++ )
-        {
+			if(x > 63)
+			{
+				x = 0;
+			}
+			if((val & 0x80 ) > 0)
+			{
 
 
-            if(x > 63)
-            {
-                x = 0;
-            }
-            if((val & 0x80 ) > 0)
-            {
+				if(this._disp[y][x]==1)
+				{
+					this._disp[y][x] = 0;
+					flag = true;
+				}
+				else
+				{
+					this._disp[y][x] = 1;
+				}
+
+			}
+			else
+			{
+				if(this._disp[y][x] != 1)
+				{
+					this._disp[y][x] = 0;
+				}
 
 
-                if(this._disp[y][x]==1)
-                {
-                    this._disp[y][x] = 1;
-                    return true;
-                }
-                else
-                {
-                    this._disp[y][x] = 1;
-                }
 
-            }
-            else
-            {
-
-                this._disp[y][x] = 0;
-
-            }
-            val <<= 1;
-            x++;
-        }
-        this.displayChange();
+			}
+			val <<= 1;
+			x++;
+		}
+		this.displayChange();
+		return flag;
 
 
-    }
+	}
 
 
 
