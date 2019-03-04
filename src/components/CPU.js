@@ -95,7 +95,6 @@ class CPU {
 
 
     opcodetest(_opcode) {
-      this.reset();
       _opcode = parseInt(_opcode);
        let test = new Uint8Array(2);
        test[0] = _opcode >> 8;
