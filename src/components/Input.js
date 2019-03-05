@@ -82,7 +82,6 @@ class Input {
                 default:
                     this._keyPressed = 0;
             }
-            console.log(this._isKeyPressed);
         });
     }
 

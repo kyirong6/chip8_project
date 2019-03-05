@@ -199,7 +199,8 @@ class CPU {
 
                     //	00EE Returns from Subroutine
                     case 0x00EE:
-                        this._pc = this.stack[this._sp --];
+
+                        this._pc = this._stack[--this._sp];
                         break;
                 }
                 break;
@@ -212,9 +213,10 @@ class CPU {
 
             //  2NNN Calls subroutine at NNN
             case 0x2000:
-                this._stack[this._sp] = this._pc; 		//saves pc in the stacks
-                this._sp++;						  		//add one to the stackpointer to avoid collision
-                this._pc = (opcode & 0x0FFF);		    //grab last 3 nibbles of the opcode
+                this._stack[this._sp] = this._pc;
+                this._sp++;
+                this._pc = opcode & 0x0FFF;
+                break;
                 break;
 
             //  3XNN Skips the next instruction if VX equals NN;
@@ -349,7 +351,7 @@ class CPU {
                     Skips the next instruction if VX doesn't equal VY.
                     (Usually the next instruction is a jump to skip a code block)
                 */
-                if(_v[x] != _v[y]){
+                if(this._v[x] != this._v[y]){
                     this._pc += 2;
                 }
                 break;
@@ -485,10 +487,14 @@ class CPU {
 
                     //Fx33 converts binary to decimal then stores the three digits
                     case 0x0033:
+                        console.log(this._v[x]);
                         let bin = this._v[x];
-                        let dec = parseInt(bin, 2);
-                        let list = [dec.charAt(0),dec.charAt(1),dec.charAt(2)];
-                        writeTo(this._I,list );
+                        let ones = bin%10;
+                        bin = bin / 10;
+                        let tens = bin % 10;
+                        let hunds = bin / 10;
+                        let list = [ones, tens, hunds];
+                        this._memory.writeTo(this._I,list );
                         break;
 
                     //Fx55 stores v0 to vx in memory
