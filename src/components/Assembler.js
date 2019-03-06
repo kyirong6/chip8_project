@@ -86,6 +86,10 @@ class Assembler {
         this.read(opcode);
     }
 
+    updateEditor(sequenceNumber){
+        document.getElementById("editorTextBox").innerHTML =  document.getElementById(sequenceNumber).innerText;
+    }
+
     read(opcode) {
 
         var x = ((opcode & 0x0F00) >> 8).toString(16); //used for displaying
@@ -109,25 +113,25 @@ class Assembler {
             //	1NNN Jumps to address NNN *Done*
             case 0x1000:
                 //Jump to (NNN)
-                this.SequenceString = "Jump to " + (opcode & 0x0FFF).toString(16);
+                this.SequenceString = "Jump to 0x" + (opcode & 0x0FFF).toString(16).toUpperCase();
                 break;
 
             //  2NNN Calls subroutine at NNN
             case 0x2000:
                 //Call Subroutine at (NNN)
-                this.SequenceString = "Call subroutine at " + (opcode & 0x0FFF).toString(16);
+                this.SequenceString = "Call subroutine at 0x" + (opcode & 0x0FFF).toString(16).toUpperCase();
                 break;
 
             //  3XNN Skips the next instruction if VX equals NN;
             case 0x3000:
                 //Skip if V(X) = (NN)
-                this.SequenceString = "Skip next instruction if v[" + x + "] = " + (opcode & 0x00FF).toString(16);
+                this.SequenceString = "Skip next instruction if v[" + x + "] = 0x" + (opcode & 0x00FF).toString(16).toUpperCase();
                 break;
 
             //	4XNN Skips the next instruction if VX doesn't equal NN
             case 0x4000:
                  //Skip if V(X) != (NN)
-                 this.SequenceString = "Skip next instruction if v[" + x + "] != " + (opcode & 0x00FF).toString(16);
+                 this.SequenceString = "Skip next instruction if v[" + x + "] != 0x" + (opcode & 0x00FF).toString(16).toUpperCase();
                 break;
 
             //  5XY0; skips next instruction if Vx == Vy
@@ -139,12 +143,12 @@ class Assembler {
             //  6xkk; Set Vx = kk
             case 0x6000:
                 //Set V(x) to (kk)
-                this.SequenceString = "set v[" + x + "] to " + (opcode & 0x00FF).toString(16);
+                this.SequenceString = "set v[" + x + "] to 0x" + (opcode & 0x00FF).toString(16).toUpperCase();
                 break;
 
             //  7xkk; Set Vx = Vx + kk
             case 0x7000:
-                this.SequenceString = "set v[" + x + "] to" + "v[" + x + "] + " + (opcode & 0x00FF).toString(16);
+                this.SequenceString = "set v[" + x + "] to" + "v[" + x + "] + " + (opcode & 0x00FF).toString(16).toUpperCase();
                 break;
 
             case 0x8000:
@@ -235,12 +239,12 @@ class Assembler {
                 /*
                     Sets I to the address NNN.
                 */
-                this.SequenceString = "Set I to the adress " + (opcode & 0x0FFF).toString(16);
+                this.SequenceString = "Set I to the adress 0x" + (opcode & 0x0FFF).toString(16).toUpperCase();
                 break;
 
             // BNNN sets the pc to nnn + v0
             case 0xB000:
-                this.SequenceString = "Set pc to 0x" + (opcode & 0x0FFF).toString(16) + " + v[0]";
+                this.SequenceString = "Set pc to 0x" + (opcode & 0x0FFF).toString(16).toUpperCase() + " + v[0]";
                 break;
 
             //Cxkk generates random number between 0 and 255
@@ -325,7 +329,7 @@ class Assembler {
         if(this._pc < this.Counter)
         {
         this.Sequence[this.SequenceCounter] = new sequence();
-        this.Sequence[this.SequenceCounter].set((this.SequenceCounter).toString(10), opcode.toString(16) , this.SequenceString);
+        this.Sequence[this.SequenceCounter].set((this.SequenceCounter).toString(10), opcode.toString(16).toUpperCase() , this.SequenceString);
         this.Sequence[this.SequenceCounter].showAll();
         this.SequenceCounter ++;
         this._pc += 2;
