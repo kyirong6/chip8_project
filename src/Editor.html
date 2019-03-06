@@ -35,7 +35,6 @@
 
     <script type="text/javascript">
       function onLoad() {
-        alert("page loaded");
         window.chip = new chip8();
       }
 
@@ -50,20 +49,105 @@
         game = games[0];
         chip.readProgram(game);
         setTimeout(function(){chip.startRead(); },1000);
+      }
 
+      function onClickReader(number){
+        console.log("Beep Boop");
+        chip.updateEditor(number);
       }
     </script>
 
-      
+
+    <style>
+      table.reader{
+        border-style: solid;
+        overflow-y: scroll;
+        display: inline-block;
+        max-height: 850px;
+        height: 850px;
+        vertical-align: top;
+      }
+  
+    table.editor{
+      border-style: solid;
+      display: inline-block;
+      vertical-align: top;
+      max-height: 850px;
+    }
+
+    table.writer{
+      border-style: solid;
+      display: inline-block;
+      vertical-align: top;
+      max-height: 850px;
+    }
+
+    table.main td{
+      vertical-align: top;
+    }
+
+    ul li{
+      display: block;
+    }
+
+    ul li:hover {
+    background-color: #ccc;
+    }
+
+  </style>
+ 
 </head>
 
 
 
 <body onload="tableCreate(); onLoad();">
-​<input type="file" id="game" name="myFile" oninput="onSelection();">
+<input type="file" id="game" name="myFile" oninput="onSelection();">
+
+<table class="main">
+
+  <td>
+  <table class="reader">
+      <col width="600">
+    <tr>
+      <td><ul id="programsequence"></ul>
+      </td>
+    </tr>
+  </table>
+  </td>
+
+  <td>
+    <table class="editor">
+        <col width="600">
+
+     <tr>
+        <td><textarea rows="5" cols="100%" id="editorTextBox"></textarea></td>
+     </tr>
+     <tr>
+       <td>
+       <button id="add" type="button">Add</button>
+       <button id="delete" type="button">Delete</button>
+       <button id="saveChange" type="button">Save Change</button>
+      </td>
+     </tr>
+    </table>
+  </td>
+
+  <td>
+  <table class="writer">
+      <col width="600">
+    <tr>
+      <td><ul id="writer">List of Writer to be added</ul></td>
+    </tr>
+    </table>
+  </td>
+
+</table>
 
 
-<div id="tblHold"><table id="tbl"></table></div>
+<div id="tblHold"><table id="tbl"></table>
+
+
+</div>
 
 
 <div id="hold">  

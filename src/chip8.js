@@ -17,10 +17,7 @@ class chip8 {
 		this._input = new Input();
         this._cpu = new CPU(this._memory, this._input, this._display);
         this._assembler = new Assembler(this._memory, this._input, this._display);
-
-
-
-	}
+  }
 
 
 	sum(a,b) {
@@ -37,16 +34,7 @@ class chip8 {
    loadProgram(game) {
      this._cpu.loadProgram(game);
   }
-
-  readProgram(game) {
-    this._assembler.readProgram(game);
-  }
-  //read it in assembler, used only by Editor.html
-
-  startRead(){
-    this._assembler.cycle();
-  }
-  
+ 
   /*
   A method to start the emulator
   */
@@ -84,6 +72,20 @@ class chip8 {
   */
   stepBackward() {
 
+  }
+
+  //Assembler functions
+  readProgram(game) {
+    this._assembler.readProgram(game);
+  }
+  //read it in assembler, used only by Editor.html
+
+  startRead(){
+    this._assembler.cycle();
+  }
+
+  updateEditor(number){
+    this._assembler.updateEditor(number);
   }
 }
 
