@@ -34,7 +34,7 @@ class chip8 {
    loadProgram(game) {
      this._cpu.loadProgram(game);
   }
- 
+
   /*
   A method to start the emulator
   */
@@ -63,7 +63,7 @@ class chip8 {
   A method to step the emulator forward
   */
    stepForward() {
-
+		 this._cpu.stepForward();
   }
 
 
@@ -71,7 +71,7 @@ class chip8 {
   A method to step the emulator backward
   */
   stepBackward() {
-
+		this._cpu.stepBackward();
   }
 
   //Assembler functions

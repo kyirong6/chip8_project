@@ -22,6 +22,7 @@ class CPU {
         this._delayTimer = 0;
         this._soundTimer = 0;
         this._isRunning = false;
+        this._waitingForKey = false;
 
         //fontsets
         this._fontsets = [
@@ -83,13 +84,25 @@ class CPU {
       //cancelAnimationFrame(this.id);
     }
 
+    isPaused() {
+      return !this._isRunning;
+    }
+
 
     stepBackward() {
+      pause();
+
 
     }
 
 
     stepForward() {
+      if (this._waitingForKey) {
+        alert("waiting for key press...");
+        return;
+      }
+      this.pause();
+      this.cycle();
 
     }
 
@@ -136,6 +149,7 @@ class CPU {
     loop() {
       let self = this;
       this._isRunning = true;
+      this._waitingForKey = false;
       requestAnimationFrame(function run() {
             if (self._isRunning && self._pc < self.Counter) {
             self.cycle();
@@ -442,6 +456,7 @@ class CPU {
                     case 0x000A://pauses program until key is pressed
                         this.pause();
                         this._input.clear();
+                        this._waitingForKey = true;
                         let press = false;
                         let a = this;
                         let pos = (opcode & 0x0F00);
