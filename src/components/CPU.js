@@ -23,6 +23,8 @@ class CPU {
         this._soundTimer = 0;
         this._isRunning = false;
         this._waitingForKey = false;
+        this._pcStack = [];
+        this._displayStack = [];
 
         //fontsets
         this._fontsets = [
@@ -91,8 +93,9 @@ class CPU {
 
     stepBackward() {
       pause();
-
-
+      this._display._disp = this._displayStack.pop();
+      this._display.displayChange();
+      this._pc = this._pcStack.pop();
     }
 
 
@@ -141,6 +144,7 @@ class CPU {
              this.Counter = program.byteLength + 0x200;
 
 
+
              //this.loop();
          }
        }
@@ -173,6 +177,7 @@ class CPU {
         this._display.displayChange();
         this._display.dispReg( this._v);
         this._display.dispMem( this._memory.memDump());
+        this._pcStack.push(this._pc);
 
 
 
@@ -408,6 +413,8 @@ class CPU {
                     height++;
 
                 }
+                console.log("pushing to disp stack")
+                this._displayStack.push(this._display._disp);
 
                 break;
 
