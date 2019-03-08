@@ -27,6 +27,10 @@ class CPU {
         this._displayStack = [];
         this._iStack = [];
         this._vStack = [];
+        this._escape = false;
+        this._memStack = [];
+        this._sStack = []
+        this._spStack = []
 
         //fontsets
         this._fontsets = [
@@ -63,6 +67,7 @@ class CPU {
         this._displayStack = [];
         this._iStack = [];
         this._vStack = [];
+        this._memStack = [];
         document.getElementById("inMem").innerHTML = "";
         document.getElementById("inLog").innerHTML = "";
 
@@ -89,6 +94,7 @@ class CPU {
 
     pause() {
       this._isRunning = false;
+      this._escape = true;
       //cancelAnimationFrame(this.id);
     }
 
@@ -100,11 +106,19 @@ class CPU {
     stepBackward() {
       pause();
       this._waitingForKey = false;
+      this._escape = true;
+      this._stack = this._sStack.pop();
+      this._sp = this._spStack.pop();
       this._v = this._vStack.pop();
       this._display._disp = this._displayStack.pop();
       this._I = this._iStack.pop();
       this._display.displayChange();
       this._pc = this._pcStack.pop();
+      this._memory._mem = this._memStack.pop();
+      this._display.displayChange();
+      this._display.dispMem(this._memory.memDump());
+      this._display.dispReg(this._v);
+
     }
 
 
@@ -113,6 +127,7 @@ class CPU {
         alert("waiting for key press...");
         return;
       }
+
       this.pause();
       this.cycle();
 
@@ -150,6 +165,7 @@ class CPU {
              this._memory.writeTo(0,this._fontsets); // load fontsets
              this._memory.writeTo(0x200, program);
              this._display.dispMem( this._memory.memDump());
+             this._memStack.push(JSON.parse(JSON.stringify(this._memory._mem)));
              this._displayStack.push(JSON.parse(JSON.stringify(this._display._disp)));
              this.Counter = program.byteLength + 0x200;
 
@@ -217,6 +233,9 @@ class CPU {
         this._displayStack.push(JSON.parse(JSON.stringify(this._display._disp)));
         this._iStack.push(this._I);
         this._vStack.push(JSON.parse(JSON.stringify(this._v)));
+        this._memStack.push(JSON.parse(JSON.stringify(this._memory._mem)));
+        this._sStack.push(JSON.parse(JSON.stringify(this._stack)));
+        this._spStack.push(this._sp);
 
         this._pc += 2;
         console.log(opcode.toString(16).toUpperCase());
@@ -483,9 +502,15 @@ class CPU {
                         let press = false;
                         let a = this;
                         let pos = (opcode & 0x0F00);
+                        this._escape = false;
+                        this._v[x] = 0;
 
                         let hold =  function()
                         {
+                            console.log("--------IM STILL RUNNING-------");
+                            if (a._escape) {
+                              return;
+                            }
                             press = a._input.check();
                             if(press)
                             {
