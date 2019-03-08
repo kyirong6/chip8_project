@@ -24,7 +24,7 @@ class Display {
 
 	displayChange()
 	{
-
+		console.log("changing");
 
 		for(let i = 0; i < 32; i++)
 		{

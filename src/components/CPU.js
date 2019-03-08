@@ -141,6 +141,7 @@ class CPU {
              this._memory.writeTo(0,this._fontsets); // load fontsets
              this._memory.writeTo(0x200, program);
              this._display.dispMem( this._memory.memDump());
+             this._displayStack.push(JSON.parse(JSON.stringify(this._display._disp)));
              this.Counter = program.byteLength + 0x200;
 
 
@@ -414,7 +415,7 @@ class CPU {
 
                 }
                 console.log("pushing to disp stack")
-                this._displayStack.push(this._display._disp);
+                this._displayStack.push(JSON.parse(JSON.stringify(this._display._disp)));
 
                 break;
 
