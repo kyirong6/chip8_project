@@ -25,6 +25,8 @@ class CPU {
         this._waitingForKey = false;
         this._pcStack = [];
         this._displayStack = [];
+        this._iStack = [];
+        this._vStack = [];
 
         //fontsets
         this._fontsets = [
@@ -57,6 +59,10 @@ class CPU {
         this._pc = 0x200;  // Reset program counter to start at 0x200
         this._I = 0;      // Reset index register
         this._sp = 0;      // Reset stack pointer
+        this._pcStack = [];
+        this._displayStack = [];
+        this._iStack = [];
+        this._vStack = [];
         document.getElementById("inMem").innerHTML = "";
         document.getElementById("inLog").innerHTML = "";
 
@@ -93,7 +99,10 @@ class CPU {
 
     stepBackward() {
       pause();
+      this._waitingForKey = false;
+      this._v = this._vStack.pop();
       this._display._disp = this._displayStack.pop();
+      this._I = this._iStack.pop();
       this._display.displayChange();
       this._pc = this._pcStack.pop();
     }
@@ -169,16 +178,16 @@ class CPU {
         //Every first and the second array are to be together to create opcode
         //so we move the first one by 8bits and let the second one stay to get 0xFFFF;
         //e.g. 12 32 42 52 63 77 = 0x1232 on the first opcode, 0x4252 on the second opcode etc..
-
+        console.log(this._pc);
         let opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
         testLengthOfOpcode(opcode.toString(16), 4);
 
-        this.execute(opcode);
+        this.execute(opcode)
         //testOpcode(opcode, this._v, this._display, this._pc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer);
         this._display.displayChange();
         this._display.dispReg( this._v);
         this._display.dispMem( this._memory.memDump());
-        this._pcStack.push(this._pc);
+        //this._pcStack.push(this._pc);
 
 
 
@@ -203,6 +212,12 @@ class CPU {
     This method executes a given opcode
     */
     execute(opcode) {
+        this._pcStack.push(this._pc);
+        //console.log("pushing to disp stack")
+        this._displayStack.push(JSON.parse(JSON.stringify(this._display._disp)));
+        this._iStack.push(this._I);
+        this._vStack.push(JSON.parse(JSON.stringify(this._v)));
+
         this._pc += 2;
         console.log(opcode.toString(16).toUpperCase());
         var x = (opcode & 0x0F00) >> 8; // isolate variable x from opcode
@@ -414,8 +429,8 @@ class CPU {
                     height++;
 
                 }
-                console.log("pushing to disp stack")
-                this._displayStack.push(JSON.parse(JSON.stringify(this._display._disp)));
+                //console.log("pushing to disp stack")
+                //this._displayStack.push(JSON.parse(JSON.stringify(this._display._disp)));
 
                 break;
 
