@@ -101,6 +101,12 @@
 
     <script type="text/javascript">
       function forward() {
+        const games = document.getElementById('game').files;
+        game = games[0];
+        if (games.length == 0) {
+          alert("No Game To Step Forward");
+          return;
+        }
         chip.stepForward();
         //alert("placeholder");
       }
@@ -110,6 +116,12 @@
     <script type="text/javascript">
       function backward() {
         //alert("placeholder");
+        const games = document.getElementById('game').files;
+        game = games[0];
+        if (games.length == 0) {
+          alert("No Game To Step Backward");
+          return;
+        }
         chip.stepBackward();
       }
     </script>
