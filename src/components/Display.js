@@ -24,7 +24,6 @@ class Display {
 
 	displayChange()
 	{
-		console.log("changing");
 
 		for(let i = 0; i < 32; i++)
 		{
@@ -77,12 +76,8 @@ class Display {
 		block.innerHTML = "";
 		for(let i = 0; i <= reg.length; i++)
 		{
-
 			holder = i.toString(16)
 			holder = '0x' + holder;
-
-
-
 			if(reg[i] != null)
 			{
 				text = document.createTextNode(holder+": "+reg[i].toString(16).toUpperCase() );
@@ -93,6 +88,26 @@ class Display {
 
 
 		}
+	}
+	dispOther(I, pc, sp )
+	{
+		let holder;
+		let block = document.getElementById("inOther");
+		let text;
+		let breakLine;
+		block.innerHTML = "";
+		text = document.createTextNode("I: "+I.toString(16).toUpperCase() );
+		block.appendChild(text);
+		breakLine = document.createElement('br');
+		block.appendChild(breakLine);
+		text = document.createTextNode("PC: "+pc.toString(16).toUpperCase() );
+		block.appendChild(text);
+		breakLine = document.createElement('br');
+		block.appendChild(breakLine);
+		text = document.createTextNode("SP: "+sp.toString(16).toUpperCase() );
+		block.appendChild(text);
+		breakLine = document.createElement('br');
+		block.appendChild(breakLine);
 	}
 
 

@@ -203,6 +203,7 @@ class CPU {
         this._display.displayChange();
         this._display.dispReg( this._v);
         this._display.dispMem( this._memory.memDump());
+        this._display.dispOther(this._I, this._pc,  this._sp);
         //this._pcStack.push(this._pc);
 
 
@@ -310,6 +311,7 @@ class CPU {
                 break;
 
             case 0x8000:
+                let temp;
                 switch (opcode & 0x000F) {
                     // 8xy0; Set Vx = Vy
                     case 0x0000:
@@ -332,68 +334,74 @@ class CPU {
                         break;
 
                     // 8XY4 Set Vx = Vx + Vy, set VF = carry.
-                    case 0x8004:
+                    case 0x0004:
                         /*
                             Adds VY to VX.
                             VF is set to 1 when there's a carry,
                             and to 0 when there isn't.
                         */
-                        if ( _v[x] > 255){
-                            _v[0xF] = 1;
+                        temp = this._v[x] + this._v[y]
+                        if ( temp > 255){
+                            this._v[0xF] = 1;
+                            this._v[x] = temp - 256;
                         } else {
-                            _v[0xF] = 0;
+                            this._v[0xF] = 0;
+                            this._v[x] = temp;
                         }
-                        _v[x] += _v[y];
                         break;
 
                     // 8XY5 Set Vx = Vx - Vy, set VF = NOT borrow.
-                    case 0x8005:
+                    case 0x0005:
                         /*
                             VY is subtracted from VX.
                             VF is set to 0 when there's a borrow,
                             and 1 when there isn't.
                         */
-                        if ( _v[x] > _v[y]){
-                            _v[F] = 1;
+                        temp= this._v[x] - this._v[y];
+                        if ( temp < 0){
+                            this._v[0xF] = 0;
+                            this._v[x] = temp + 256;
                         } else {
-                            _v[F] = 0;
+                            this._v[0xF] = 1;
+                            this._v[x] = temp;
                         }
-                        _v[x] -= _v[y];
                         break;
 
                      //8XY6 Set Vx = Vx SHR 1.
-                    case 0x8006:
+                    case 0x0006:
                         /*
                             Stores the least significant bit of VX in VF
                             and then shifts VX to the right by 1
                         */
-                        _v[F] = _v[x] & 0x000F;
-                        _v[x]>>1;
+                        this._v[0xF] = this._v[x] & 0x000F;
+                        this._v[x]>>=1;
                         break;
 
                     //8XY7 Set Vx = Vy - Vx, set VF = NOT borrow.
-                    case 0x8007:
+                    case 0x0007:
                         /*
                             Sets VX to VY minus VX.
                             VF is set to 0 when there's a borrow,
                             and 1 when there isn't.
                         */
-                        if ( _v[y] > _v[x]){
-                            _v[0xF] = 1;
+                        temp= this._v[y] - this._v[x];
+                        if ( temp < 0){
+                            this._v[0xF] = 0;
+                            this._v[x] = temp + 256;
                         } else {
-                            _v[0xF] = 0;
+                            this._v[0xF] = 1;
+                            this._v[x] = temp;
                         }
-                        _v[x] = _v[y] - _v[x];
                         break;
 
                     //8XYE Set Vx = Vx SHL 1.
-                    case 0x800E:
+                    case 0x000E:
                         /*
                             Stores the most significant bit of VX in VF
                             and then shifts VX to the left by 1.
                         */
-                        _v[0xF] = _v[x] & 0xF000;
-                        _v[x]<<1;
+                        this._v[0xF] = this._v[x] & 0xF000;
+                        this._v[x]<<=1;
                         break;
 
                 }
@@ -429,11 +437,11 @@ class CPU {
                 this._v[x] = (rand & (opcode & 0x00FF));
                 break;
 
-            //Dxyn draws display; todo:come back to this
+            //Dxyn draws display;
             case 0xD000:
                 let binDig = 0;
                 let height = this._v[y];
-                this._v[16] = 0
+                this._v[0xF] = 0;
                 let h = opcode & 0x000f;
 
                 for(let i = 0; i < h ; i++)
@@ -444,7 +452,7 @@ class CPU {
                         height = 0;
                     binDig = this._memory.readIn(this._I + i);
                     if( this._display.modDisp(this._v[x], height, binDig))
-                        this._v[16] = 1;
+                        this._v[0xF] = 1;
                     height++;
 
                 }
@@ -455,7 +463,7 @@ class CPU {
 
             case 0xE000:
                 switch (opcode & 0x000F) {
-                    //Ex9E skips next instruction if key found at vx todo:once rest is running
+                    //Ex9E skips next instruction if key found at vx
                     case 0x000E:
                         if(this._input.isPressed())
                         {
@@ -470,7 +478,7 @@ class CPU {
 
                         break;
 
-                    //ExA1 checks if key is stored skips if not todo:once rest is running
+                    //ExA1 checks if key is stored skips if not
                     case 0x0001:
                         if(this._input.isPressed())
                         {
@@ -514,6 +522,7 @@ class CPU {
                             press = a._input.check();
                             if(press)
                             {
+
                                 a._v[x] = a._input.getCode();
                                 a.loop();
                                 return;
@@ -543,21 +552,22 @@ class CPU {
                         this._I += this._v[x];
                         break;
 
-                    //Fx29 sets I to location of sprite todo: create sprites
+                    //Fx29 sets I to location of sprite for fontsets
                     case 0x0029:
-                        this._I = this._v[x];
+                        this._I = this._v[x] * 5;
                         break;
 
                     //Fx33 converts binary to decimal then stores the three digits
                     case 0x0033:
-                        console.log(this._v[x]);
                         let bin = this._v[x];
-                        let ones = bin%10;
-                        bin = bin / 10;
-                        let tens = bin % 10;
-                        let hunds = bin / 10;
-                        let list = [ones, tens, hunds];
-                        this._memory.writeTo(this._I,list );
+                        let m = [];
+                        for(let i = 3; i > 0; i--)
+                        {
+                            m[i-1] = parseInt(bin % 10);
+                            bin /= 10;
+                        }
+                        this._memory.writeTo(this._I, m);
+
                         break;
 
                     //Fx55 stores v0 to vx in memory

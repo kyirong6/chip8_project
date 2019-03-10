@@ -18,11 +18,18 @@
 }
 
 #con {
-  width: 50%;
+  width: 25%;
   overflow-y: auto;
   height: 30vh;
   color: white;
 }
+#other {
+  width: 25%;
+  overflow-y: auto;
+  height: 30vh;
+  color: white;
+}
+
 
 #hold > *{
   display: inline;
