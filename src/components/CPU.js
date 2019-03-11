@@ -147,12 +147,13 @@ class CPU {
        this.Counter = test.byteLength + 0x200;
        this._isRunning = true;
        _opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
-       let dummypc = this._pc;
+       let dummypc = this._pc + 2;
+       var dummyv = this._v.slice(0);
        this.execute(_opcode);
+       testOpcode(_opcode, this._v, dummyv, this._display, this._pc, dummypc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer, this._input);
        this._display.displayChange();
        this._display.dispReg( this._v);
        this._display.dispMem( this._memory.memDump());
-       testOpcode(_opcode, this._v, this._display, this._pc, this.dummypc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer);
     }
     filetest(){
       let self = this;
@@ -167,10 +168,10 @@ class CPU {
     }
     test(){
       let opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
-      testLengthOfOpcode(opcode.toString(16), 4);
-
+      let dummypc = this._pc + 2;
+      var dummyv = this._v.slice(0);
       this.execute(opcode)
-      //testOpcode(opcode, this._v, this._display, this._pc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer);
+      testOpcode(opcode, this._v, dummyv, this._display, this._pc, dummypc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer, this._input);
       this._display.displayChange();
       this._display.dispReg( this._v);
       this._display.dispMem( this._memory.memDump());
