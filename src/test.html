@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Chip-8-test</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="chip8.js"></script>
-    <script src="components/Memory.js"></script>
-    <script src="components/Input.js"></script>
-    <script src="components/Display.js"></script>
-    <script src="components/CPU.js"></script>
-    <script src="components/Assembler.js"></script>
-    <script src="chip8.test.js"></script>
+      <title>Chip-8 TEST</title>
+      <h2 id="heading" align=center>CHIP-8 TESTING</h2>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <link rel="stylesheet" type="text/css" href="styles.css" media="screen" />
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src="chip8.js"></script>
+      <script src="components/Memory.js"></script>
+      <script src="components/Input.js"></script>
+      <script src="components/Display.js"></script>
+      <script src="components/CPU.js"></script>
+      <script src="components/Assembler.js"></script>
+      <script src="chip8.test.js"></script>
 
 
     <script>
@@ -79,13 +81,14 @@
       }
     </script>
 
-      <style>
+      <!-- <style>
         #log{
              width: 25%;
              color: white;
-
-
-
+        }
+        #other{
+             width: 25%;
+             color: white;
         }
         #mem{
             width: 25%;
@@ -156,19 +159,22 @@
 
 
 
-    </style>
+    </style> -->
 </head>
 
 
 
 <body onload="tableCreate();">
-​
+​<div id="tblHold">
+  <table id="tbl"></table>
 
-<button onclick="startnew()">START TESTING INDIVIDUAL OPCODE</button>
-<button onclick="_continue()">CONTINUE TO NEXT OPCODE</button>
-<input type="file" id="game" name="myFile" oninput="onSelection();">
-<button onclick ="start()">START TESTING FILE</button><br>
-
+  <div style="text-align:center;">
+    <button onclick="startnew()">START TESTING INDIVIDUAL OPCODE</button>
+    <button onclick="_continue()">CONTINUE TO NEXT OPCODE</button>
+    <input type="file" id="game" name="myFile" oninput="onSelection();">
+    <button onclick ="start()">START TESTING FILE</button><br>
+  </div>
+</div>
 
 <div id="tblHold"><table id="tbl"></table></div>
 
@@ -177,11 +183,9 @@
 
     <div id="log"><p id = "inLog">log</p></div>
     <div id="con"><p id = "inCon"> </p></div>
+    <div id ="other"><p id = "inOther"></p></div>
     <div id="mem"><p id="inMem"></p></div>
 </div>
-
-
-
 </body>
 </html>
 ​

@@ -167,25 +167,34 @@ class CPU {
     }
     test(){
       let opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
-      let dummypc = this._pc;
-      console.log("b4:", this._pc);
+      testLengthOfOpcode(opcode.toString(16), 4);
+
       this.execute(opcode)
-      console.log("after:", this._pc);
-      // testOpcode(opcode, this._v, this._display, this._pc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer);
+      //testOpcode(opcode, this._v, this._display, this._pc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer);
       this._display.displayChange();
       this._display.dispReg( this._v);
       this._display.dispMem( this._memory.memDump());
+      this._display.dispOther(this._I, this._pc,  this._sp);
+      //this._pcStack.push(this._pc);
+
+
+
       //Update delay timer
       if(this._delayTimer > 0){
           --this._delayTimer;
       }
+
+      //Update sound timer
       if(this._soundTimer > 0){
           if(this.sound_timer== 1){
+              //have it to print BEEP for now
               console.log("BEEP!\n");
           }
               --this._soundTimer;
       }
-    }
+
+      //this.id = requestAnimationFrame(this.cycle); // this needs to stay at the bottome of cycle() for the emulator to constantly run
+  }
     // testing implementations ends here
 
     /*
@@ -203,9 +212,6 @@ class CPU {
              this._memStack.push(JSON.parse(JSON.stringify(this._memory._mem)));
              this._displayStack.push(JSON.parse(JSON.stringify(this._display._disp)));
              this.Counter = program.byteLength + 0x200;
-
-
-
              //this.loop();
          }
        }
