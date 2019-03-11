@@ -34,7 +34,7 @@
 
     <script type="text/javascript">
 
-    function start() {
+    function startnew() {
       var opcode = prompt("Enter an testing opcode:");
       while (opcode.length != 6){
         opcode = prompt("Enter an valid opcode:")
@@ -55,6 +55,28 @@
         chip.opcodetest(opcode);
       }
 
+    </script>
+
+    <script>
+      function onSelection() {
+        window.chip1 = new chip8();
+        alert("selected");
+        const games = document.getElementById('game').files;
+        game = games[0];
+        chip1.restart();
+        chip1.loadProgram(game);
+      }
+    </script>
+
+    <script>
+      function start(){
+        const games = document.getElementById('game').files;
+        if (games.length == 0) {
+          alert("Please Select A Game");
+          return;
+        }
+        chip1.filetest();
+      }
     </script>
 
       <style>
@@ -139,35 +161,14 @@
 
 
 
-<body onload="tableCreate(); ">
+<body onload="tableCreate();">
 ​
 
+<button onclick="startnew()">START TESTING INDIVIDUAL OPCODE</button>
+<button onclick="_continue()">CONTINUE TO NEXT OPCODE</button>
+<input type="file" id="game" name="myFile" oninput="onSelection();">
+<button onclick ="start()">START TESTING FILE</button><br>
 
-<button onclick="start()">START NEW EMULATOR</button>
-<button onclick="_continue()">CONTINUE NEXT OPCODE</button>
-
-
-
-
-
-
-<!--
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">Chip-8</a>
-        </div>
-        <ul class="nav navbar-nav">
-            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">File <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li oninput="load();"><input type="file" on /></li>
-                    <li><a href="#">Reset Place Holder</a></li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-</nav>
--->
 
 <div id="tblHold"><table id="tbl"></table></div>
 

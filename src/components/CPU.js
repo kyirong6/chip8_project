@@ -134,24 +134,59 @@ class CPU {
     }
 
 
+    // testing implementations starts here
+
     opcodetest(_opcode) {
       _opcode = parseInt(_opcode);
        let test = new Uint8Array(2);
        test[0] = _opcode >> 8;
        test[1] = _opcode;
        this._memory.writeTo(0, this._fontsets);
-       this._memory.writeTo(0x200, test);
+       this._memory.writeTo(this._pc, test);
        this._display.dispMem( this._memory.memDump());
        this.Counter = test.byteLength + 0x200;
        this._isRunning = true;
-       this._pc = 0x200;
        _opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
+       let dummypc = this._pc;
        this.execute(_opcode);
        this._display.displayChange();
        this._display.dispReg( this._v);
        this._display.dispMem( this._memory.memDump());
-       testOpcode(_opcode, this._v, this._display, this._pc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer);
+       testOpcode(_opcode, this._v, this._display, this._pc, this.dummypc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer);
     }
+    filetest(){
+      let self = this;
+      this._isRunning = true;
+      this._waitingForKey = false;
+      requestAnimationFrame(function run() {
+            if (self._isRunning && self._pc < self.Counter) {
+              self.test();
+              self.id = requestAnimationFrame(run);
+          }
+      });
+    }
+    test(){
+      let opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
+      let dummypc = this._pc;
+      console.log("b4:", this._pc);
+      this.execute(opcode)
+      console.log("after:", this._pc);
+      testOpcode(opcode, this._v, this._display, this._pc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer);
+      this._display.displayChange();
+      this._display.dispReg( this._v);
+      this._display.dispMem( this._memory.memDump());
+      //Update delay timer
+      if(this._delayTimer > 0){
+          --this._delayTimer;
+      }
+      if(this._soundTimer > 0){
+          if(this.sound_timer== 1){
+              console.log("BEEP!\n");
+          }
+              --this._soundTimer;
+      }
+    }
+    // testing implementations ends here
 
     /*
     This method loads the program into the CPU

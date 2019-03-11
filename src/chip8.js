@@ -20,14 +20,15 @@ class chip8 {
   }
 
 
-	sum(a,b) {
-		return a + b;
-	}
-
+	 //testing implementations starts here
 	 opcodetest(_opcode){
 			this._cpu.opcodetest(_opcode);
 		}
-
+	 filetest(){
+ 		 this._cpu.filetest();
+ 	 }
+	 //testing implementations ends here
+	 
     /*
     A method to load the chip8 program
     */

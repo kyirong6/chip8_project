@@ -14,7 +14,8 @@ function testLengthOfOpcode(opcode, n) { //checking the length of the opcode
     console.log(assert(opcode.length, n));
 }
 
-function testOpcode(opcode, v, display, pc, stack, sp, I, Memory, delaytimer, soundtimer){ //making sure each opcode performs the correct operation
+function testOpcode(opcode, v, display, pc, dummypc, stack, sp, I, Memory, delaytimer, soundtimer){ //making sure each opcode performs the correct operation
+  console.log("opcode: ", opcode, ", pc: ", pc, ", sp: ", sp, ", I: ", I, ", delaytimer: ", delaytimer, ", soundtimer: ", soundtimer);
   var x = (opcode & 0x0F00) >> 8; // isolate variable x from opcode
   var y = (opcode & 0x00F0) >> 4; // isolate   variable y from opcode
 
@@ -30,9 +31,10 @@ function testOpcode(opcode, v, display, pc, stack, sp, I, Memory, delaytimer, so
             break;
           }
         case 0x00EE://returns from Subroutine
-          console.log(assert(opcode, stack[sp --]));
+          console.log(assert(pc, stack[sp --]));
           break;
       }
+      break;
 
       case 0x1000:
         console.log(assert(pc, opcode & 0x0FFF));
@@ -46,7 +48,7 @@ function testOpcode(opcode, v, display, pc, stack, sp, I, Memory, delaytimer, so
         if (v[x] == (opcode & 0x00FF)){console.log(assert(pc, 516))}
           break;
       case 0x4000:
-        if (v[x] != (opcode & 0x00FF)){console.log(asert(pc, 516))}
+        if (v[x] != (opcode & 0x00FF)){console.log(assert(pc, 516))}
           break;
       case 0x5000:
         if (v[x] == v[y]){console.log(assert(pc, 516))}
