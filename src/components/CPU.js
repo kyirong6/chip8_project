@@ -171,7 +171,7 @@ class CPU {
       console.log("b4:", this._pc);
       this.execute(opcode)
       console.log("after:", this._pc);
-      testOpcode(opcode, this._v, this._display, this._pc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer);
+      // testOpcode(opcode, this._v, this._display, this._pc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer);
       this._display.displayChange();
       this._display.dispReg( this._v);
       this._display.dispMem( this._memory.memDump());
