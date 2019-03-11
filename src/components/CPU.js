@@ -175,16 +175,9 @@ class CPU {
       this._display.dispReg( this._v);
       this._display.dispMem( this._memory.memDump());
       this._display.dispOther(this._I, this._pc,  this._sp);
-      //this._pcStack.push(this._pc);
-
-
-
-      //Update delay timer
       if(this._delayTimer > 0){
           --this._delayTimer;
       }
-
-      //Update sound timer
       if(this._soundTimer > 0){
           if(this.sound_timer== 1){
               //have it to print BEEP for now
@@ -192,8 +185,6 @@ class CPU {
           }
               --this._soundTimer;
       }
-
-      //this.id = requestAnimationFrame(this.cycle); // this needs to stay at the bottome of cycle() for the emulator to constantly run
   }
     // testing implementations ends here
 
