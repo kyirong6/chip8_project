@@ -3,6 +3,7 @@ This defines the CPU of the chip8 emulator.
 
 TODO: define and implement all properties and methods.
 */
+var flag = 0; // has to be declared as a global variable, for testing purpose
 class CPU {
     /*
     Initializes the CPU
@@ -29,8 +30,8 @@ class CPU {
         this._vStack = [];
         this._escape = false;
         this._memStack = [];
-        this._sStack = []
-        this._spStack = []
+        this._sStack = [];
+        this._spStack = [];           //for testing
 
         //fontsets
         this._fontsets = [
@@ -137,7 +138,8 @@ class CPU {
     // testing implementations starts here
 
     opcodetest(_opcode) {
-      _opcode = parseInt(_opcode);
+       flag = 1;
+       _opcode = parseInt(_opcode);
        let test = new Uint8Array(2);
        test[0] = _opcode >> 8;
        test[1] = _opcode;
@@ -156,6 +158,7 @@ class CPU {
        this._display.dispMem( this._memory.memDump());
     }
     filetest(){
+      flag = 1;
       let self = this;
       this._isRunning = true;
       this._waitingForKey = false;
@@ -167,6 +170,7 @@ class CPU {
       });
     }
     test(){
+      flag = 1;
       let opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
       let dummypc = this._pc + 2;
       var dummyv = this._v.slice(0);
@@ -555,10 +559,16 @@ class CPU {
                             press = a._input.check();
                             if(press)
                             {
-
+                              console.log("fsfds:",flag);
+                              if(flag ==1){
+                                a._v[x] = a._input.getCode();
+                                a.filetest();
+                                return;}
+                              else{
                                 a._v[x] = a._input.getCode();
                                 a.loop();
                                 return;
+                              }
                             }
                             setTimeout(hold, 1);
 
