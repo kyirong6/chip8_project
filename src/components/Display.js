@@ -178,7 +178,6 @@ class Display {
 			val <<= 1;
 			x++;
 		}
-		this.displayChange();
 		return flag;
 
 

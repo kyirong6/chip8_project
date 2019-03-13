@@ -53,6 +53,8 @@ class CPU {
             0xF0, 0x80, 0xF0, 0x80, 0x80  // F
         ];
 
+        this.counter();
+
     }
 
 
