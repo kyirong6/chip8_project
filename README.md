@@ -13,16 +13,24 @@ This project consists of building a **chip8 emulator**, a **visualizer** that sh
 
 
 # Testing Manual
-We created a file called "test.html", which will take one opcode as an input to the emulator, here's a detailed step on how the testing works:
 1. Open test.html file.
-2. click on "Start".
-3. Enter an opcode with prefix "0x".
-4. the screen will then display the opcode, what has changed to the register and memory.
+2. If user wants to test individual opcode:
+    1) Press F12.
+    2) Click START TETING INDIVIDUAL OPCODE to start a new emulator.
+    3) Click CONTINUE TO NEXT OPCODE for next opcode within the same emulator.
+    4) In console, this should print "true" for right performing opcodes, "false" otherwise.
+
+3. If user wants to test a testing file:
+    1) Press F12.
+    2) Click Choose File.
+    3) Choose the testing file.
+    4) Click START TESTING FILE.
+    5) In console, this should print "true" for right performing opcodes, "false" otherwise.
 
 #Running Emulator
 1. Open index.html file.
 2. Click on File in top left corner and select Choose File.
-3. Navigate to Chip8 file games 'CONNECT4' stored in chip8_project\src\components\games 
+3. Navigate to Chip8 file games 'CONNECT4' stored in chip8_project\src\components\games
 4. Program will then load and display memory usage on bottom right of screen if succesful.
 5. Click start button to begin game.
 
@@ -35,7 +43,7 @@ We created a file called "test.html", which will take one opcode as an input to 
 
 #Running Editor
 1. open Editor.html
-2. click on choose file 
+2. click on choose file
 3. Select any Chip 8 program
 4. Right click in the web browser, and click inspect to see the console
 5. The opcode will be displayed in sentence form

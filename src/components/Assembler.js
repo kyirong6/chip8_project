@@ -54,8 +54,8 @@ class Assembler {
     }
 
 
-    
-    
+
+
 
     /*
     This method loads the program into the CPU
@@ -76,12 +76,12 @@ class Assembler {
        }
 
 
-   
+
 
 
 
     cycle() {
-       
+
         let opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
         this.read(opcode);
     }
@@ -93,13 +93,13 @@ class Assembler {
     read(opcode) {
 
         var x = ((opcode & 0x0F00) >> 8).toString(16); //used for displaying
-        var y = ((opcode & 0x00F0) >> 4).toString(16); 
+        var y = ((opcode & 0x00F0) >> 4).toString(16);
 
-        switch (opcode & 0xF000) { 
+        switch (opcode & 0xF000) {
 
             case 0x0000:
                 switch (opcode) {
-                   
+
                     case 0x00E0:
                         this.SequenceString = "Clear Display" ;
                         break;
@@ -183,7 +183,7 @@ class Assembler {
                         */
                     this.SequenceString = "set v[" + x + "] = v[" + x + "] + v[" + y + "] and set v[F] to 1 when there is carry";
 
-                
+
                     // 8XY5 Set Vx = Vx - Vy, set VF = NOT borrow.
                     case 0x8005:
                         /*
@@ -254,7 +254,7 @@ class Assembler {
 
             //Dxyn draws display; todo:come back to this
             case 0xD000:
-                this.SequenceString = "Draw display at coordinates v[" + x + "] and v[" + y + "] that has width of 8 pixels and height of " + (opcode & 0x000F).toString(16); 
+                this.SequenceString = "Draw display at coordinates v[" + x + "] and v[" + y + "] that has width of 8 pixels and height of " + (opcode & 0x000F).toString(16);
                 break;
 
             case 0xE000:
@@ -297,7 +297,7 @@ class Assembler {
                     //Fx1E I to value of I + vx
                     case 0x001E:
                         this._I += this._v[x];
-                    this.SequenceString = "Set I to value of I + v[" + x + "]"; 
+                    this.SequenceString = "Set I to value of I + v[" + x + "]";
                         break;
 
                     //Fx29 sets I to location of sprite todo: create sprites
@@ -325,7 +325,7 @@ class Assembler {
 
         }
 
-       
+
         if(this._pc < this.Counter)
         {
         this.Sequence[this.SequenceCounter] = new sequence();
@@ -335,7 +335,7 @@ class Assembler {
         this._pc += 2;
         this.cycle();
         }
-        
+
     }
 }
 

@@ -28,7 +28,7 @@ class chip8 {
  		 this._cpu.filetest();
  	 }
 	 //testing implementations ends here
-	 
+
     /*
     A method to load the chip8 program
     */
