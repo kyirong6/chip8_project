@@ -141,7 +141,6 @@ class Display {
 	modDisp(x, y, val)
 	{
 		let flag  = false;
-		let cell;
 
 		for(let i =0; i < 8; i++ )
 		{
@@ -176,16 +175,6 @@ class Display {
 
 
 			}
-			/*cell = document.getElementById("cell"+y+"-"+x);
-
-			if(this._disp[y][x] == 0)
-			{
-				cell.style.backgroundColor = 'black';
-			}
-			else if(this._disp[y][x] == 1)
-			{
-				cell.style.backgroundColor = 'white';
-			}*/
 			val <<= 1;
 			x++;
 		}
