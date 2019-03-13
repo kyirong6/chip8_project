@@ -14,7 +14,7 @@ function testLengthOfOpcode(opcode, n) { //checking the length of the opcode
     console.log(assert(opcode.length, n));
 }
 
-function testOpcode(opcode, v, dummyv, display, pc, dummypc, stack, sp, I, Memory, delaytimer, soundtimer, input){ //making sure each opcode performs the correct operation
+function testOpcode(opcode, v, display, pc, dummypc, stack, sp, I, Memory, delaytimer, soundtimer){ //making sure each opcode performs the correct operation
   console.log("opcode: ", opcode, ", pc: ", pc, ", sp: ", sp, ", I: ", I, ", delaytimer: ", delaytimer, ", soundtimer: ", soundtimer);
   var x = (opcode & 0x0F00) >> 8; // isolate variable x from opcode
   var y = (opcode & 0x00F0) >> 4; // isolate   variable y from opcode
@@ -26,36 +26,32 @@ function testOpcode(opcode, v, dummyv, display, pc, dummypc, stack, sp, I, Memor
       switch(opcode){
 
         case 0x00E0://check if the display was cleared
-        let flag = true;
-          for(var i = 0; i<display.length; i++) {
-            if (display[i] != 0){flag = false}
-          }
-          console.log(flag);
+          if (display == undefined || display.length == 0) {
+            console.log("True");
             break;
+          }
         case 0x00EE://returns from Subroutine
           console.log(assert(pc, stack[sp --]));
           break;
       }
       break;
+
       case 0x1000:
         console.log(assert(pc, opcode & 0x0FFF));
         break;
       case 0x2000:
-        var result = (assert(pc, opcode & 0x0FFF));
-        if (result == true){console.log(assert(stack[sp-1], dummypc))}
+        let result = (assert(pc, opcode & 0x0FFF));
+        if (result == true){console.log(assert(stack[sp-1], 514))}
         else(console.log("false"));
         break;
       case 0x3000:
-        if (v[x] == (opcode & 0x00FF)){console.log(assert(pc, dummypc+2))}
-        else {console.log(assert(pc, dummypc))}
+        if (v[x] == (opcode & 0x00FF)){console.log(assert(pc, 516))}
           break;
       case 0x4000:
-        if (v[x] != (opcode & 0x00FF)){console.log(assert(pc, dummypc+2))}
-        else {console.log(assert(pc, dummypc))}
+        if (v[x] != (opcode & 0x00FF)){console.log(assert(pc, 516))}
           break;
       case 0x5000:
-        if (v[x] == v[y]){console.log(assert(pc, dummypc+2))}
-        else {console.log(assert(pc, dummypc))}
+        if (v[x] == v[y]){console.log(assert(pc, 516))}
           break;
       case 0x6000:
         console.log(assert(v[x], opcode & 0xFF));
@@ -79,54 +75,41 @@ function testOpcode(opcode, v, dummyv, display, pc, dummypc, stack, sp, I, Memor
             break;
           case 0x0004:
             if (v[0xF] == 1) {
-              result = greaterassert((dummyv[x]+dummyv[y]), 255);
-              result = assert(v[x], (dummyv[x]+dummyv[y]-256));
+              console.log(greaterassert(1, (v[x] - v[y])));
+              break;
             }
             if (v[0xF] == 0) {
-              result = greaterassert(255, (dummyv[x] + dummyv[y]));
-              result = assert(v[x], (dummyv[x] + dummyv[y]));
+              console.log(greaterassert((v[x] - v[y]), 0));
+              break;
             }
-            console.log(result);
-            break;
           case 0x0005:
-            if (v[0xF] == 0) {
-              result = greaterassert(0, (dummyv[x]-dummyv[y]));
-              result = assert(v[x], (dummyv[x]-dummyv[y]+256));
-            }
             if (v[0xF] == 1) {
-              result = greaterassert((dummyv[x] - dummyv[y]), 0);
-              result = assert(v[x], (dummyv[x]-dummyv[y]));
+              console.log(greaterassert(256, (v[x] + v[y])));
+              break;
             }
-            console.log(result);
-            break;
+            if (v[0xF] == 0) {
+              console.log(greaterassert((v[x] + v[y]), 255));
+              break;
+            }
           case 0x0006:
-            result = assert(v[0xF], (dummyv[x] & 0x000F));
-            result = assert(v[x], dummyv[x]>>=1);
-            break;
+            if (v[0xF] != 1 || 0) {
+              console.log("False");
+              break;
+            }
           case 0x0007:
-          if (v[0xF] == 0) {
-            result = greaterassert(0, (dummyv[y]-dummyv[x]));
-            result = assert(v[x], (dummyv[y]-dummyv[x]+256));
-          }
-          if (v[0xF] == 1) {
-            result = greaterassert((dummyv[y] - dummyv[x]), 0);
-            result = assert(v[x], (dummyv[y]-dummyv[x]));
-          }
-          console.log(result);
-          break;
+            if (v[0xF] == 1) {
+              console.log(greaterassert((v[y] - v[x]), -1));
+              break;
+            }
           case 0x000E:
-          result = assert(v[0xF], (dummyv[x] & 0x000F));
-          result = assert(v[x], dummyv[x]<<=1);
-          break;
+            console.log(greaterassert(256, v[x]));
+            break;
         }
-        break;
       case 0x9000:
         if (v[x] != v[y]) {
-          console.log(assert(pc, dummypc+2));
+          console.log(_assert(0x200, pc));
           break;
         }
-        else{console.log(assert(pc, dummypc))}
-        break;
       case 0xA000:
         console.log(assert(I, opcode & 0x0FFF));
         break;
@@ -137,50 +120,32 @@ function testOpcode(opcode, v, dummyv, display, pc, dummypc, stack, sp, I, Memor
         console.log(greaterassert(256, v[x]));
         break;
       case 0xD000:
-        //implement here
+        console.log("true");
       case 0xE000:
         switch (opcode & 0x000F){
           case 0x000E:
-            if (input.isPressed()){
-              if(input.getCode() == v[x]){console.log(assert(pc, dummypc+2))}
-              break;
-            }
-            else{console.log(assert(pc, dummypc))}
-            break;
+          console.log("true");
+          break;
           case 0x0001:
-            if (input.isPressed()){
-              if(input.getCode() != v[x]){console.log(assert(pc, dummypc+2))}
-              break;
-            }
-            else{console.log(assert(pc, dummypc))}
-            break;
+          console.log("true");
+          break;
         }
-        break;
       case 0xF000:
         switch(opcode & 0x00FF){
           case 0x0007:
             console.log(assert(v[x], delaytimer));
-            break;
           case 0x000A:
-            //implement here
-            console.log('true');
-            break;
+            console.log("true");
           case 0x0015:
             console.log(assert(v[x], delaytimer));
-            break;
           case 0x0018:
             console.log(assert(v[x], soundtimer));
-            break;
           case 0x001E:
             console.log(greaterassert((I-v[x]), 0));
-            break;
           case 0x0029:
-            console.log(assert(I, dummyv[x]*5));
-            break;
+            console.log(assert(I, v[x]));
           case 0x0033:
-            //implement here
-            console.log('true');
-            break;
+            console.log("true");
           case 0x0055:
             let flag = 0;
             for(let i = 0; i <= x; i++){
@@ -190,7 +155,6 @@ function testOpcode(opcode, v, dummyv, display, pc, dummypc, stack, sp, I, Memor
             }
             if(flag == 1){console.log("false");}
             if(flag == 0){console.log(true);}
-            break;
           case 0x0065:
             let flag1 = 0;
             for(let i = 0; i <= x; i++){
@@ -200,8 +164,6 @@ function testOpcode(opcode, v, dummyv, display, pc, dummypc, stack, sp, I, Memor
             }
             if(flag1 == 1){console.log("false");}
             if(flag1 == 0){console.log(true);}
-            break;
         }
-        break;
     }
 }
