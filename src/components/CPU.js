@@ -92,6 +92,27 @@ class CPU {
         this._isRunning = false;
     }
 
+    counter()
+    {
+        let a = this;
+        setInterval( function()
+        {
+            //Update delay timer
+            if(a._delayTimer > 0){
+                --a._delayTimer;
+            }
+
+            //Update sound timer
+            if(a._soundTimer > 0){
+                if(a.sound_timer== 1){
+                    //have it to print BEEP for now
+                    console.log("BEEP!\n");
+                }
+                --a._soundTimer;
+            }
+        },17)
+    }
+
 
     pause() {
       this._isRunning = false;
@@ -230,13 +251,12 @@ class CPU {
         //Every first and the second array are to be together to create opcode
         //so we move the first one by 8bits and let the second one stay to get 0xFFFF;
         //e.g. 12 32 42 52 63 77 = 0x1232 on the first opcode, 0x4252 on the second opcode etc..
-        console.log(this._pc);
+        
         let opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
         testLengthOfOpcode(opcode.toString(16), 4);
 
         this.execute(opcode)
         //testOpcode(opcode, this._v, this._display, this._pc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer);
-        this._display.displayChange();
         this._display.dispReg( this._v);
         this._display.dispMem( this._memory.memDump());
         this._display.dispOther(this._I, this._pc,  this._sp);
@@ -244,19 +264,7 @@ class CPU {
 
 
 
-        //Update delay timer
-        if(this._delayTimer > 0){
-            --this._delayTimer;
-        }
 
-        //Update sound timer
-        if(this._soundTimer > 0){
-            if(this.sound_timer== 1){
-                //have it to print BEEP for now
-                console.log("BEEP!\n");
-            }
-                --this._soundTimer;
-        }
 
         //this.id = requestAnimationFrame(this.cycle); // this needs to stay at the bottome of cycle() for the emulator to constantly run
     }
@@ -492,6 +500,7 @@ class CPU {
                     height++;
 
                 }
+                this._display.displayChange();
                 //console.log("pushing to disp stack")
                 //this._displayStack.push(JSON.parse(JSON.stringify(this._display._disp)));
 
@@ -551,7 +560,7 @@ class CPU {
 
                         let hold =  function()
                         {
-                            console.log("--------IM STILL RUNNING-------");
+
                             if (a._escape) {
                               return;
                             }
