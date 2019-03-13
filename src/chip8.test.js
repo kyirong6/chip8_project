@@ -14,8 +14,8 @@ function testLengthOfOpcode(opcode, n) { //checking the length of the opcode
     console.log(assert(opcode.length, n));
 }
 
-function testOpcode(opcode, v, dummyv, display, pc, dummypc, stack, sp, I, Memory, delaytimer, soundtimer, input){
-  console.log("pc: ", pc, ", sp: ", sp, ", I: ", I, ", delaytimer: ", delaytimer, ", soundtimer: ", soundtimer);
+function testOpcode(opcode, v, dummyv, display, pc, dummypc, stack, sp, _I, Memory, delaytimer, soundtimer, input){
+  console.log("pc: ", pc, ", sp: ", sp, ", I: ", _I, ", delaytimer: ", delaytimer, ", soundtimer: ", soundtimer);
   var x = (opcode & 0x0F00) >> 8; // isolate variable x from opcode
   var y = (opcode & 0x00F0) >> 4; // isolate   variable y from opcode
 
@@ -128,7 +128,7 @@ function testOpcode(opcode, v, dummyv, display, pc, dummypc, stack, sp, I, Memor
         else{console.log(assert(pc, dummypc))}
         break;
       case 0xA000:
-        console.log(assert(I, opcode & 0x0FFF));
+        console.log(assert(_I, opcode & 0x0FFF));
         break;
       case 0xB000:
         console.log(assert((opcode & 0x0FFF), (pc - v[0])));
@@ -174,10 +174,10 @@ function testOpcode(opcode, v, dummyv, display, pc, dummypc, stack, sp, I, Memor
             console.log(assert(v[x], soundtimer));
             break;
           case 0x001E:
-            console.log(greaterassert((I-v[x]), 0));
+            console.log(greaterassert((_I-v[x]), 0));
             break;
           case 0x0029:
-            console.log(assert(I, dummyv[x]*5));
+            console.log(assert(_I, dummyv[x]*5));
             break;
           case 0x0033:
             //implement here
@@ -186,7 +186,8 @@ function testOpcode(opcode, v, dummyv, display, pc, dummypc, stack, sp, I, Memor
           case 0x0055:
             var result = 0;
             for(let i = 0; i <= x; i++){
-              if (v[i] != I[i]){
+              var val = Memory.readIn(_I+i);
+              if (v[i] != val){
                 flag = 1;
               }
             }
@@ -196,7 +197,8 @@ function testOpcode(opcode, v, dummyv, display, pc, dummypc, stack, sp, I, Memor
           case 0x0065:
             result = 0;
             for(let i = 0; i <= x; i++){
-              if (v[i] != I[i]){
+              let val = Memory.readIn(_I+i);
+              if (v[i] != Memory.readIn(_I + i)){
                 result = 1;
               }
             }

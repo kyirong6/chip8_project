@@ -198,7 +198,7 @@ class CPU {
       let dummypc = this._pc + 2;
       var dummyv = this._v.slice(0);
       this.execute(opcode)
-      testOpcode(opcode, this._v, dummyv, this._display, this._pc, dummypc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer, this._input);
+      testOpcode(opcode, this._v, dummyv, this._display, this._pc, dummypc, this._stack, this._sp, this._I, this._memory, this._delayTimer, this._soundTimer, this._input);
       this._display.displayChange();
       this._display.dispReg( this._v);
       this._display.dispMem( this._memory.memDump());

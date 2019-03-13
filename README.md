@@ -26,6 +26,7 @@ This project consists of building a **chip8 emulator**, a **visualizer** that sh
     3) Choose the testing file.
     4) Click START TESTING FILE.
     5) In console, this should print "true" for right performing opcodes, "false" otherwise.
+    note: we'll be using CONNECT4 in the games folder as a testing script for now, will implement it for the next release.
 
 #Running Emulator
 1. Open index.html file.
