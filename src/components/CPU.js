@@ -140,6 +140,7 @@ class CPU {
       this._display.displayChange();
       this._display.dispMem(this._memory.memDump());
       this._display.dispReg(this._v);
+      this._display.dispOther(this._I, this._pc, this._sp);
 
     }
 
@@ -251,7 +252,7 @@ class CPU {
         //Every first and the second array are to be together to create opcode
         //so we move the first one by 8bits and let the second one stay to get 0xFFFF;
         //e.g. 12 32 42 52 63 77 = 0x1232 on the first opcode, 0x4252 on the second opcode etc..
-        
+
         let opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
         testLengthOfOpcode(opcode.toString(16), 4);
 
