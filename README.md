@@ -30,7 +30,7 @@ This project consists of building a **chip8 emulator**, a **visualizer** that sh
 
 #Running Emulator
 1. Open index.html file.
-2. Click on File in top left corner and select Choose File.
+2. Click on Choose File on left hand side.
 3. Navigate to Chip8 file games 'CONNECT4' stored in chip8_project\src\components\games
 4. Program will then load and display memory usage on bottom right of screen if succesful.
 5. Click start button to begin game.
