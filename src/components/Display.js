@@ -69,12 +69,13 @@ class Display {
 	}
 	dispReg(reg)
 	{
+
 		let holder;
 		let block = document.getElementById("inCon");
 		let text;
 		let breakLine;
 		block.innerHTML = "";
-		for(let i = 0; i <= reg.length; i++)
+		for(let i = 0; i <= 16; i++)
 		{
 			holder = i.toString(16)
 			holder = '0x' + holder;
@@ -118,9 +119,8 @@ class Display {
 		let text;
 		let breakLine;
 		block.innerHTML = "";
-		for(let i = 0; i <= mem.byteLength; i++)
+		for(let i = 0; i <= 4095; i++)
 		{
-
 
 			holder = i.toString(16)
 			holder = '0x' + holder;
