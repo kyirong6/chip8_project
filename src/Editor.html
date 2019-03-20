@@ -14,7 +14,7 @@
     <script src="components/CPU.js"></script>
     <script src="components/Sequence.js"></script>
     <script src="components/Assembler.js"></script>
-    <script src="chip8.test.js"></script>
+
 
 
     <script>
@@ -28,34 +28,21 @@
                     let cell = row.insertCell(-1);
     				cell.setAttribute('id', "cell"+r+"-"+c );
 
-  				}
-			}
-}
-    </script>
-
-    <script type="text/javascript">
+  			    	}
+			    }
+      }
+   
       function onLoad() {
-        window.chip = new chip8();
+        window.assembler = new Assembler();
       }
+    
+      
 
-
+      
+      
+  
     </script>
 
-
-    <script type="text/javascript">
-      function onSelection() {
-        alert("selected");
-        const games = document.getElementById('game').files;
-        game = games[0];
-        chip.readProgram(game);
-        setTimeout(function(){chip.startRead(); },1000);
-      }
-
-      function onClickReader(number){
-        console.log("Beep Boop");
-        chip.updateEditor(number);
-      }
-    </script>
 
 
     <style>
@@ -76,6 +63,14 @@
     }
 
     table.writer{
+      border-style: solid;
+      display: inline-block;
+      vertical-align: top;
+      max-height: 850px;
+      overflow-y: scroll;
+    }
+
+    table.editorDisplay{
       border-style: solid;
       display: inline-block;
       vertical-align: top;
@@ -101,8 +96,103 @@
 
 
 <body onload="tableCreate(); onLoad();">
+
 <input type="file" id="game" name="myFile" oninput="onSelection();">
 
+<form>
+<a href="javascript:void(0)" download="data">Download</a>
+</form>
+
+<script type="text/javascript">
+  var input = document.querySelector( "button[ type = 'button'] ");
+  var download = document.querySelector("a[ download ]");
+  var downloadUrl = null;
+
+  updateDownloadHref();
+
+      function onSelection() {
+        alert("selected");
+        const games = document.getElementById('game').files;
+        game = games[0];
+        assembler.readProgram(game);
+        setTimeout(function(){assembler.cycle(); },1000);
+  
+        setTimeout(function(){updateDownloadHref(); },1000);
+      }
+
+      function onClickReader(number){
+        assembler.displaySelected(number);
+      }
+
+      function addSequence(){
+          assembler.addOpcode();   
+          setTimeout(function(){updateDownloadHref(); },1000);   
+      }
+      
+
+      function deleteSequence(){
+          assembler.deleteOpcode();
+          setTimeout(function(){updateDownloadHref(); },1000);
+      }
+      
+
+      function editSequence(){
+          assembler.editOpcode();
+          setTimeout(function(){updateDownloadHref(); },1000);
+      }
+
+      function updateDownloadHref(){
+      var e = assembler.updateDownloadData();
+      console.log(e);
+        var blob = new Blob(
+          [ e ], //blob content
+          {
+            type : "application/octet-stream"
+          }
+        );
+  
+        if(downloadUrl){
+          URL.revokeObjectURL(downloadUrl);
+        }
+  
+        downloadUrl = URL.createObjectURL(blob);
+        download.setAttribute("href", downloadUrl);
+    }
+</script>
+
+<script type="text/javascript">
+/*
+    var input = document.querySelector( "button[ type = 'button'] ");
+    var download = document.querySelector("a[ download ]");
+    var downloadUrl = null;
+  
+    document.getElementById("add").addEventListener("click", updateDownloadHref, false);
+    document.getElementById("delete").addEventListener("click", updateDownloadHref, false);
+    document.getElementById("edit").addEventListener("click", updateDownloadHref, false);
+  
+    //create download link
+    updateDownloadHref();
+  
+    function updateDownloadHref(){
+      var e = assembler.updateDownloadData();
+      console.log(e);
+        var blob = new Blob(
+          [ document.getElementById("opcode").value ], //blob content
+          {
+            type : "text/plain;charset=utf-8"
+          }
+        );
+  
+        if(downloadUrl){
+          URL.revokeObjectURL(downloadUrl);
+        }
+  
+        downloadUrl = URL.createObjectURL(blob);
+        download.setAttribute("href", downloadUrl);
+    }
+    */
+  </script>
+  
 <table class="main">
 
   <td>
@@ -122,13 +212,27 @@
      <tr>
         <td><textarea rows="5" cols="100%" id="editorTextBox"></textarea></td>
      </tr>
-     <tr>
-       <td>
-       <button id="add" type="button">Add</button>
-       <button id="delete" type="button">Delete</button>
-       <button id="saveChange" type="button">Save Change</button>
-      </td>
-     </tr>
+     
+    </table>
+   
+    <table>
+        <col width="600">
+        <tr>
+
+            <td>
+              <p style="vertical-align: text-top"><b>Op code</b></p>
+                <textarea rows="1" id="opcode" name="input"></textarea>
+            </td>
+
+         </tr>
+
+         <tr>
+           <td>
+           <button id="add" onclick="addSequence()" type="button">Add</button>
+           <button id="delete" onclick="deleteSequence()" type="button">Delete</button>
+           <button id="edit" onclick="editSequence()" type="button">Edit</button>
+          </td>
+         </tr>
     </table>
   </td>
 
@@ -136,7 +240,45 @@
   <table class="writer">
       <col width="600">
     <tr>
-      <td><ul id="writer">List of Writer to be added</ul></td>
+      <td><ul id="writer">
+
+            <li id="00E0"><b>00E0:</b> Clear screen</li>
+            <li id="00EE"><b>00EE:</b> Return from subroutine</li>
+            <li id="1NNN"><b>1NNN:</b> Jump to NNN</li>
+            <li id="2NNN"><b>2NNN:</b> Call subroutine at NNN</li>
+            <li id="3XNN"><b>3XNN:</b> Skip next if V[X] = NN</li>
+            <li id="4XNN"><b>4XNN:</b> Skip next if V[X] != NN</li>
+            <li id="5XY0"><b>5XY0:</b> Skip next if V[X] = V[Y]</li>
+            <li id="6XNN"><b>6XNN:</b> Set V[X] to NN</li>
+            <li id="7XNN"><b>7XNN:</b> Add NN to V[X]</li>
+            <li id="8XY0"><b>8XY0:</b> Set V[X] to V[Y] value</li>
+            <li id="8XY1"><b>8XY1:</b> Set V[X] to V[X] OR(|) V[y]</li>
+            <li id="8XY2"><b>8XY2:</b> Set V[X] to V[X] AND(&) V[y]</li>
+            <li id="8XY3"><b>8XY3:</b> Set V[X] to V[X] XOR(^) V[y]</li>
+            <li id="8XY4"><b>8XY4:</b> Add V[Y] to V[X]. V[F] set to 1 if there's a carry, 0 if not.</li>
+            <li id="8XY5"><b>8XY5:</b> V[X] set to V[X] - V[Y]. VF is set to 0 when there's a borrow, and 1 when there isn't.</li>
+            <li id="8XY6"><b>8XY6:</b> Store least significant bit of VX in VF and shifts VX to the right by 1</li>
+            <li id="8XY7"><b>8XY7:</b> Set V[X] to V[Y] - V[X]</li>
+            <li id="8XYE"><b>8XYE:</b> Store most significant bit of V[X] in V[F] and then shifts VX to the left by 1</li>
+            <li id="9XY0"><b>9XY0:</b> Skip next if V[X] != V[Y]</li>
+            <li id="ANNN"><b>ANNN:</b> Sets I to NNN.</li>
+            <li id="BNNN"><b>BNNN:</b> Jumps to NNN plus V[0]</li>
+            <li id="CXNN"><b>CXNN:</b> V[X] to result of a bitwise and operation on a random number and NN</li>
+            <li id="DXYN"><b>DXYN:</b> Draws a sprite at coordinate (V[X], V[Y])</li>
+            <li id="EX9E"><b>EX9E:</b> Skip next if the key stored in V[X] is pressed</li>
+            <li id="EXA1"><b>EXA1:</b> Skip next if the key stored in V[X] isn't pressed</li>
+            <li id="FX07"><b>FX07:</b> Set V[X] to value of delay timer</li>
+            <li id="FX0A"><b>FX0A:</b> Wait key press. Then store it in V[X]</li>
+            <li id="FX15"><b>FX15:</b> Set delay timer to V[X]</li>
+            <li id="FX18"><b>FX18:</b> Set sound timer to V[X]</li>
+            <li id="FX1E"><b>FX1E:</b> Add V[X] to I</li>
+            <li id="FX29"><b>FX29:</b> Sets I to the location of the sprite for the character in V[X]</li>
+            <li id="FX33"><b>FX33:</b> Stores the binary-coded decimal representation of V[X]</li>
+            <li id="FX55"><b>FX55:</b> Stores V[0] to V[X] in memory starting at address I. The offset from I is increased by 1 for each value written</li>
+            <li id="FX65"><b>FX65:</b> Fills V[0] to V[X] with values from memory starting at address I. The offset from I is increased by 1 for each value written</li>
+            
+          </ul>
+      </td>
     </tr>
     </table>
   </td>
@@ -153,8 +295,6 @@
 <div id="hold">
     <div id="mem"><p id="inMem"></p></div>
 </div>
-
-
 
 </body>
 </html>

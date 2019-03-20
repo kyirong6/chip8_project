@@ -7,11 +7,14 @@ class Assembler {
     /*
     Initializes the CPU
     */
-    constructor(memory, input, display) {
+    constructor() {
 
-        this._memory = memory; //raw binary data, each are a byte
-        this._input = input;
-        this._display = display;
+
+        this._memory = new Memory();
+		this._display = new Display();
+		this._input = new Input();
+
+       
         this._v = new Uint8Array(16);        //register
         this._pc = 0x200;                    //program counter
         this._stack = new Uint16Array(16);	 //is used for subroutine
@@ -24,37 +27,15 @@ class Assembler {
         this._isRunning = false;
         this.SequenceCounter = 0;
         this.SequenceString = "";
-        this.Sequence = new Array(4096); //Store DATA of the opcode that can be edited later
-                                         //Includes Order in the Sequence : 1.
-                                         //         Opcode                : 0x00E0
-                                         //     Opcode to Display         :"Clear Display"  (Mark what can be changed)
+        this.Sequence = new Array(4096);
+
+
+        this.selectedAction = ""; 
+        this.selectedSequenceNumber = 0;
     }
 
 
-    /*
-    This method resets the CPU.
-    */
-    reset() {
-
-        this._pc     = 0x200;  // Reset program counter to start at 0x200
-        this._I      = 0;      // Reset index register
-        this._sp     = 0;      // Reset stack pointer
-
-        this._display.clearDisp();
-        this._stack = new Uint16Array(16);
-        this._v = new Uint8Array(16);
-        this._memory = new Memory();
-        this._keyBoardBuffer = new Uint8Array(16);;
-
-        this._delayTimer = 0;
-        this._soundTimer = 0;
-        this._isRunning = false;
-
-
-    }
-
-
-
+ 
 
 
     /*
@@ -67,27 +48,111 @@ class Assembler {
          reader.readAsArrayBuffer(game);
          reader.onloadend = () =>{
              program = new Uint8Array(reader.result);
+             console.log(reader.result);
+             console.log(reader.type);
              this._memory.writeTo(0x200, program);
              this.Counter = program.byteLength + 0x200;
              console.log(program.byteLength);
              this._v[0] = 0;
              this._v[1] = 0;
          }
+         this.selectedAction = "read";
        }
 
-
-
-
-
-
-    cycle() {
-
-        let opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
-        this.read(opcode);
+    //update the display based on which opcode is clicked from Reader/Writer
+    displaySelected(sequenceNumber){
+        document.getElementById("editorTextBox").innerHTML =  document.getElementById(sequenceNumber).innerText;
+        document.getElementById("opcode").value = this.Sequence[sequenceNumber].getOpcode().toString(16).toUpperCase();
+        
+        this.selectedSequenceNumber = sequenceNumber;
+        console.log(this.selectedSequenceNumber);
+        console.log(this.Sequence[sequenceNumber].getOpcode().toString(16));
     }
 
-    updateEditor(sequenceNumber){
-        document.getElementById("editorTextBox").innerHTML =  document.getElementById(sequenceNumber).innerText;
+    //update the downloadable content 
+    updateDownloadData(){
+        
+        var data = new Uint8Array(this.SequenceCounter * 2);
+        for(var i = 0 ; i < this.SequenceCounter ; i++){
+            console.log(this.Sequence[i].getOpcode().toString(16));
+            var split1 = (this.Sequence[i].getOpcode() & 0xFF00) >> 8;
+            var split2 = (this.Sequence[i].getOpcode() & 0x00FF);
+            
+            var e = i * 2;
+
+            data[e] = split1;
+            data[e+1] = split2;
+        }
+        return data;
+    }
+
+    addOpcode(){
+       
+        console.log("adding...");
+        this.Sequence[this.SequenceCounter] = new sequence();
+        this.selectedAction = "add";
+
+        for(var i = this.SequenceCounter; i > this.selectedSequenceNumber; i--){
+            //add Add to Sequence Class by incrementing by one
+            var e = parseInt(i) - 1;
+            this.Sequence[i].set(i, this.Sequence[e].getOpcode().toString(16), this.Sequence[e].getString() );
+
+
+            if(document.getElementById(i) == null){
+                //create a room to add in HTML
+                document.getElementById("programsequence").innerHTML += 
+                '<li onclick="onClickReader(this.id)">'  + i.toString() + ". 0x" + this.Sequence[e].getOpcode().toString(16).toUpperCase() + ": " + this.Sequence[e].getString() +  '</li>'; 
+                //assign ID to new sequence
+                document.getElementsByTagName("li")[this.SequenceCounter].id = this.SequenceCounter.toString(); 
+            }
+            else{
+                document.getElementById(i).innerText = (i.toString() + ". 0x" + this.Sequence[e].getOpcode().toString(16).toUpperCase() + ": " + this.Sequence[e].getString());
+            }
+        }
+
+        this.SequenceCounter++;
+        console.log("Determining opcode...")
+        this.read(this.Sequence[this.selectedSequenceNumber].getOpcode());
+        
+
+       
+    }
+
+    deleteOpcode(){
+        this.SequenceCounter--;
+        console.log("Deleting...");
+        this.selectedAction = "delete";
+
+        for(var i = this.selectedSequenceNumber; i < this.SequenceCounter; i++){
+            //Delete from Sequence class by incrementing by one
+            var e = parseInt(i) + 1;
+            this.Sequence[i].set( i.toString() , this.Sequence[e].getOpcode().toString(16).toUpperCase(), this.Sequence[e].getString() );
+           
+
+            //Delete it in HTML
+            document.getElementById(i).innerText = (i.toString() + ". 0x" + this.Sequence[e].getOpcode().toString(16).toUpperCase() + ": " + this.Sequence[e].getString());
+  
+        }
+        document.getElementById(this.SequenceCounter).innerText = "";
+    }
+
+    editOpcode(){
+        
+        this.selectedAction = "edit";
+        var e =  parseInt(document.getElementById("opcode").value,16);
+        console.log(e.toString(16));
+        this.read(e);
+       
+
+       
+    }
+
+    cycle() {
+        console.log("currently on");
+        console.log(this._memory.readIn(this._pc));
+        console.log(this._memory.readIn(this._pc+1));
+        let opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
+        this.read(opcode);
     }
 
     read(opcode) {
@@ -324,19 +389,39 @@ class Assembler {
                 break;
 
         }
+        
+        if(this.selectedAction == "edit"){
+            console.log("detected change");
+            console.log(this.selectedSequenceNumber);
+            console.log(opcode.toString(16).toUpperCase());
+            console.log(this.SequenceString);
+            this.Sequence[this.selectedSequenceNumber].set(this.selectedSequenceNumber.toString(), opcode.toString(16).toUpperCase() , this.SequenceString);
 
-
-        if(this._pc < this.Counter)
-        {
-        this.Sequence[this.SequenceCounter] = new sequence();
-        this.Sequence[this.SequenceCounter].set((this.SequenceCounter).toString(10), opcode.toString(16).toUpperCase() , this.SequenceString);
-        this.Sequence[this.SequenceCounter].showAll();
-        this.SequenceCounter ++;
-        this._pc += 2;
-        this.cycle();
+            document.getElementById(this.selectedSequenceNumber).innerText =  (this.selectedSequenceNumber.toString() + ". 0x" + opcode.toString(16).toUpperCase() + ": " + this.SequenceString);
+            document.getElementById("editorTextBox").innerText =  (this.selectedSequenceNumber.toString() + ". 0x" + opcode.toString(16).toUpperCase() + ": " + this.SequenceString);
         }
 
+        if(this.selectedAction == "add"){
+            console.log("Almost done add");
+            var SQN = this.selectedSequenceNumber;
+            this.Sequence[SQN].set(SQN.toString(), opcode.toString(16).toUpperCase() , this.SequenceString);
+            document.getElementById(SQN).innerText = (SQN.toString() + ". 0x" + opcode.toString(16).toUpperCase() + ": " + this.SequenceString);
+        }
+
+        if(this.selectedAction == "read"){
+             if(this._pc < this.Counter)
+             {
+             this.Sequence[this.SequenceCounter] = new sequence();
+             this.Sequence[this.SequenceCounter].set((this.SequenceCounter).toString(10), opcode.toString(16).toUpperCase() , this.SequenceString);
+             this.Sequence[this.SequenceCounter].showAll();
+              this.SequenceCounter ++;
+             this._pc += 2;
+             this.cycle();
+             }
+        }
     }
+
+    
 }
 
 

@@ -16,7 +16,6 @@ class chip8 {
 		this._display = new Display();
 		this._input = new Input();
         this._cpu = new CPU(this._memory, this._input, this._display);
-        this._assembler = new Assembler(this._memory, this._input, this._display);
   }
 
 
@@ -75,19 +74,6 @@ class chip8 {
 		this._cpu.stepBackward();
   }
 
-  //Assembler functions
-  readProgram(game) {
-    this._assembler.readProgram(game);
-  }
-  //read it in assembler, used only by Editor.html
-
-  startRead(){
-    this._assembler.cycle();
-  }
-
-  updateEditor(number){
-    this._assembler.updateEditor(number);
-  }
 }
 
 // module.exports = chip8; // this is for the jest testing

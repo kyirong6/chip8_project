@@ -25,6 +25,13 @@ class sequence{
         opcodeDisplay = display;
     }
     */
+    getString(){
+        return this.opcodeDisplay;
+    }
+    getOpcode(){
+        var e = parseInt(this.opcodeStored, 16);
+        return e;
+    }
     getAll(){
         return this.sequenceOrder + ". 0x" + this.opcodeStored + ": " + this.opcodeDisplay;
     }
