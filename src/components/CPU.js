@@ -24,14 +24,10 @@ class CPU {
         this._soundTimer = 0;
         this._isRunning = false;
         this._waitingForKey = false;
-        this._pcStack = [];
-        this._displayStack = [];
-        this._iStack = [];
-        this._vStack = [];
         this._escape = false;
-        this._memStack = [];
-        this._sStack = [];
         this._spStack = [];           //for testing
+        this._stateStack = [];
+
 
         //fontsets
         this._fontsets = [
@@ -66,11 +62,7 @@ class CPU {
         this._pc = 0x200;  // Reset program counter to start at 0x200
         this._I = 0;      // Reset index register
         this._sp = 0;      // Reset stack pointer
-        this._pcStack = [];
-        this._displayStack = [];
-        this._iStack = [];
-        this._vStack = [];
-        this._memStack = [];
+        this._stateStack = [];
         document.getElementById("inMem").innerHTML = "";
         document.getElementById("inLog").innerHTML = "";
 
@@ -129,21 +121,30 @@ class CPU {
 
     stepBackward() {
       pause();
+
+      if (this._stateStack.length != 1) {
+      this.revert();
+      } else {
+        alert("Cannot Step Further Back");
+        }
+    }
+
+    revert() {
+      //prevState = {mem: this._memory._mem, disp: this._display._disp, v: this._v.slice(), pc: this._pc, stack: this._stack.slice(), sp: this._sp, i: this._I};
       this._waitingForKey = false;
       this._escape = true;
-      this._stack = this._sStack.pop();
-      this._sp = this._spStack.pop();
-      this._v = this._vStack.pop();
-      this._display._disp = this._displayStack.pop();
-      this._I = this._iStack.pop();
+      var prevState = this._stateStack.pop();
+      this._stack = prevState.stack;
+      this._sp = prevState.sp;
+      this._v = prevState.v;
+      this._display._disp = prevState.disp;
+      this._I = prevState.i;
+      this._pc = prevState.pc;
+      this._memory._mem = prevState.mem;
       this._display.displayChange();
-      this._pc = this._pcStack.pop();
-      this._memory._mem = this._memStack.pop();
-      this._display.displayChange();
-      this._display.dispMem(this._memory.memDump());
+      this._display.dispMem(this._memory._mem);
       this._display.dispReg(this._v);
       this._display.dispOther(this._I, this._pc, this._sp);
-
     }
 
 
@@ -228,9 +229,10 @@ class CPU {
              this._memory.writeTo(0,this._fontsets); // load fontsets
              this._memory.writeTo(0x200, program);
              this._display.dispMem( this._memory.memDump());
-             this._memStack.push(JSON.parse(JSON.stringify(this._memory._mem)));
-             this._displayStack.push(JSON.parse(JSON.stringify(this._display._disp)));
              this.Counter = program.byteLength + 0x200;
+             var prevState = {mem: this._memory._mem.slice(), disp: this._display._disp.slice(), v: this._v.slice(), pc: this._pc, stack: this._stack.slice(), sp: this._sp, i: this._I};
+             this._stateStack.push(prevState);
+
              //this.loop();
          }
        }
@@ -276,14 +278,8 @@ class CPU {
     This method executes a given opcode
     */
     execute(opcode) {
-        this._pcStack.push(this._pc);
-        //console.log("pushing to disp stack")
-        this._displayStack.push(JSON.parse(JSON.stringify(this._display._disp)));
-        this._iStack.push(this._I);
-        this._vStack.push(JSON.parse(JSON.stringify(this._v)));
-        this._memStack.push(JSON.parse(JSON.stringify(this._memory._mem)));
-        this._sStack.push(JSON.parse(JSON.stringify(this._stack)));
-        this._spStack.push(this._sp);
+        var prevState = {mem: JSON.parse(JSON.stringify(this._memory._mem)), disp: JSON.parse(JSON.stringify(this._display._disp)), v: JSON.parse(JSON.stringify(this._v)), pc: this._pc, stack: JSON.parse(JSON.stringify(this._stack)), sp: this._sp, i: this._I};
+        this._stateStack.push(prevState);
 
         this._pc += 2;
         console.log(opcode.toString(16).toUpperCase());
