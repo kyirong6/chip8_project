@@ -80,6 +80,13 @@
         chip1.filetest();
       }
     </script>
+
+    <script>
+      function Utest(){
+        window.chip2 = new chip8();
+        chip2.Utest();
+      }
+    </script>
 </head>
 
 
@@ -93,6 +100,7 @@
     <button onclick="_continue()">CONTINUE TO NEXT OPCODE</button>
     <input type="file" id="game" name="myFile" oninput="onSelection();">
     <button onclick ="start()">START TESTING FILE</button><br>
+    <button onclick ="Utest()">START UNIT TESTING</button><br>
   </div>
 </div>
 

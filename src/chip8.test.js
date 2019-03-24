@@ -14,7 +14,147 @@ function testLengthOfOpcode(opcode, n) { //checking the length of the opcode
     console.log(assert(opcode.length, n));
 }
 
-function testOpcode(opcode, v, dummyv, display, pc, dummypc, stack, sp, _I, Memory, delaytimer, soundtimer, input){
+//unit testing
+function UtestOpcode(){
+  var result = 1;
+  this.chip2._cpu.execute(0x6001);
+  var expected = 1;
+  if (this.chip2._cpu._v[0]!=expected){result = 0}
+
+  this.chip2._cpu.execute(0x6101);
+  if (this.chip2._cpu._v[1]!=expected){result = 0}
+
+  this.chip2._cpu.execute(0x6202);
+  expected = 2;
+  if (this.chip2._cpu._v[2]!=expected){result = 0}
+
+  this.chip2._cpu.execute(0x00E0);
+  expected = 0;
+  for (var i = 0; i<this.chip2._cpu._display.length; i++){
+    if (this.chip2._cpu._display[i] != expected){result = 0}}
+
+  this.chip2._cpu.execute(0x2208);
+  expected = 0x20A;
+  if(this.chip2._cpu._stack[this.chip2._cpu._sp-1] != expected){result = 0}
+
+  this.chip2._cpu.execute(0x00EE);
+  expected = 0x20A;
+  if(this.chip2._cpu._pc != expected){result = 0}
+  expected = 0;
+  if(this.chip2._cpu._sp != expected){result = 0}
+
+  this.chip2._cpu.execute(0x1200);
+  expected = 0x200;
+  if(this.chip2._cpu._pc != expected){result = 0}
+
+  this.chip2._cpu.execute(0x3001);
+  expected = 0x204;
+  if(this.chip2._cpu._pc != expected){result = 0}
+
+  this.chip2._cpu.execute(0x3011);
+  expected = 0x206;
+  if(this.chip2._cpu._pc != expected){result = 0}
+
+  this.chip2._cpu.execute(0x4012);
+  expected = 0x20A;
+  if(this.chip2._cpu._pc != expected){result = 0}
+
+  this.chip2._cpu.execute(0x4001);
+  expected = 0x20C;
+  if(this.chip2._cpu._pc != expected){result = 0}
+
+  this.chip2._cpu.execute(0x5100);
+  expected = 0x210;
+  if(this.chip2._cpu._pc != expected){result = 0}
+
+  this.chip2._cpu.execute(0x7099);
+  expected = 0x9A;
+  if(this.chip2._cpu._v[0] != expected){result = 0}
+
+  this.chip2._cpu.execute(0x7099);
+  expected = 0x33;
+  if(this.chip2._cpu._v[0]!= expected){result = 0}
+
+  this.chip2._cpu.execute(0x8010);
+  expected = 0x1;
+  if(this.chip2._cpu._v[0] != expected){result = 0}
+
+  this.chip2._cpu.execute(0x8121);
+  expected = 0x3;
+  if(this.chip2._cpu._v[1] != expected){result = 0}
+
+  this.chip2._cpu.execute(0x8012);
+  expected = 0x1;
+  if(this.chip2._cpu._v[0] != expected){result = 0}
+
+  this.chip2._cpu.execute(0x8013);
+  expected = 0x2;
+  if(this.chip2._cpu._v[0] != expected){result = 0}
+
+  this.chip2._cpu.execute(0x8014);
+  expected = 0x5;
+  if(this.chip2._cpu._v[0] != expected){result = 0}
+
+  this.chip2._cpu.execute(0x8015);
+  expected = 0x2;
+  if(this.chip2._cpu._v[0] != expected){result = 0}
+
+  this.chip2._cpu.execute(0x8016);
+  expected = 1;
+  if(this.chip2._cpu._v[0] != expected){result = 0}
+
+  this.chip2._cpu.execute(0x8017);
+  expected = 0x2;
+  if(this.chip2._cpu._v[0xF] != 1 && this.chip2._cpu._v[0] != expected){result = 0}
+
+  this.chip2._cpu.execute(0x801E);
+  expected = 0x4;
+  if(this.chip2._cpu._v[0xF] != 0 && this.chip2._cpu._v[0] != expected){result = 0}
+
+  this.chip2._cpu.execute(0x9020);
+  expected = 0x22A;
+  if(this.chip2._cpu._pc != expected){result = 0}
+
+  this.chip2._cpu.execute(0xA123);
+  expected = 0x123;
+  if(this.chip2._cpu._I != expected){result = 0}
+
+  this.chip2._cpu.execute(0xB200);
+  expected = 0x204;
+  if(this.chip2._cpu._pc != expected){result = 0}
+
+  this.chip2._cpu.execute(0xF007);
+  expected = this.chip2._cpu._delayTimer;
+  if(this.chip2._cpu._v[0] != expected){result = 0}
+
+  this.chip2._cpu.execute(0xF115);
+  expected = 0x3;
+  if(this.chip2._cpu._delayTimer != expected){result = 0}
+
+  this.chip2._cpu.execute(0xF118);
+  if(this.chip2._cpu._soundTimer != expected){result = 0}
+
+  this.chip2._cpu.execute(0xF11E);
+  expected = 0x126;
+  if(this.chip2._cpu._I != expected){result = 0}
+
+  this.chip2._cpu.execute(0xF955);
+  let mem = this.chip2._cpu._memory.memDump();
+  let data = [];
+  for (let i = 0; i < 9; i++){
+    if(this.chip2._cpu._v[i] != mem[this.chip2._cpu._I + i]){result = 0}
+  }
+
+  this.chip2._cpu.execute(0xF029);
+  expected = 0x0;
+  if(this.chip2._cpu._I != expected){result = 0}
+
+  if(result === 1){console.log("success")}
+  else{console.log("fail")}
+}
+
+//behaviour testing
+function BtestOpcode(opcode, v, dummyv, display, pc, dummypc, stack, sp, _I, Memory, delaytimer, soundtimer, input){
   console.log("pc: ", pc, ", sp: ", sp, ", I: ", _I, ", delaytimer: ", delaytimer, ", soundtimer: ", soundtimer);
   var x = (opcode & 0x0F00) >> 8; // isolate variable x from opcode
   var y = (opcode & 0x00F0) >> 4; // isolate   variable y from opcode
@@ -26,11 +166,11 @@ function testOpcode(opcode, v, dummyv, display, pc, dummypc, stack, sp, _I, Memo
       switch(opcode){
 
         case 0x00E0://check if the display was cleared
-        let flag = true;
+        let result = true;
           for(var i = 0; i<display.length; i++) {
-            if (display[i] != 0){flag = false}
+            if (display[i] != 0){result = false}
           }
-          console.log(flag);
+          console.log(result);
             break;
         case 0x00EE://returns from Subroutine
           console.log(assert(pc, stack[sp --]));
@@ -188,7 +328,7 @@ function testOpcode(opcode, v, dummyv, display, pc, dummypc, stack, sp, _I, Memo
             for(let i = 0; i <= x; i++){
               var val = Memory.readIn(_I+i);
               if (v[i] != val){
-                flag = 1;
+                result = 1;
               }
             }
             if(result == 1){console.log(false);}

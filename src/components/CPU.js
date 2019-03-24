@@ -177,17 +177,23 @@ class CPU {
        let dummypc = this._pc + 2;
        var dummyv = this._v.slice(0);
        this.execute(_opcode);
-       testOpcode(_opcode, this._v, dummyv, this._display, this._pc, dummypc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer, this._input);
+       BtestOpcode(_opcode, this._v, dummyv, this._display, this._pc, dummypc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer, this._input);
        this._display.displayChange();
        this._display.dispReg( this._v);
        this._display.dispMem( this._memory.memDump());
     }
+    //unit testing
+    Utest(){
+      UtestOpcode(this._v, this._display, this._pc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer, this._input);
+    }
+    //Behaviour testing
     filetest(){
       flag = 1;
       let self = this;
       this._isRunning = true;
       this._waitingForKey = false;
       requestAnimationFrame(function run() {
+        // console.log(self.isrunning, self.pc, self.Counter);
             if (self._isRunning && self._pc < self.Counter) {
               self.test();
               self.id = requestAnimationFrame(run);
@@ -199,7 +205,7 @@ class CPU {
       let dummypc = this._pc + 2;
       var dummyv = this._v.slice(0);
       this.execute(opcode)
-      testOpcode(opcode, this._v, dummyv, this._display, this._pc, dummypc, this._stack, this._sp, this._I, this._memory, this._delayTimer, this._soundTimer, this._input);
+      BtestOpcode(opcode, this._v, dummyv, this._display, this._pc, dummypc, this._stack, this._sp, this._I, this._memory, this._delayTimer, this._soundTimer, this._input);
       this._display.displayChange();
       this._display.dispReg( this._v);
       this._display.dispMem( this._memory.memDump());
@@ -333,8 +339,8 @@ class CPU {
 
             //  5XY0; skips next instruction if Vx == Vy
             case 0x5000:
-                if (this._v[x] == this._v[y]) {
-                    this.pc += 2;
+                if (this._v[x] === this._v[y]) {
+                    this._pc += 2;
                 }
                 break;
 
@@ -416,7 +422,7 @@ class CPU {
                             Stores the least significant bit of VX in VF
                             and then shifts VX to the right by 1
                         */
-                        this._v[0xF] = this._v[x] & 0x000F;
+                        this._v[0xF] = this._v[x] & 0x1;
                         this._v[x]>>=1;
                         break;
 
@@ -485,7 +491,7 @@ class CPU {
                 let binDig = 0;
                 let height = this._v[y];
                 this._v[0xF] = 0;
-                let h = opcode & 0x000f;
+                let h = opcode & 0x000F;
 
                 for(let i = 0; i < h ; i++)
                 {
@@ -508,7 +514,7 @@ class CPU {
             case 0xE000:
                 switch (opcode & 0x000F) {
                     //Ex9E skips next instruction if key found at vx
-                    case 0x000E:
+                    case 0x009E:
                         if(this._input.isPressed())
                         {
                             let key = this._input.getCode();

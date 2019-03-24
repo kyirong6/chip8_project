@@ -26,6 +26,9 @@ class chip8 {
 	 filetest(){
  		 this._cpu.filetest();
  	 }
+	 Utest(){
+		 this._cpu.Utest();
+	 }
 	 //testing implementations ends here
 
     /*
