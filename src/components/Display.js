@@ -1,61 +1,44 @@
 class Display {
 
 	constructor() {
-		this._disp = this.buildArray();
+		this._disp =new Array(2048);
 		this.displayChange();
 
 	}
 
-	buildArray()
-	{
-		let t = 1;
-		let arr = new Array(64);
-		for(let i = 0; i < 32; i++)
-		{
-			arr[i] = new Array(32);
-			for(let j = 0; j < 64; j++)
-			{
-				arr[i][j] = 0;
-
-			}
-		}
-		return arr;
-	}
 
 	displayChange()
 	{
+		let c = document.getElementById("tbl");
+		let ctx = c.getContext("2d");
+		let loc;
 
-		for(let i = 0; i < 32; i++)
+		for(let i = 0; i < 64; i++)
 		{
-
-			for(let j = 0; j < 64; j++)
+			for(let j = 0; j < 32; j++ )
 			{
-				let cell = document.getElementById("cell"+i+"-"+j);
-
-				if(this._disp[i][j] == 0)
+				loc = i +(j*64);
+				if(this._disp[loc] == 0)
 				{
-					cell.style.backgroundColor = 'black';
+					ctx.fillStyle = "#000000";
+					ctx.fillRect(i*10, j*10, 10, 10);
 				}
-				else if(this._disp[i][j] == 1)
+				else if(this._disp[loc] == 1)
 				{
-					cell.style.backgroundColor = 'white';
+					ctx.fillStyle = "#FFFFFF";
+					ctx.fillRect(i*10, j*10, 10, 10);
 				}
-
 			}
 		}
+
 
 	}
 
 	clearDisp()
 	{
-		for(let i = 0; i < 32; i++)
+		for(let i = 0; i < 2048; i++)
 		{
-
-			for(let j = 0; j < 64; j++)
-			{
-				this._disp[i][j] = 0;
-
-			}
+			this._disp[i] = 0;
 		}
 	}
 
@@ -138,51 +121,39 @@ class Display {
 		}
 	}
 
-	modDisp(x, y, val)
-	{
-		let flag  = false;
+	modDisp(x,y, val) {
+		let flag = false;
+		var c = document.getElementById("tbl");
+		var ctx = c.getContext("2d");
+		let loc = x +(y*64);
 
-		for(let i =0; i < 8; i++ )
-		{
-
-
-			if(x > 63)
-			{
-				x = 0;
-			}
-			if((val & 0x80 ) > 0)
-			{
-
-
-				if(this._disp[y][x]==1)
-				{
-					this._disp[y][x] = 0;
-					flag = true;
-				}
-				else
-				{
-					this._disp[y][x] = 1;
-				}
-
+		if ((val & 0x80) > 0) {
+			if (this._disp[loc] == 1) {
+				this._disp[loc] = 0;
+				flag = true;
 			}
 			else
 			{
-				if(this._disp[y][x] != 1)
-				{
-					this._disp[y][x] = 0;
-				}
-
-
-
+				this._disp[loc] = 1;
 			}
-			val <<= 1;
-			x++;
 		}
+		else
+		{
+			if(this._disp[loc] != 1)
+				this._disp[loc] = 0;
+		}
+
+		if (this._disp[loc] == 0) {
+			ctx.fillStyle = "#000000";
+			ctx.fillRect(x * 10, y * 10, 10, 10);
+		} else if (this._disp[loc] == 1) {
+			ctx.fillStyle = "#FFFFFF";
+			ctx.fillRect(x * 10, y * 10, 10, 10);
+		}
+
+
 		return flag;
-
-
 	}
-
 
 
 }

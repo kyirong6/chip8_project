@@ -250,7 +250,8 @@ class CPU {
       this._waitingForKey = false;
       requestAnimationFrame(function run() {
             if (self._isRunning && self._pc < self.Counter) {
-            self.cycle();
+                for(let i = 0; i < 5; i++)
+                     self.cycle();
             self.id = requestAnimationFrame(run);
           }
       });
@@ -299,6 +300,7 @@ class CPU {
                     //  0NNN (ignored by modern interpreters)
                     case 0x00E0: //	00E0 Clears Screen
                         this._display.clearDisp();
+                        this._display.displayChange();
                         break;
 
                     //	00EE Returns from Subroutine
@@ -488,24 +490,43 @@ class CPU {
 
             //Dxyn draws display;
             case 0xD000:
-                let binDig = 0;
+                let binary = 0;
                 let height = this._v[y];
+                let width = this._v[x];
                 this._v[0xF] = 0;
                 let h = opcode & 0x000F;
-
+                let j = 0;
+                console.log
                 for(let i = 0; i < h ; i++)
                 {
-
-
+                    if(width > 63)
+                        width = 0;
                     if(height > 31)
                         height = 0;
-                    binDig = this._memory.readIn(this._I + i);
-                    if( this._display.modDisp(this._v[x], height, binDig))
+                    if(j == 0)
+                        binary = this._memory.readIn(this._I + i);
+
+
+                    if( this._display.modDisp(width, height, binary))
                         this._v[0xF] = 1;
-                    height++;
+
+                    binary <<= 1;
+                    width++;
+                    j++;
+                    if(j == 8)
+                    {
+                        width -= 8;
+                        height++;
+                        j = 0;
+                    }
+                    else
+                    {
+                        i--;
+                    }
+
 
                 }
-                this._display.displayChange();
+               // this._display.displayChange();
                 //console.log("pushing to disp stack")
                 //this._displayStack.push(JSON.parse(JSON.stringify(this._display._disp)));
 
@@ -514,12 +535,14 @@ class CPU {
             case 0xE000:
                 switch (opcode & 0x000F) {
                     //Ex9E skips next instruction if key found at vx
-                    case 0x009E:
+                    case 0x000E:
                         if(this._input.isPressed())
                         {
                             let key = this._input.getCode();
+                            console.log(this._v[x]+"-----------------");
                             if(key == this._v[x] )
                             {
+
                                 this._pc += 2;
                             }
 
