@@ -78,7 +78,7 @@ class CPU {
         this._stack = new Uint16Array(16);
         this._v = new Uint8Array(16);
         this._memory = new Memory();
-        this._keyBoardBuffer = new Uint8Array(16);;
+        this._keyBoardBuffer = new Uint8Array(16);
 
         //set Timers
         this._delayTimer = 0;
