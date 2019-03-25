@@ -11,8 +11,8 @@ class Assembler {
 
 
         this._memory = new Memory();
-		this._display = new Display();
-		this._input = new Input();
+		
+		
 
        
         this._v = new Uint8Array(16);        //register
