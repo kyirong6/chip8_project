@@ -98,6 +98,7 @@
 <body onload="tableCreate(); onLoad();">
 
 <input type="file" id="game" name="myFile" oninput="onSelection();">
+<button onclick="createNew()" type="button">New File</button>
 
 <form>
 <a href="javascript:void(0)" download="data">Download</a>
@@ -115,6 +116,16 @@
         const games = document.getElementById('game').files;
         game = games[0];
         assembler.readProgram(game);
+        setTimeout(function(){assembler.cycle(); },1000);
+  
+        setTimeout(function(){updateDownloadHref(); },1000);
+      }
+
+      function createNew(){
+        alert("creating new file");
+        const games = [0x00 , 0xE0];
+        var blob = new Blob(games)
+        assembler.readProgram(blob);
         setTimeout(function(){assembler.cycle(); },1000);
   
         setTimeout(function(){updateDownloadHref(); },1000);
@@ -161,36 +172,7 @@
 </script>
 
 <script type="text/javascript">
-/*
-    var input = document.querySelector( "button[ type = 'button'] ");
-    var download = document.querySelector("a[ download ]");
-    var downloadUrl = null;
-  
-    document.getElementById("add").addEventListener("click", updateDownloadHref, false);
-    document.getElementById("delete").addEventListener("click", updateDownloadHref, false);
-    document.getElementById("edit").addEventListener("click", updateDownloadHref, false);
-  
-    //create download link
-    updateDownloadHref();
-  
-    function updateDownloadHref(){
-      var e = assembler.updateDownloadData();
-      console.log(e);
-        var blob = new Blob(
-          [ document.getElementById("opcode").value ], //blob content
-          {
-            type : "text/plain;charset=utf-8"
-          }
-        );
-  
-        if(downloadUrl){
-          URL.revokeObjectURL(downloadUrl);
-        }
-  
-        downloadUrl = URL.createObjectURL(blob);
-        download.setAttribute("href", downloadUrl);
-    }
-    */
+
   </script>
   
 <table class="main">

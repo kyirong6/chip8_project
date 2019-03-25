@@ -13,18 +13,10 @@ class Assembler {
         this._memory = new Memory();
 		
 		
-
-       
-        this._v = new Uint8Array(16);        //register
         this._pc = 0x200;                    //program counter
-        this._stack = new Uint16Array(16);	 //is used for subroutine
         this._sp = 0;                        //stack pointer also for subroutine
-        this._I = 0;
         this.Counter = 0;   //Will be used to get out of perm iteration until op code is all done
         this.id = "";
-        this._delayTimer = 0;
-        this._soundTimer = 0;
-        this._isRunning = false;
         this.SequenceCounter = 0;
         this.SequenceString = "";
         this.Sequence = new Array(4096);
@@ -53,8 +45,6 @@ class Assembler {
              this._memory.writeTo(0x200, program);
              this.Counter = program.byteLength + 0x200;
              console.log(program.byteLength);
-             this._v[0] = 0;
-             this._v[1] = 0;
          }
          this.selectedAction = "read";
        }
@@ -157,6 +147,11 @@ class Assembler {
 
     read(opcode) {
 
+        if(opcode > 0xFFFF){
+            this.SequenceString = "Not a valid opcode!";
+        }
+
+        else{
         var x = ((opcode & 0x0F00) >> 8).toString(16); //used for displaying
         var y = ((opcode & 0x00F0) >> 4).toString(16);
 
@@ -361,14 +356,12 @@ class Assembler {
 
                     //Fx1E I to value of I + vx
                     case 0x001E:
-                        this._I += this._v[x];
                     this.SequenceString = "Set I to value of I + v[" + x + "]";
                         break;
 
                     //Fx29 sets I to location of sprite todo: create sprites
                     case 0x0029:
                     this.SequenceString = "Set I to location of sprite v[" + x + "]";
-                        this._I = this._v[x];
                         break;
 
                     //Fx33 converts binary to decimal then stores the three digits
@@ -387,6 +380,9 @@ class Assembler {
                         break;
                 }
                 break;
+            default:
+                this.SequenceString = "Not Valid opcode!";
+            
 
         }
         
@@ -421,6 +417,7 @@ class Assembler {
         }
     }
 
+    }
     
 }
 
