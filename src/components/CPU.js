@@ -249,10 +249,15 @@ class CPU {
       this._isRunning = true;
       this._waitingForKey = false;
       requestAnimationFrame(function run() {
-            if (self._isRunning && self._pc < self.Counter) {
-                self.cycle();
-            self.id = requestAnimationFrame(run);
-          }
+
+              if (self._isRunning && self._pc < self.Counter) {
+                  self.cycle();
+                  self.id = requestAnimationFrame(run);
+              }
+
+
+
+
       });
     }
 
@@ -263,13 +268,20 @@ class CPU {
         //so we move the first one by 8bits and let the second one stay to get 0xFFFF;
         //e.g. 12 32 42 52 63 77 = 0x1232 on the first opcode, 0x4252 on the second opcode etc..
 
-        let opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
-        testLengthOfOpcode(opcode.toString(16), 4);
+        let opcode;
 
-        this.execute(opcode)
+        for(let i = 0; i < 10; i++)
+        {
+            opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
+            this.execute(opcode)
+        }
+
+        //testLengthOfOpcode(opcode.toString(16), 4);
+
+
         //testOpcode(opcode, this._v, this._display, this._pc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer);
-        this._display.dispReg( this._v);
-        this._display.dispMem( this._memory.memDump());
+        //this._display.dispReg( this._v);
+        //this._display.dispMem( this._memory.memDump());
         this._display.dispOther(this._I, this._pc,  this._sp);
         //this._pcStack.push(this._pc);
 
@@ -501,7 +513,6 @@ class CPU {
                     let x = w;
                     if(i == h)
                         return;
-                    console.log(x+"--------------");
                     if(y > 31)
                         y = 0;
 
@@ -644,6 +655,7 @@ class CPU {
                             bin /= 10;
                         }
                         this._memory.writeTo(this._I, m);
+                        this._display.dispMem();
 
                         break;
 
@@ -655,6 +667,7 @@ class CPU {
                             data[i] = this._v[i];
                         }
                         this._memory.writeTo(this._I, data);
+                        this._display.dispMem();
                         break;
 
                     //Fx65 stores memory in v0 to vx
