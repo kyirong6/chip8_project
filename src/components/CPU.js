@@ -75,6 +75,7 @@ class CPU {
         // clear keyboard buffer
         */
         this._display.clearDisp();
+        this._display.displayChange();
         this._stack = new Uint16Array(16);
         this._v = new Uint8Array(16);
         this._memory = new Memory();
@@ -250,10 +251,14 @@ class CPU {
       this._waitingForKey = false;
       requestAnimationFrame(function run() {
 
+              for (let i = 0; i <10; i++) {
               if (self._isRunning && self._pc < self.Counter) {
                   self.cycle();
                   self.id = requestAnimationFrame(run);
               }
+            }
+
+              self.id = requestAnimationFrame(run);
 
 
 
