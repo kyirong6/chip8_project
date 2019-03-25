@@ -251,18 +251,10 @@ class CPU {
       this._waitingForKey = false;
       requestAnimationFrame(function run() {
 
-              for (let i = 0; i <10; i++) {
               if (self._isRunning && self._pc < self.Counter) {
                   self.cycle();
                   self.id = requestAnimationFrame(run);
               }
-            }
-
-              self.id = requestAnimationFrame(run);
-
-
-
-
       });
     }
 
@@ -275,8 +267,10 @@ class CPU {
 
         let opcode;
 
-            opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
-            this.execute(opcode)
+        for (let i = 0; i < 10; i++) {
+        opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
+        this.execute(opcode);
+        }
 
 
         //testLengthOfOpcode(opcode.toString(16), 4);
