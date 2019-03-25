@@ -270,11 +270,9 @@ class CPU {
 
         let opcode;
 
-        for(let i = 0; i < 10; i++)
-        {
             opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
             this.execute(opcode)
-        }
+
 
         //testLengthOfOpcode(opcode.toString(16), 4);
 
@@ -300,7 +298,7 @@ class CPU {
         this._stateStack.push(prevState);
 
         this._pc += 2;
-       // console.log(opcode.toString(16).toUpperCase());
+        console.log(opcode.toString(16).toUpperCase());
         var x = (opcode & 0x0F00) >> 8; // isolate variable x from opcode
         var y = (opcode & 0x00F0) >> 4; // isolate variable y from opcode
 
@@ -506,39 +504,36 @@ class CPU {
                 let width = this._v[x];
                 this._v[0xF] = 0;
                 let h = opcode & 0x000F;
-                let a = this;
-                let run = function( x, y, i,j,binary)
+                let a = this
+                let run = function( w, y, i)
                 {
+
+                    let x = w;
                     if(i == h)
                         return;
                     if(y > 31)
                         y = 0;
-                    if(j == 0)
-                        binary = a._memory.readIn(a._I + i);
-                    if(x > 63)
-                        x = 0;
 
-                    if( a._display.modDisp(x, y, binary))
-                        a._v[0xF] = 1;
-                    binary <<= 1;
-                    x++;
-                    j++;
-
-                    if(j == 8)
+                    binary = a._memory.readIn(a._I + i);
+                    for(let j = 0; j < 8; j++)
                     {
-                        y++;
-                        i++;
-                        j = 0;
-                        x -= 8  ;
+                        if(x > 63)
+                            x = 0;
+
+                        if( a._display.modDisp(x, y, binary))
+                            a._v[0xF] = 1;
+                        binary <<= 1;
+                        x++;
                     }
 
+                    y++;
+                    i++;
 
-                    setTimeout(run(x,y,i,j, binary), 1);
+                    setTimeout(run(w,y,i), 1);
 
                 }
 
-                binary = a._memory.readIn(this._I );
-                run(width, height, 0,0,binary);
+                run(width, height, 0);
 
                // this._display.displayChange();
                 //console.log("pushing to disp stack")
@@ -658,7 +653,7 @@ class CPU {
                             bin /= 10;
                         }
                         this._memory.writeTo(this._I, m);
-                        this._display.dispMem();
+                       // this._display.dispMem();
 
                         break;
 
@@ -670,7 +665,7 @@ class CPU {
                             data[i] = this._v[i];
                         }
                         this._memory.writeTo(this._I, data);
-                        this._display.dispMem();
+                       // this._display.dispMem();
                         break;
 
                     //Fx65 stores memory in v0 to vx
