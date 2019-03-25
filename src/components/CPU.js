@@ -250,8 +250,7 @@ class CPU {
       this._waitingForKey = false;
       requestAnimationFrame(function run() {
             if (self._isRunning && self._pc < self.Counter) {
-                for(let i = 0; i < 5; i++)
-                     self.cycle();
+                self.cycle();
             self.id = requestAnimationFrame(run);
           }
       });
@@ -495,37 +494,38 @@ class CPU {
                 let width = this._v[x];
                 this._v[0xF] = 0;
                 let h = opcode & 0x000F;
-                let j = 0;
+                let a = this
                 console.log
-                for(let i = 0; i < h ; i++)
+                let run = function( w, y, i)
                 {
-                    if(width > 63)
-                        width = 0;
-                    if(height > 31)
-                        height = 0;
-                    if(j == 0)
-                        binary = this._memory.readIn(this._I + i);
+                    let x = w;
+                    if(i == h)
+                        return;
+                    console.log(x+"--------------");
+                    if(y > 31)
+                        y = 0;
 
-
-                    if( this._display.modDisp(width, height, binary))
-                        this._v[0xF] = 1;
-
-                    binary <<= 1;
-                    width++;
-                    j++;
-                    if(j == 8)
+                    binary = a._memory.readIn(a._I + i);
+                    for(let j = 0; j < 8; j++)
                     {
-                        width -= 8;
-                        height++;
-                        j = 0;
-                    }
-                    else
-                    {
-                        i--;
+                        if(x > 63)
+                            x = 0;
+
+                        if( a._display.modDisp(x, y, binary))
+                            a._v[0xF] = 1;
+                        binary <<= 1;
+                        x++;
                     }
 
+                    y++;
+                    i++;
+
+                    setTimeout(run(w,y,i), 1);
 
                 }
+
+                run(width, height, 0);
+
                // this._display.displayChange();
                 //console.log("pushing to disp stack")
                 //this._displayStack.push(JSON.parse(JSON.stringify(this._display._disp)));
@@ -539,7 +539,6 @@ class CPU {
                         if(this._input.isPressed())
                         {
                             let key = this._input.getCode();
-                            console.log(this._v[x]+"-----------------");
                             if(key == this._v[x] )
                             {
 
