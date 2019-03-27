@@ -25,24 +25,6 @@ class Assembler {
         this.selectedAction = ""; 
         this.selectedSequenceNumber = 0;
 
-        this._fontsets = [
-            0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
-            0x20, 0x60, 0x20, 0x20, 0x70, // 1
-            0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
-            0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3
-            0x90, 0x90, 0xF0, 0x10, 0x10, // 4
-            0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5
-            0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6
-            0xF0, 0x10, 0x20, 0x40, 0x40, // 7
-            0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8
-            0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
-            0xF0, 0x90, 0xF0, 0x90, 0x90, // A
-            0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
-            0xF0, 0x80, 0x80, 0x80, 0xF0, // C
-            0xE0, 0x90, 0x90, 0x90, 0xE0, // D
-            0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
-            0xF0, 0x80, 0xF0, 0x80, 0x80  // F
-        ];
     }
 
 
@@ -157,20 +139,15 @@ class Assembler {
     }
 
     cycle() {
-        var opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
-       
+        let opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
         this.read(opcode);
     }
 
     read(opcode) {
         
-       
+        this.SequenceString = "Not valid Opcode";
 
-        if(opcode > 0xFF65){
-            this.SequenceString = "Not a valid opcode!";
-        }
-
-        else{
+        
         var x = ((opcode & 0x0F00) >> 8).toString(16); //used for displaying
         var y = ((opcode & 0x00F0) >> 4).toString(16);
 
@@ -231,6 +208,7 @@ class Assembler {
                 break;
 
             case 0x8000:
+                console.log("Beep");
                 switch (opcode & 0x000F) {
                     // 8xy0; Set Vx = Vy
                     case 0x0000:
@@ -254,7 +232,7 @@ class Assembler {
                         break;
 
                     // 8XY4 Set Vx = Vx + Vy, set VF = carry.
-                    case 0x8004:
+                    case 0x0004:
                         /*
                             Adds VY to VX.
                             VF is set to 1 when there's a carry,
@@ -264,7 +242,7 @@ class Assembler {
 
 
                     // 8XY5 Set Vx = Vx - Vy, set VF = NOT borrow.
-                    case 0x8005:
+                    case 0x0005:
                         /*
                             VY is subtracted from VX.
                             VF is set to 0 when there's a borrow,
@@ -274,7 +252,7 @@ class Assembler {
                         break;
 
                      //8XY6 Set Vx = Vx SHR 1.
-                    case 0x8006:
+                    case 0x0006:
                         /*
                             Stores the least significant bit of VX in VF
                             and then shifts VX to the right by 1
@@ -283,7 +261,7 @@ class Assembler {
                         break;
 
                     //8XY7 Set Vx = Vy - Vx, set VF = NOT borrow.
-                    case 0x8007:
+                    case 0x0007:
                         /*
                             Sets VX to VY minus VX.
                             VF is set to 0 when there's a borrow,
@@ -293,7 +271,7 @@ class Assembler {
                         break;
 
                     //8XYE Set Vx = Vx SHL 1.
-                    case 0x800E:
+                    case 0x000E:
                         /*
                             Stores the most significant bit of VX in VF
                             and then shifts VX to the left by 1.
@@ -399,11 +377,6 @@ class Assembler {
                         break;
                 }
                 break;
-
-            default:
-            console.log("Invalid code detected!");
-            this.SequenceString = "Not Valid opcode/Empty";
-            break;
             
 
         }
@@ -424,18 +397,20 @@ class Assembler {
         }
 
         if(this.selectedAction == "read"){
+            
 
              if(this._pc < this.Counter)
              {
              this.Sequence[this.SequenceCounter] = new sequence();
 
-                if(parseInt(opcode,16) < 0xFF){
-                    this.SequenceString = "Not Valid opcode/Empty";
+                if((opcode < 0x00FF) && (opcode != 0x00EE) && (opcode != 0x00E0)){                   
+                    this.SequenceString = "---------";
                     this.Sequence[this.SequenceCounter].set((this.SequenceCounter).toString(10), 0 , this.SequenceString);
                     this.Sequence[this.SequenceCounter].showAll();
                     this.SequenceCounter ++;
                     this._pc +=1
                     this.cycle();
+                    
                 }
                 else{
                     this.Sequence[this.SequenceCounter].set((this.SequenceCounter).toString(10), opcode.toString(16).toUpperCase() , this.SequenceString);
@@ -447,7 +422,7 @@ class Assembler {
               
              }
         }
-    }
+    
 
     }
     
