@@ -20,10 +20,29 @@ class Assembler {
         this.SequenceCounter = 0;
         this.SequenceString = "";
         this.Sequence = new Array(4096);
-
+        
 
         this.selectedAction = ""; 
         this.selectedSequenceNumber = 0;
+
+        this._fontsets = [
+            0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
+            0x20, 0x60, 0x20, 0x20, 0x70, // 1
+            0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
+            0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3
+            0x90, 0x90, 0xF0, 0x10, 0x10, // 4
+            0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5
+            0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6
+            0xF0, 0x10, 0x20, 0x40, 0x40, // 7
+            0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8
+            0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
+            0xF0, 0x90, 0xF0, 0x90, 0x90, // A
+            0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
+            0xF0, 0x80, 0x80, 0x80, 0xF0, // C
+            0xE0, 0x90, 0x90, 0x90, 0xE0, // D
+            0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
+            0xF0, 0x80, 0xF0, 0x80, 0x80  // F
+        ];
     }
 
 
@@ -38,15 +57,16 @@ class Assembler {
          const reader = new FileReader();
          let program;
          reader.readAsArrayBuffer(game);
+  
          reader.onloadend = () =>{
              program = new Uint8Array(reader.result);
-             console.log(reader.result);
-             console.log(reader.type);
+             console.log(reader.result.toString(16));
              this._memory.writeTo(0x200, program);
              this.Counter = program.byteLength + 0x200;
-             console.log(program.byteLength);
          }
          this.selectedAction = "read";
+
+         
        }
 
     //update the display based on which opcode is clicked from Reader/Writer
@@ -64,7 +84,7 @@ class Assembler {
         
         var data = new Uint8Array(this.SequenceCounter * 2);
         for(var i = 0 ; i < this.SequenceCounter ; i++){
-            console.log(this.Sequence[i].getOpcode().toString(16));
+            
             var split1 = (this.Sequence[i].getOpcode() & 0xFF00) >> 8;
             var split2 = (this.Sequence[i].getOpcode() & 0x00FF);
             
@@ -130,7 +150,6 @@ class Assembler {
         
         this.selectedAction = "edit";
         var e =  parseInt(document.getElementById("opcode").value,16);
-        console.log(e.toString(16));
         this.read(e);
        
 
@@ -138,16 +157,16 @@ class Assembler {
     }
 
     cycle() {
-        console.log("currently on");
-        console.log(this._memory.readIn(this._pc));
-        console.log(this._memory.readIn(this._pc+1));
-        let opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
+        var opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
+       
         this.read(opcode);
     }
 
     read(opcode) {
+        
+       
 
-        if(opcode > 0xFFFF){
+        if(opcode > 0xFF65){
             this.SequenceString = "Not a valid opcode!";
         }
 
@@ -155,15 +174,14 @@ class Assembler {
         var x = ((opcode & 0x0F00) >> 8).toString(16); //used for displaying
         var y = ((opcode & 0x00F0) >> 4).toString(16);
 
+        console.log((opcode & 0xF000).toString(16));
         switch (opcode & 0xF000) {
 
             case 0x0000:
                 switch (opcode) {
-
                     case 0x00E0:
                         this.SequenceString = "Clear Display" ;
                         break;
-
                     case 0x00EE:
                         this.SequenceString = "Return from Subroutine";
                         break;
@@ -198,6 +216,7 @@ class Assembler {
             case 0x5000:
                 //skips if V(x) = V(y)
                 this.SequenceString = "Skip next instruction if v[" + x + "] = v[" + y + "]";
+                
                 break;
 
             //  6xkk; Set Vx = kk
@@ -380,17 +399,17 @@ class Assembler {
                         break;
                 }
                 break;
+
             default:
-                this.SequenceString = "Not Valid opcode!";
+            console.log("Invalid code detected!");
+            this.SequenceString = "Not Valid opcode/Empty";
+            break;
             
 
         }
         
         if(this.selectedAction == "edit"){
-            console.log("detected change");
-            console.log(this.selectedSequenceNumber);
-            console.log(opcode.toString(16).toUpperCase());
-            console.log(this.SequenceString);
+   
             this.Sequence[this.selectedSequenceNumber].set(this.selectedSequenceNumber.toString(), opcode.toString(16).toUpperCase() , this.SequenceString);
 
             document.getElementById(this.selectedSequenceNumber).innerText =  (this.selectedSequenceNumber.toString() + ". 0x" + opcode.toString(16).toUpperCase() + ": " + this.SequenceString);
@@ -405,14 +424,27 @@ class Assembler {
         }
 
         if(this.selectedAction == "read"){
+
              if(this._pc < this.Counter)
              {
              this.Sequence[this.SequenceCounter] = new sequence();
-             this.Sequence[this.SequenceCounter].set((this.SequenceCounter).toString(10), opcode.toString(16).toUpperCase() , this.SequenceString);
-             this.Sequence[this.SequenceCounter].showAll();
-              this.SequenceCounter ++;
-             this._pc += 2;
-             this.cycle();
+
+                if(parseInt(opcode,16) < 0xFF){
+                    this.SequenceString = "Not Valid opcode/Empty";
+                    this.Sequence[this.SequenceCounter].set((this.SequenceCounter).toString(10), 0 , this.SequenceString);
+                    this.Sequence[this.SequenceCounter].showAll();
+                    this.SequenceCounter ++;
+                    this._pc +=1
+                    this.cycle();
+                }
+                else{
+                    this.Sequence[this.SequenceCounter].set((this.SequenceCounter).toString(10), opcode.toString(16).toUpperCase() , this.SequenceString);
+                    this.Sequence[this.SequenceCounter].showAll();
+                    this.SequenceCounter ++;
+                    this._pc += 2;
+                    this.cycle();
+                }
+              
              }
         }
     }

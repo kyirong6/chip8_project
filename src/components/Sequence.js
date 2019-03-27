@@ -37,7 +37,7 @@ class sequence{
     }
     
     showAll(){
-        console.log(this.sequenceOrder + ". 0x" + this.opcodeStored + ": " + this.opcodeDisplay);
+        //console.log(this.sequenceOrder + ". 0x" + this.opcodeStored + ": " + this.opcodeDisplay);
         document.getElementById("programsequence").innerHTML += '<li onclick="onClickReader(this.id)">'  + this.sequenceOrder + ". 0x" + this.opcodeStored + ": " + this.opcodeDisplay +  '</li>'; //display in textbox
         document.getElementsByTagName("li")[this.sequenceOrder].id = this.sequenceOrder.toString(); //assign ID
         
