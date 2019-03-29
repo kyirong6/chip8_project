@@ -1,16 +1,19 @@
 class Display {
 
+
+
 	constructor() {
 		this._disp =new Array(2048);
 		this.displayChange();
+		let c = document.getElementById("tbl");
+		this.ctx = c.getContext("2d");
 
 	}
 
 
 	displayChange()
 	{
-		let c = document.getElementById("tbl");
-		let ctx = c.getContext("2d");
+
 		let loc;
 
 		for(let i = 0; i < 64; i++)
@@ -20,13 +23,13 @@ class Display {
 				loc = i +(j*64);
 				if(this._disp[loc] == 0)
 				{
-					ctx.fillStyle = "#000000";
-					ctx.fillRect(i*10, j*10, 10, 10);
+					this.ctx.fillStyle = "#000000";
+					this.ctx.fillRect(i*10, j*10, 10, 10);
 				}
 				else if(this._disp[loc] == 1)
 				{
-					ctx.fillStyle = "#FFFFFF";
-					ctx.fillRect(i*10, j*10, 10, 10);
+					this.ctx.fillStyle = "#FFFFFF";
+					this.ctx.fillRect(i*10, j*10, 10, 10);
 				}
 			}
 		}
@@ -123,8 +126,6 @@ class Display {
 
 	modDisp(x,y, val) {
 		let flag = false;
-		var c = document.getElementById("tbl");
-		var ctx = c.getContext("2d");
 		let loc = x +(y*64);
 
 		if ((val & 0x80) > 0) {
@@ -144,11 +145,11 @@ class Display {
 		}
 
 		if (this._disp[loc] == 0) {
-			ctx.fillStyle = "#000000";
-			ctx.fillRect(x * 10, y * 10, 10, 10);
+			this.ctx.fillStyle = "#000000";
+			this.ctx.fillRect(x * 10, y * 10, 10, 10);
 		} else if (this._disp[loc] == 1) {
-			ctx.fillStyle = "#FFFFFF";
-			ctx.fillRect(x * 10, y * 10, 10, 10);
+			this.ctx.fillStyle = "#FFFFFF";
+			this.ctx.fillRect(x * 10, y * 10, 10, 10);
 		}
 
 

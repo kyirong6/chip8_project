@@ -250,11 +250,16 @@ class CPU {
       this._isRunning = true;
       this._waitingForKey = false;
       requestAnimationFrame(function run() {
+          for(let i = 0; i < 3; i++)
+            {
+                if (self._isRunning && self._pc < self.Counter) {
+                    self.cycle();
+                }
+            }
+          if (self._isRunning && self._pc < self.Counter) {
+              self.id = requestAnimationFrame(run);
+          }
 
-              if (self._isRunning && self._pc < self.Counter) {
-                  self.cycle();
-                  self.id = requestAnimationFrame(run);
-              }
       });
     }
 
@@ -267,10 +272,12 @@ class CPU {
 
         let opcode;
 
-        for (let i = 0; i < 10; i++) {
-        opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
-        this.execute(opcode);
-        }
+            if(this._isRunning)
+            {
+                opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
+                this.execute(opcode);
+            }
+
 
 
         //testLengthOfOpcode(opcode.toString(16), 4);
@@ -357,6 +364,7 @@ class CPU {
             //  6xkk; Set Vx = kk
             case 0x6000:
                 this._v[x] = opcode & 0xFF;
+                this._display.dispReg( this._v);
                 break;
 
             //  7xkk; Set Vx = Vx + kk
@@ -367,6 +375,7 @@ class CPU {
                     val -= 256;
                 }
                 this._v[x] = val;
+                this._display.dispReg( this._v);
                 break;
 
             case 0x8000:
@@ -375,21 +384,25 @@ class CPU {
                     // 8xy0; Set Vx = Vy
                     case 0x0000:
                         this._v[x] = this._v[y];
+                        this._display.dispReg( this._v);
                         break;
 
                     // 8xy1; Set Vx = Vx OR Vy
                     case 0x0001:
                         this._v[x] |= this._v[y];
+                        this._display.dispReg( this._v);
                         break;
 
                     // 8xy2; Set Vx = Vx AND Vy
                     case 0x0002:
                         this._v[x] &= this._v[y];
+                        this._display.dispReg( this._v);
                         break;
 
                     // 8xy3; Set Vx = Vx XOR Vy
                     case 0x0003:
                         this._v[x] ^= this._v[y];
+                        this._display.dispReg( this._v);
                         break;
 
                     // 8XY4 Set Vx = Vx + Vy, set VF = carry.
@@ -407,6 +420,7 @@ class CPU {
                             this._v[0xF] = 0;
                             this._v[x] = temp;
                         }
+                        this._display.dispReg( this._v);
                         break;
 
                     // 8XY5 Set Vx = Vx - Vy, set VF = NOT borrow.
@@ -424,6 +438,7 @@ class CPU {
                             this._v[0xF] = 1;
                             this._v[x] = temp;
                         }
+                        this._display.dispReg( this._v);
                         break;
 
                      //8XY6 Set Vx = Vx SHR 1.
@@ -434,6 +449,7 @@ class CPU {
                         */
                         this._v[0xF] = this._v[x] & 0x1;
                         this._v[x]>>=1;
+                        this._display.dispReg( this._v);
                         break;
 
                     //8XY7 Set Vx = Vy - Vx, set VF = NOT borrow.
@@ -461,6 +477,7 @@ class CPU {
                         */
                         this._v[0xF] = this._v[x] & 0xF000;
                         this._v[x]<<=1;
+                        this._display.dispReg( this._v);
                         break;
 
                 }
@@ -494,6 +511,7 @@ class CPU {
             case 0xC000:
                 let rand =Math.floor(Math.random() * Math.floor(256));
                 this._v[x] = (rand & (opcode & 0x00FF));
+                this._display.dispReg( this._v);
                 break;
 
             //Dxyn draws display;
@@ -580,6 +598,7 @@ class CPU {
                     //Fx07 sets vx to delay timer
                     case 0x0007:
                         this._v[x] = this._delayTimer;
+                        this._display.dispReg( this._v);
                         break;
 
 
@@ -673,6 +692,7 @@ class CPU {
                         {
                             this._v[i] = this._memory.readIn(this._I + i);
                         }
+                        this._display.dispReg( this._v);
                         break;
                 }
                 break;
