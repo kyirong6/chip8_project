@@ -89,6 +89,9 @@ class CPU {
 
     counter()
     {
+
+        let audio = new Audio('beep.mp3');
+
         let a = this;
         setInterval( function()
         {
@@ -99,9 +102,8 @@ class CPU {
 
             //Update sound timer
             if(a._soundTimer > 0){
-                if(a.sound_timer== 1){
-                    //have it to print BEEP for now
-                    console.log("BEEP!\n");
+                if(a._soundTimer === 1){
+                    audio.play();
                 }
                 --a._soundTimer;
             }
@@ -250,7 +252,7 @@ class CPU {
       this._isRunning = true;
       this._waitingForKey = false;
       requestAnimationFrame(function run() {
-          for(let i = 0; i < 3; i++)
+          for(let i = 0; i < 10; i++)
             {
                 if (self._isRunning && self._pc < self.Counter) {
                     self.cycle();
@@ -272,11 +274,9 @@ class CPU {
 
         let opcode;
 
-            if(this._isRunning)
-            {
                 opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
                 this.execute(opcode);
-            }
+
 
 
 
@@ -304,7 +304,6 @@ class CPU {
         this._stateStack.push(prevState);
 
         this._pc += 2;
-        console.log(opcode.toString(16).toUpperCase());
         var x = (opcode & 0x0F00) >> 8; // isolate variable x from opcode
         var y = (opcode & 0x00F0) >> 4; // isolate variable y from opcode
 
