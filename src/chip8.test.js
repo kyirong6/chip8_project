@@ -155,7 +155,7 @@ function UtestOpcode(){
 
 //behaviour testing
 function BtestOpcode(opcode, v, dummyv, display, pc, dummypc, stack, sp, _I, Memory, delaytimer, soundtimer, input){
-  console.log("pc: ", pc, ", sp: ", sp, ", I: ", _I, ", delaytimer: ", delaytimer, ", soundtimer: ", soundtimer);
+  console.log("opcode:","0x"+opcode.toString(16), " pc: ", pc, ", sp: ", sp, ", I: ", _I, ", delaytimer: ", delaytimer, ", soundtimer: ", soundtimer);
   var x = (opcode & 0x0F00) >> 8; // isolate variable x from opcode
   var y = (opcode & 0x00F0) >> 4; // isolate   variable y from opcode
 
