@@ -577,15 +577,14 @@ class CPU {
 
                     //ExA1 checks if key is stored skips if not
                     case 0x0001:
-                        if(this._input.isPressed())
-                        {
+                        
                             let key = this._input.getCode();
                             if(key != this._v[x] )
                             {
                                 this._pc += 2;
                             }
 
-                        }
+                       
 
                         break;
                 }

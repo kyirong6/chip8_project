@@ -323,7 +323,7 @@ class Assembler {
 
                     //ExA1 checks if key is stored skips if not todo:once rest is running
                     case 0x0001:
-                        this.SequenceString = "Check if key is stored, skips if not";
+                        this.SequenceString = "Skip next instruction if key isnt found at v[" + x +"]";
                         break;
                 }
                 break;
@@ -380,6 +380,8 @@ class Assembler {
             
 
         }
+
+        
         
         if(this.selectedAction == "edit"){
    
