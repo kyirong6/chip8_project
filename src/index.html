@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="styles.css" media="screen" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="sweetalert"></script>
     <script src="chip8.js"></script>
     <script src="components/Memory.js"></script>
     <script src="components/Input.js"></script>
@@ -16,6 +17,7 @@
     <script src="components/CPU.js"></script>
     <script src="components/Assembler.js"></script>
     <script src="chip8.test.js"></script>
+
 
 
     <script>
@@ -129,8 +131,18 @@
 
     <script type="text/javascript">
       function help() {
-        //fill...
-        alert("help");
+        var message = "here's how to use the emulator: \n\n1. ...\n2. ...\n3. ...";
+        Swal.fire({
+          title: message,
+          width: 600,
+          padding: '3em',
+          backdrop: `
+            rgba(0,0,123,0.4)
+            url("nyan-cat.gif")
+            center left
+            no-repeat
+          `
+        })
       }
     </script>
 </head>
