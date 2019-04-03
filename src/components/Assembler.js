@@ -104,7 +104,8 @@ class Assembler {
 
         this.SequenceCounter++;
         console.log("Determining opcode...")
-        this.read(document.getElementById("opcode").value);
+        var e =  parseInt(document.getElementById("opcode").value,16);
+        this.read(e);
         
 
        
