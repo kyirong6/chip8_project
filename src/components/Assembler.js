@@ -85,7 +85,7 @@ class Assembler {
         this.selectedAction = "add";
 
         for(var i = this.SequenceCounter; i > this.selectedSequenceNumber; i--){
-            //add Add to Sequence Class by incrementing by one
+            //Add to Sequence Class by incrementing by one
             var e = parseInt(i) - 1;
             this.Sequence[i].set(i, this.Sequence[e].getOpcode().toString(16), this.Sequence[e].getString() );
 
@@ -104,7 +104,7 @@ class Assembler {
 
         this.SequenceCounter++;
         console.log("Determining opcode...")
-        this.read(this.Sequence[this.selectedSequenceNumber].getOpcode());
+        this.read(document.getElementById("opcode").value);
         
 
        

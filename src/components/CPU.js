@@ -158,6 +158,7 @@ class CPU {
       }
 
       this.pause();
+      
       this.cycle();
 
     }
