@@ -101,6 +101,13 @@
   border: none;
 }
 
+#help {
+  background-color: blue;
+  border-color: blue;
+  color: white;
+  border: none;
+}
+
 #start:hover {
   box-shadow: 0px 0px 5px #777;
 }
@@ -121,12 +128,16 @@
   box-shadow: 0px 0px 5px #777;
 }
 
+#help:hover {
+  box-shadow: 0px 0px 5px #777;
+}
+
 body {
   background-color: black;
 }
 
 table {
-  border: 4px solid red;
+  border: 5px solid red;
   width: 50%;
   table-layout: fixed;
 }

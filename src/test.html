@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-      <title>Chip-8 TEST</title>
-      <h2 id="heading" align=center>CHIP-8 TESTING</h2>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-      <link rel="stylesheet" type="text/css" href="styles.css" media="screen" />
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-      <script src="chip8.js"></script>
-      <script src="components/Memory.js"></script>
-      <script src="components/Input.js"></script>
-      <script src="components/Display.js"></script>
-      <script src="components/CPU.js"></script>
-      <script src="components/Assembler.js"></script>
-      <script src="chip8.test.js"></script>
+    <title>Chip-8</title>
+    <h2 id="heading" align=center>CHIP-8 EMULATOR IN JAVASCRIPT</h2>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="styles.css" media="screen" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="chip8.js"></script>
+    <script src="components/Memory.js"></script>
+    <script src="components/Input.js"></script>
+    <script src="components/Display.js"></script>
+    <script src="components/CPU.js"></script>
+    <script src="components/Assembler.js"></script>
+    <script src="chip8.test.js"></script>
 
 
     <script>
@@ -23,14 +23,15 @@
     		let rows =32;
             let cols=64;
             let table = document.getElementById('tbl');
-			for (let r = 0; r<rows; r++){
+
+			/*for (let r = 0; r<rows; r++){
                 let row = table.insertRow(-1);
   				for (let c = 0; c<cols; c++){
                     let cell = row.insertCell(-1);
     				cell.setAttribute('id', "cell"+r+"-"+c );
 
   				}
-			}
+			}*/
 }
     </script>
 
@@ -93,7 +94,7 @@
 
 <body onload="tableCreate();">
 ​<div id="tblHold">
-  <table id="tbl"></table>
+  <canvas id = "tbl" height="320px" width="640px"> </canvas>
 
   <div style="text-align:center;">
     <button onclick="startnew()">START TESTING INDIVIDUAL OPCODE</button>
@@ -103,9 +104,6 @@
     <button onclick ="Utest()">START UNIT TESTING</button><br>
   </div>
 </div>
-
-<div id="tblHold"><table id="tbl"></table></div>
-
 
 <div id="hold">
 

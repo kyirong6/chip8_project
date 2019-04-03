@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="styles.css" media="screen" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="sweetalert"></script>
     <script src="chip8.js"></script>
     <script src="components/Memory.js"></script>
     <script src="components/Input.js"></script>
@@ -16,6 +17,7 @@
     <script src="components/CPU.js"></script>
     <script src="components/Assembler.js"></script>
     <script src="chip8.test.js"></script>
+
 
 
     <script>
@@ -126,6 +128,26 @@
         chip.stepBackward();
       }
     </script>
+
+    <script type="text/javascript">
+      function help() {
+        var message = "INSTRUCTIONS: \n\nSTART: starts a chip8 ROM selected via 'Choose File'\n \
+        PAUSE: pauses the program\n RESTART: restarts the program\n \
+        STEP BACKWARD: reverses the program into its previous states opcode by opcode\n\
+        STEP FORWARD: progresses the program opcode by opcode";
+        Swal.fire({
+          title: message,
+          width: 600,
+          padding: '3em',
+          backdrop: `
+            rgba(0,0,123,0.4)
+            url("nyan-cat.gif")
+            center left
+            no-repeat
+          `
+        })
+      }
+    </script>
 </head>
 
 
@@ -172,6 +194,7 @@
     <button id="restart" onclick="restart()">RESTART</button>
     <button id="backward" onclick="backward()">STEP BACKWARD</button>
     <button id="forward" onclick="forward()">STEP FORWARD</button>
+    <button id="help" onclick="help()">HELP</button>
   </div>
 </div>
 
