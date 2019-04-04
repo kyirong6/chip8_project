@@ -276,7 +276,6 @@ class CPU {
              setTimeout(function(){a.loop();}, 100);
              return;
          }
-         console.log("hello");
       let self = this;
       this._isRunning = true;
       this._waitingForKey = false;

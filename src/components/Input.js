@@ -86,7 +86,7 @@ class Input {
 
   check()
   {
-      if(this._keyPressed != 0)
+      if(this._keyPressed != 0xFF)
       {
           return true;
       }
