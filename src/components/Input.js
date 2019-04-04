@@ -2,9 +2,8 @@ class Input {
 
     constructor(){
 
-        this._keyBoardBuffer = new Uint16Array(16) // keyboard buffer (new Uint16Array(16);)
         this._isKeyPressed = false; // gets set whenever a key is pressed (boolean)
-        this._keyPressed = 0;
+        this._keyPressed = 0xFF;
         document.addEventListener('keyup', (event)=>
         {
             this._isKeyPressed = false;
@@ -80,7 +79,7 @@ class Input {
                     this._isKeyPressed = true;
                     break;
                 default:
-                    this._keyPressed = 0;
+                    this._keyPressed = 0xFF;
             }
         });
     }
@@ -96,7 +95,7 @@ class Input {
   }
   clear()
   {
-      this._keyPressed = 0;
+      this._keyPressed = 0xFF;
   }
   getCode()
   {
