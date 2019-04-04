@@ -149,8 +149,8 @@ function UtestOpcode(){
   expected = 0x0;
   if(this.chip2._cpu._I != expected){result = 0}
 
-  if(result === 1){console.log("success")}
-  else{console.log("fail")}
+  if(result === 1){document.write("success")}
+  else{document.write("fail")}
 }
 
 //behaviour testing
