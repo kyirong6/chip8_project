@@ -27,6 +27,7 @@ class CPU {
         this._escape = false;
         this._spStack = [];           //for testing
         this._stateStack = [];
+        this._loaded = false;
 
 
         //fontsets
@@ -63,8 +64,11 @@ class CPU {
         this._I = 0;      // Reset index register
         this._sp = 0;      // Reset stack pointer
         this._stateStack = [];
+        this._loaded = false;
         document.getElementById("inMem").innerHTML = "";
         document.getElementById("inLog").innerHTML = "";
+        document.getElementById("inCon").innerHTML = "";
+        document.getElementById("inOther").innerHTML = "";
 
         /*
         defining new arrays so there is no need for the following:
@@ -79,12 +83,11 @@ class CPU {
         this._stack = new Uint16Array(16);
         this._v = new Uint8Array(16);
         this._memory = new Memory();
-        this._keyBoardBuffer = new Uint8Array(16);
+        this._input.clear();
 
         //set Timers
         this._delayTimer = 0;
         this._soundTimer = 0;
-        this._isRunning = false;
     }
 
     counter()
@@ -233,22 +236,46 @@ class CPU {
      loadProgram(game) {
          const reader = new FileReader();
          let program;
+         let a = this;
+         let done = false;
          reader.readAsArrayBuffer(game);
-         reader.onloadend = () =>{
-             program = new Uint8Array(reader.result);
-             this._memory.writeTo(0,this._fontsets); // load fontsets
-             this._memory.writeTo(0x200, program);
-             this._display.dispMem( this._memory.memDump());
-             this.Counter = program.byteLength + 0x200;
-             var prevState = {mem: this._memory._mem.slice(), disp: this._display._disp.slice(), v: this._v.slice(), pc: this._pc, stack: this._stack.slice(), sp: this._sp, i: this._I};
-             this._stateStack.push(prevState);
 
-             //this.loop();
+         function read(callback){
+             reader.onload = function (e){
+                 program = new Uint8Array(reader.result);
+                 a._memory.writeTo(0,a._fontsets); // load fontsets
+                 a._memory.writeTo(0x200, program);
+                 a._display.dispMem( a._memory.memDump());
+                 a.Counter = program.byteLength + 0x200;
+                 var prevState = {mem: a._memory._mem.slice(), disp: a._display._disp.slice(), v: a._v.slice(), pc: a._pc, stack: a._stack.slice(), sp: a._sp, i: a._I};
+                 a._stateStack.push(prevState);
+                 callback(true);
+                 //this.loop();
+             };
          }
+
+
+
+         read(function(bool){
+             a._loaded = bool;
+         });
+
+
+
+
+
+
+
        }
 
 
     loop() {
+         if(!this._loaded)
+         {
+             let a = this;
+             setTimeout(function(){a.loop();}, 100);
+             return;
+         }
       let self = this;
       this._isRunning = true;
       this._waitingForKey = false;
