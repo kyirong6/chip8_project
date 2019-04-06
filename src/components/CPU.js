@@ -67,8 +67,8 @@ class CPU {
         this._loaded = false;
         document.getElementById("inMem").innerHTML = "";
         document.getElementById("inLog").innerHTML = "";
-        document.getElementById("inCon").innerHTML = "";
-        document.getElementById("inOther").innerHTML = "";
+        //document.getElementById("inCon").innerHTML = "";
+        //document.getElementById("inOther").innerHTML = "";
 
         /*
         defining new arrays so there is no need for the following:
@@ -110,6 +110,8 @@ class CPU {
                 }
                 --a._soundTimer;
             }
+            a._display.dispReg(a._soundTimer,"O");
+            a._display.dispReg(a._delayTimer,"L");
         },17)
     }
 
@@ -149,8 +151,16 @@ class CPU {
       this._memory._mem = prevState.mem;
       this._display.displayChange();
       this._display.dispMem(this._memory._mem);
-      this._display.dispReg(this._v);
-      this._display.dispOther(this._I, this._pc, this._sp);
+      for(let i = 0; i < 16; i++)
+      {
+          this._display.dispReg(this._v[i], i.toString(16).toUpperCase());
+      }
+      this._display.dispReg(this._I, "I");
+      this._display.dispReg(this._pc, "P");
+      this._display.dispReg(this._sp,"S");
+      this._display.dispReg(this._soundTimer,"O");
+      this._display.dispReg(this._delayTimer,"L");
+
     }
 
 
@@ -186,7 +196,10 @@ class CPU {
        this.execute(_opcode);
        BtestOpcode(_opcode, this._v, dummyv, this._display, this._pc, dummypc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer, this._input);
        this._display.displayChange();
-       this._display.dispReg( this._v);
+        for(let i = 0; i < 16; i++)
+        {
+            this._display.dispReg(this._v[i], i.toString(16).toUpperCase());
+        }
        this._display.dispMem( this._memory.memDump());
     }
     //unit testing
@@ -214,9 +227,16 @@ class CPU {
       this.execute(opcode)
       BtestOpcode(opcode, this._v, dummyv, this._display, this._pc, dummypc, this._stack, this._sp, this._I, this._memory, this._delayTimer, this._soundTimer, this._input);
       this._display.displayChange();
-      this._display.dispReg( this._v);
+        for(let i = 0; i < 16; i++)
+        {
+            this._display.dispReg(this._v[i], i.toString(16).toUpperCase());
+        }
       this._display.dispMem( this._memory.memDump());
-      this._display.dispOther(this._I, this._pc,  this._sp);
+        this._display.dispReg(this._I, "I");
+        this._display.dispReg(this._pc, "P");
+        this._display.dispReg(this._sp,"S");
+        this._display.dispReg(this._soundTimer,"O");
+        this._display.dispReg(this._delayTimer,"L");
       if(this._delayTimer > 0){
           --this._delayTimer;
       }
@@ -314,7 +334,8 @@ class CPU {
         //testOpcode(opcode, this._v, this._display, this._pc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer);
         //this._display.dispReg( this._v);
         //this._display.dispMem( this._memory.memDump());
-        this._display.dispOther(this._I, this._pc,  this._sp);
+        this._display.dispReg(this._pc, "P");
+        this._display.dispReg(this._sp,"S");
         //this._pcStack.push(this._pc);
 
 
@@ -391,7 +412,7 @@ class CPU {
             //  6xkk; Set Vx = kk
             case 0x6000:
                 this._v[x] = opcode & 0xFF;
-                this._display.dispReg( this._v);
+                this._display.dispReg(this._v[x], x.toString(16).toUpperCase());
                 break;
 
             //  7xkk; Set Vx = Vx + kk
@@ -402,7 +423,7 @@ class CPU {
                     val -= 256;
                 }
                 this._v[x] = val;
-                this._display.dispReg( this._v);
+                this._display.dispReg(this._v[x], x.toString(16).toUpperCase());
                 break;
 
             case 0x8000:
@@ -411,25 +432,25 @@ class CPU {
                     // 8xy0; Set Vx = Vy
                     case 0x0000:
                         this._v[x] = this._v[y];
-                        this._display.dispReg( this._v);
+                        this._display.dispReg(this._v[x], x.toString(16).toUpperCase());
                         break;
 
                     // 8xy1; Set Vx = Vx OR Vy
                     case 0x0001:
                         this._v[x] |= this._v[y];
-                        this._display.dispReg( this._v);
+                        this._display.dispReg(this._v[x], x.toString(16).toUpperCase());
                         break;
 
                     // 8xy2; Set Vx = Vx AND Vy
                     case 0x0002:
                         this._v[x] &= this._v[y];
-                        this._display.dispReg( this._v);
+                        this._display.dispReg(this._v[x], x.toString(16).toUpperCase());
                         break;
 
                     // 8xy3; Set Vx = Vx XOR Vy
                     case 0x0003:
                         this._v[x] ^= this._v[y];
-                        this._display.dispReg( this._v);
+                        this._display.dispReg(this._v[x], x.toString(16).toUpperCase());
                         break;
 
                     // 8XY4 Set Vx = Vx + Vy, set VF = carry.
@@ -447,7 +468,7 @@ class CPU {
                             this._v[0xF] = 0;
                             this._v[x] = temp;
                         }
-                        this._display.dispReg( this._v);
+                        this._display.dispReg(this._v[x], x.toString(16).toUpperCase());
                         break;
 
                     // 8XY5 Set Vx = Vx - Vy, set VF = NOT borrow.
@@ -465,7 +486,7 @@ class CPU {
                             this._v[0xF] = 1;
                             this._v[x] = temp;
                         }
-                        this._display.dispReg( this._v);
+                        this._display.dispReg(this._v[x], x.toString(16).toUpperCase());
                         break;
 
                      //8XY6 Set Vx = Vx SHR 1.
@@ -476,7 +497,7 @@ class CPU {
                         */
                         this._v[0xF] = this._v[x] & 0x1;
                         this._v[x]>>=1;
-                        this._display.dispReg( this._v);
+                        this._display.dispReg(this._v[x], x.toString(16).toUpperCase());
                         break;
 
                     //8XY7 Set Vx = Vy - Vx, set VF = NOT borrow.
@@ -494,6 +515,7 @@ class CPU {
                             this._v[0xF] = 1;
                             this._v[x] = temp;
                         }
+                        this._display.dispReg(this._v[x], x.toString(16).toUpperCase());
                         break;
 
                     //8XYE Set Vx = Vx SHL 1.
@@ -504,7 +526,7 @@ class CPU {
                         */
                         this._v[0xF] = this._v[x] & 0xF000;
                         this._v[x]<<=1;
-                        this._display.dispReg( this._v);
+                        this._display.dispReg(this._v[x], x.toString(16).toUpperCase());
                         break;
 
                 }
@@ -527,6 +549,7 @@ class CPU {
                     Sets I to the address NNN.
                 */
                 this._I = opcode & 0x0FFF ;
+                this._display.dispReg(this._I, "I");
                 break;
 
             // BNNN sets the pc to nnn + v0
@@ -538,7 +561,7 @@ class CPU {
             case 0xC000:
                 let rand =Math.floor(Math.random() * Math.floor(256));
                 this._v[x] = (rand & (opcode & 0x00FF));
-                this._display.dispReg( this._v);
+                this._display.dispReg(this._v[x], x.toString(16).toUpperCase());
                 break;
 
             //Dxyn draws display;
@@ -624,7 +647,7 @@ class CPU {
                     //Fx07 sets vx to delay timer
                     case 0x0007:
                         this._v[x] = this._delayTimer;
-                        this._display.dispReg( this._v);
+                        this._display.dispReg(this._v[x], x.toString(16).toUpperCase());
                         break;
 
 
@@ -680,11 +703,13 @@ class CPU {
                     //Fx1E I to value of I + vx
                     case 0x001E:
                         this._I += this._v[x];
+                        this._display.dispReg(this._I, "I");
                         break;
 
                     //Fx29 sets I to location of sprite for fontsets
                     case 0x0029:
                         this._I = this._v[x] * 5;
+                        this._display.dispReg(this._I, "I");
                         break;
 
                     //Fx33 converts binary to decimal then stores the three digits
@@ -697,7 +722,7 @@ class CPU {
                             bin /= 10;
                         }
                         this._memory.writeTo(this._I, m);
-                       // this._display.dispMem();
+                        //this._display.dispMem();
 
                         break;
 
@@ -709,7 +734,7 @@ class CPU {
                             data[i] = this._v[i];
                         }
                         this._memory.writeTo(this._I, data);
-                       // this._display.dispMem();
+                        //this._display.dispMem();
                         break;
 
                     //Fx65 stores memory in v0 to vx
@@ -717,8 +742,9 @@ class CPU {
                        for(let i = 0; i <= x; i++ )
                         {
                             this._v[i] = this._memory.readIn(this._I + i);
+                            this._display.dispReg(this._v[i], i.toString(16).toUpperCase());
                         }
-                        this._display.dispReg( this._v);
+
                         break;
                 }
                 break;

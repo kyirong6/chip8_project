@@ -201,10 +201,59 @@
 
 <div id="hold">
 
-    <div id="log"><p id = "inLog"></p></div>
-    <div id="con"><p id = "inCon"> </p></div>
-    <div id ="other"><p id = "inOther"></p></div>
-    <div id="mem"><p id="inMem"></p></div>
+    <div id="spacer"><p></p></div>
+    <div id="log"><p id="op">Opcode Log</p><p id = "inLog"></p></div>
+    <div id="con">
+        <table>
+            <tr>
+                <th colspan="2">Registers</th>
+                <th>Counters and Pointers</th>
+            </tr>
+            <tr>
+                <td><p id="0">V0 =</p></td>
+                <td><p id="8">V8 =</p></td>
+                <td><p id="I">Address I =</p></td>
+            </tr>
+            <tr>
+                <td><p id="1">V1 =</p></td>
+                <td><p id="9">V9 =</p></td>
+                <td><p id="PC">Program Counter =</p></td>
+            </tr>
+            <tr>
+                <td><p id="2">V2 = </p></td>
+                <td><p id="A">VA =</p></td>
+                <td><p id="S">Stack Pointer =</p></td>
+            </tr>
+            <tr>
+                <td><p id="3">V3 =</p></td>
+                <td><p id="B">VB =</p></td>
+                <td><p id="sound">Sound Timer =</p></td>
+            </tr>
+            <tr>
+                <td><p id="4">V4 =</p></td>
+                <td><p id="C">V5 =</p></td>
+                <td><p id="delay">Delay Timer = </p></td>
+            </tr>
+            <tr>
+                <td><p id="5">V5 =</p></td>
+                <td><p id="D">VD =</p></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><p id="6">V6 =</p></td>
+                <td><p id="E">VE =</p></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><p id="7">V7 =</p></td>
+                <td><p id="F">VF =</p></td>
+                <td></td>
+            </tr>
+
+
+        </table>
+    </div>
+    <div id="mem"><p id="memory">Memory</p><p id="inMem"></p></div>
 </div>
 </body>
 </html>
