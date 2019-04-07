@@ -1,10 +1,9 @@
-# CHIP8 PROJECT
-*cmpt 276 - software engineering*
+# CHIP8 EMULATOR - JAVASCRIPT
 
-### Description:
-This project consists of building a **chip8 emulator**, a **visualizer** that shows various steps of program execution, a **tool** for chip8 developers, and **2 original chip8 games**.
+## Description
+This project consists of building a **chip8 emulator**, a **visualizer** that shows various steps of program execution, an **assembler** as a tool for chip8 development, and **2 original chip8 games**: **mazerunner** and **tic-tac-toe**.
 
-### Team Members:
+#### Team Members:
   1. Jiho Shin
   2. Gabriel Kwong
   3. Andrew Turner
@@ -12,7 +11,45 @@ This project consists of building a **chip8 emulator**, a **visualizer** that sh
   5. Jack Jiang
 
 
-# Testing Manual
+## The Emulator
+#### Begin Here:
+1. Open **index.html** file.
+2. Click on **choose file** and select a chip8 ROM of your choice or select a game from the folder **chip8_project/src/components/games**
+3. Click on **start** to run the emulator.
+
+#### Buttons:
+1. **START:** Once a chip8 ROM has been selected, this button will run the emulator.
+2. **PAUSE:** Halts the program. The program will resume upon pressing **START**.
+3. **RESTART:** Begins and resets the program from the beginning.
+4. **STEP BACKWARDS:** Pauses the program and reverses the emulator to its pervious states opcode by opcode.
+5. **STEP FORWARDS:** Pauses the program and runs the emulator to its next state opcode by opcode.
+6. **HELP:** Displays a brief instruction set.
+
+#### Visualizer:
+1. **OPCODE LOG:** Displays all executed opcodes in real time appending them into the bottom of the log.
+2. **REGISTERS:** Displays all values inside each registers in real time.
+3. **COUNTERS & POINTERS:** Displays the values of the counters and pointers in real time.
+4. **MEMORY:** Displays the contents of memory in real time.
+
+
+## The Games
+
+#### Tic-Tac-Toe:
+ 1. W to move up, S to move down, A to move left, D to move right.
+ 2. Turns will alternate between O and X.
+ 2. 1st player: Q to select and draw in current box.
+ 3. 2nd player: press Q again to select and draw in the current box.
+ 5. Align 3 of your tokens to win.
+
+#### Maze Runner:
+1. W to move up, S to move down, A to move left, D to move right.
+2. The Runner will never stop after moving once in the beginning of the game
+2. Touching the wall will result in a startover.
+3. Navigate your way to the end
+
+
+
+## Testing Manual
 1. Open test.html file.
 2. For Unit testing:
     1)click "START UNIT TESTING", If the page shows "success", It passes all test cases, otherwise shows "fail".
@@ -31,27 +68,7 @@ This project consists of building a **chip8 emulator**, a **visualizer** that sh
     5) In console, this should print "true" for right performing opcodes, "false" otherwise.
     note: we'll be using CONNECT4 in the games folder as a testing script for now, will implement it for the next release.
 
-#Running Emulator
-1. Open index.html file.
-2. Click on Choose File on left hand side.
-3. Navigate to Chip8 file games 'CONNECT4' stored in chip8_project\src\components\games
-4. Program will then load and display memory usage on bottom right of screen if succesful.
-5. Click start button to begin game.
-
-#Tic Tac Toe 1st game:
- 1. W to move up, S to move down, A to move left, D to move right.
- 2. Turns will alternate between O and X.
- 2. 1st player: Q to select and draw in current box.
- 3. 2nd player: press Q again to select and draw in the current box.
- 5. Align 3 of your tokens to win.
-
-#Maze Runner:
-1. W to move up, S to move down, A to move left, D to move right.
-2. The Runner will never stop after moving once in the beginning of the game
-2. Touching the wall will result in a startover.
-3. Navigate your way to the end
-
-#Running Editor
+## Running Editor
 1. open Editor.html
 2. click on choose file on the top left
 3. Select any Chip 8 program in binary file format
@@ -70,5 +87,3 @@ This project consists of building a **chip8 emulator**, a **visualizer** that sh
 			 
 	To Delete: 1. In the left textbox, click on the opcode you wish to delete.
 			   2. Press delete button
-			 
-*this is just a generic readme. we will update and be more specific as we go along...*
