@@ -46,6 +46,7 @@ This project consists of building a **chip8 emulator**, a **visualizer** that sh
 2. Touching the wall will result in a startover.
 3. Navigate your way to the end.
 
+
 ## Testing Manual
 1. Open **test.html** file.
 2. For Unit testing:
