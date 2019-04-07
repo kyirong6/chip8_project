@@ -1,7 +1,5 @@
 class Display {
 
-
-
 	constructor() {
 		this._disp =new Array(2048);
 		this.displayChange();

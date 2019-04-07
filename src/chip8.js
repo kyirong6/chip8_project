@@ -8,14 +8,11 @@ TODO: implement methods, add methods, solidify design
 */
 class chip8 {
 
-
-
-
 	constructor() {
 		this._memory = new Memory();
 		this._display = new Display();
 		this._input = new Input();
-        this._cpu = new CPU(this._memory, this._input, this._display);
+    this._cpu = new CPU(this._memory, this._input, this._display);
   }
 
 
@@ -23,13 +20,16 @@ class chip8 {
 	 opcodetest(_opcode){
 			this._cpu.opcodetest(_opcode);
 		}
+
 	 filetest(){
  		 this._cpu.filetest();
  	 }
+
 	 Utest(){
 		 this._cpu.Utest();
 	 }
 	 //testing implementations ends here
+
 
     /*
     A method to load the chip8 program
@@ -37,6 +37,7 @@ class chip8 {
    loadProgram(game) {
      this._cpu.loadProgram(game);
   }
+
 
   /*
   A method to start the emulator
@@ -76,7 +77,4 @@ class chip8 {
   stepBackward() {
 		this._cpu.stepBackward();
   }
-
 }
-
-// module.exports = chip8; // this is for the jest testing

@@ -1,7 +1,5 @@
 /*
 This defines the CPU of the chip8 emulator.
-
-TODO: define and implement all properties and methods.
 */
 var flag = 0; // has to be declared as a global variable, for testing purpose
 class CPU {
@@ -67,8 +65,6 @@ class CPU {
         this._loaded = false;
         document.getElementById("inMem").innerHTML = "";
         document.getElementById("inLog").innerHTML = "";
-        //document.getElementById("inCon").innerHTML = "";
-        //document.getElementById("inOther").innerHTML = "";
 
         /*
         defining new arrays so there is no need for the following:
@@ -89,6 +85,7 @@ class CPU {
         this._delayTimer = 0;
         this._soundTimer = 0;
     }
+
 
     counter()
     {
@@ -137,6 +134,7 @@ class CPU {
         }
     }
 
+
     revert() {
       //prevState = {mem: this._memory._mem, disp: this._display._disp, v: this._v.slice(), pc: this._pc, stack: this._stack.slice(), sp: this._sp, i: this._I};
       this._waitingForKey = false;
@@ -171,14 +169,11 @@ class CPU {
       }
 
       this.pause();
-      
       this.cycle();
-
     }
 
 
     // testing implementations starts here
-
     opcodetest(_opcode) {
        flag = 1;
        _opcode = parseInt(_opcode);
@@ -202,10 +197,14 @@ class CPU {
         }
        this._display.dispMem( this._memory.memDump());
     }
+
+
     //unit testing
     Utest(){
       UtestOpcode(this._v, this._display, this._pc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer, this._input);
     }
+
+
     //Behaviour testing
     filetest(){
       flag = 1;
@@ -220,6 +219,8 @@ class CPU {
           }
       });
     }
+
+
     test(){
       let opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
       let dummypc = this._pc + 2;
@@ -250,6 +251,7 @@ class CPU {
   }
     // testing implementations ends here
 
+
     /*
     This method loads the program into the CPU
     */
@@ -274,19 +276,10 @@ class CPU {
              };
          }
 
-
-
          read(function(bool){
              a._loaded = bool;
          });
-
-
-
-
-
-
-
-       }
+    }
 
 
     loop() {
@@ -314,42 +307,28 @@ class CPU {
     }
 
 
-
     cycle() {
         //Every first and the second array are to be together to create opcode
         //so we move the first one by 8bits and let the second one stay to get 0xFFFF;
         //e.g. 12 32 42 52 63 77 = 0x1232 on the first opcode, 0x4252 on the second opcode etc..
 
         let opcode;
+        opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
+        this.execute(opcode);
 
-                opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
-                this.execute(opcode);
-
-
-
-
-        //testLengthOfOpcode(opcode.toString(16), 4);
-
-
-        //testOpcode(opcode, this._v, this._display, this._pc, this._stack, this._sp, this._I, this._Memory, this._delayTimer, this._soundTimer);
-        //this._display.dispReg( this._v);
-        //this._display.dispMem( this._memory.memDump());
         this._display.dispReg(this._pc, "P");
         this._display.dispReg(this._sp,"S");
-        //this._pcStack.push(this._pc);
-
-
-
-
-
-        //this.id = requestAnimationFrame(this.cycle); // this needs to stay at the bottome of cycle() for the emulator to constantly run
     }
+
 
     /*
     This method executes a given opcode
     */
     execute(opcode) {
         var prevState = {mem: JSON.parse(JSON.stringify(this._memory._mem)), disp: JSON.parse(JSON.stringify(this._display._disp)), v: JSON.parse(JSON.stringify(this._v)), pc: this._pc, stack: JSON.parse(JSON.stringify(this._stack)), sp: this._sp, i: this._I};
+        if (this._stateStack.length > 100) {
+          this._stateStack.length = 0;
+        }
         this._stateStack.push(prevState);
 
         this._pc += 2;
@@ -599,13 +578,7 @@ class CPU {
                     setTimeout(run(w,y,i), 1);
 
                 }
-
                 run(width, height, 0);
-
-               // this._display.displayChange();
-                //console.log("pushing to disp stack")
-                //this._displayStack.push(JSON.parse(JSON.stringify(this._display._disp)));
-
                 break;
 
             case 0xE000:
@@ -628,14 +601,14 @@ class CPU {
 
                     //ExA1 checks if key is stored skips if not
                     case 0x0001:
-                        
+
                             let key = this._input.getCode();
                             if(key != this._v[x] )
                             {
                                 this._pc += 2;
                             }
 
-                       
+
 
                         break;
                 }
@@ -750,24 +723,6 @@ class CPU {
                 break;
 
         }
-
-        this._display.dispOp(opcode); //displays the opcode on index.html?
-
-        //For Counter:
-        //TO BE DELETED WHEN ALL OP CODE IS DONE/ RUN FUNCTION WORKING
-        //CURRENTLY USED TO TEST AND GET OUT PERM ITERATION
-        /*
-        if(this._pc < this.Counter ){
-            console.log(this._pc);
-        this.cycle();
-        }
-        */
+        this._display.dispOp(opcode);
     }
 }
-
-
-
-
-
-
-// module.exports.CPU = CPU;
