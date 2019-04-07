@@ -33,21 +33,18 @@ This project consists of building a **chip8 emulator**, a **visualizer** that sh
 
 
 ## The Games
-
 #### Tic-Tac-Toe:
- 1. W to move up, S to move down, A to move left, D to move right.
- 2. Turns will alternate between O and X.
- 2. 1st player: Q to select and draw in current box.
- 3. 2nd player: press Q again to select and draw in the current box.
- 5. Align 3 of your tokens to win.
+ 1. **W** to move up, **S** to move down, **A** to move left, **D** to move right.
+ 2. Turns will alternate between **O** and **X**.
+ 2. 1st player: **Q** to select and draw in current box.
+ 3. 2nd player: press **Q** again to select and draw in the current box.
+ 5. Align **3** of your tokens to win.
 
 #### Maze Runner:
-1. W to move up, S to move down, A to move left, D to move right.
-2. The Runner will never stop after moving once in the beginning of the game
+1. **W** to move up, **S** to move down, **A** to move left, **D** to move right.
+2. The Runner will never stop after moving once in the beginning of the game.
 2. Touching the wall will result in a startover.
-3. Navigate your way to the end
-
-
+3. Navigate your way to the end.
 
 ## Testing Manual
 1. Open test.html file.
@@ -67,6 +64,7 @@ This project consists of building a **chip8 emulator**, a **visualizer** that sh
     4) Click START TESTING FILE.
     5) In console, this should print "true" for right performing opcodes, "false" otherwise.
     note: we'll be using CONNECT4 in the games folder as a testing script for now, will implement it for the next release.
+
 
 ## Running Editor
 1. open Editor.html
