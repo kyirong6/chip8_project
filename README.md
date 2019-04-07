@@ -80,11 +80,11 @@ This project consists of building a **chip8 emulator**, a **visualizer** that sh
 5. The selected opcode will be edited to whatever you changed it to
 
 #### To Add:
-1.In the left textbox, all opcodes will have a number in their sequence
+1. In the left textbox, all opcodes will have a number in their sequence
 2. Click on the opcode where you wish to add a new opcode. (e.g click on the 5th if you want to add an opcode there)
 4. Press add button.
 5. A new opcode will be inserted to where you have clicked.
 
 #### To Delete:
- 1. In the left textbox, click on the opcode you wish to delete.
- 2. Press delete button
+1. In the left textbox, click on the opcode you wish to delete.
+2. Press delete button
