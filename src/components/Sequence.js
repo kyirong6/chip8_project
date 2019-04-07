@@ -35,16 +35,16 @@ class sequence{
     getAll(){
         return this.sequenceOrder + ". 0x" + this.opcodeStored + ": " + this.opcodeDisplay;
     }
-    
+
     showAll(){
         //console.log(this.sequenceOrder + ". 0x" + this.opcodeStored + ": " + this.opcodeDisplay);
         document.getElementById("programsequence").innerHTML += '<li onclick="onClickReader(this.id)">'  + this.sequenceOrder + ". 0x" + this.opcodeStored + ": " + this.opcodeDisplay +  '</li>'; //display in textbox
         document.getElementsByTagName("li")[this.sequenceOrder].id = this.sequenceOrder.toString(); //assign ID
-        
+
     }
-    
+
     //add a way to easily change sequence through GUI
-    
-    
-    
+
+
+
 }

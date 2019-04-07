@@ -19,9 +19,6 @@ class Memory {
 	{
 		return this._mem;
 	}
-
-
-
 }
 
 

@@ -3,50 +3,53 @@
   src: url('PressStart2P-Regular.ttf')  format('truetype');
 }
 
+#op
+{
+  font-family: 'arcade';
+  border-bottom: 1px solid white;
+  text-align: center;
+}
+#memory
+{
+  font-family: 'arcade';
+  border-bottom: 1px solid white;
+  text-align: center;
+}
 
-
+#spacer
+{
+  width: 15%;
+}
 
 #log {
-  width: 25%;
-  height: 30vh;
+  width: 10%;
+  height: 435px;
   overflow-y: auto;
+  border: 5px solid white;
   color: white;
 }
 
 #mem {
-  width: 25%;
+  width: 10%;
   overflow-y: auto;
-  height: 30vh;
+  height: 435px;
+  border: 5px solid white;
   color: white;
 }
 
-#con {
-  width: 25%;
-  overflow-y: auto;
-  height: 30vh;
-  color: white;
-}
-#other {
-  width: 25%;
-  overflow-y: auto;
-  height: 30vh;
-  color: white;
-}
+
+
 #tbl{
   width: 640px;
   height: 320px;
-  border: 4px solid red;
+  border: 4px solid blue;
 }
-
 
 #hold > *{
   display: inline;
   float: left;
 }
 
-#hold {
-  height: auto;
-}
 
 #tblHold {
   width: 100%;
@@ -55,7 +58,6 @@
 #tblHold > *{
 
   position: relative;
-
   left: 50%;
   -ms-transform: translate(-50%);
   transform: translate(-50%);
@@ -136,21 +138,41 @@ body {
   background-color: black;
 }
 
-table {
-  border: 5px solid red;
-  width: 50%;
-  table-layout: fixed;
-}
-tr
-
-td {
-   width: 1.5625%;
+#con table {
+   border: 5px solid white;
+   table-layout: fixed;
+   width: 100%;
    height: auto;
-   position: relative;
+
+ }
+#con th
+{
+font-family: 'arcade';
+  height :30px;
+  text-align: center;
+}
+#con {
+  width: 50%;
+  color: white;
+}
+#con td
+{
+  height: 50px;
+  position: relative;
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+td p
+{
+text-align: center;
+  height: 100%;
+  width: 50%;
+  border: 1px solid white;
+  background-color: blue;
+  position: relative;
+  left: 50%;
+  -ms-transform: translate(-50%);
+  transform: translate(-50%);
 }
 
-td:after {
-  content: '';
-  display: block;
-  padding-bottom:100%
-}
+

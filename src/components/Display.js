@@ -1,7 +1,5 @@
 class Display {
 
-
-
 	constructor() {
 		this._disp =new Array(2048);
 		this.displayChange();
@@ -53,11 +51,12 @@ class Display {
 		let breakLine = document.createElement('br');
 		block.appendChild(breakLine);
 	}
-	dispReg(reg)
+	dispReg(reg, index)
 	{
 
 		let holder;
-		let block = document.getElementById("inCon");
+		let block
+			/*= document.getElementById("inCon");
 		let text;
 		let breakLine;
 		block.innerHTML = "";
@@ -74,27 +73,96 @@ class Display {
 			}
 
 
+		}*/
+
+		switch (index)
+		{
+			case '0':
+				block = document.getElementById("0");
+				block.innerHTML = "V"+index + " = " + reg;
+				break;
+			case "1":
+				block = document.getElementById("1");
+				block.innerHTML = "V"+index + " = " + reg;
+				break;
+			case "2":
+				block = document.getElementById("2");
+				block.innerHTML = "V"+index + " = " + reg;
+				break;
+			case "3":
+				block = document.getElementById("3");
+				block.innerHTML = "V"+index + " = " + reg;
+				break;
+			case "4":
+				block = document.getElementById("4");
+				block.innerHTML = "V"+index + " = " + reg;
+				break;
+			case "5":
+				block = document.getElementById("5");
+				block.innerHTML = "V"+index + " = " + reg;
+				break;
+			case "6":
+				block = document.getElementById("6");
+				block.innerHTML = "V"+index + " = " + reg;
+				break;
+			case "7":
+				block = document.getElementById("7");
+				block.innerHTML = "V"+index + " = " + reg;
+				break;
+			case "8":
+				block = document.getElementById("8");
+				block.innerHTML = "V"+index + " = " + reg;
+				break;
+			case "9":
+				block = document.getElementById("9");
+				block.innerHTML = "V"+index + " = " + reg;
+				break;
+			case "A":
+				block = document.getElementById("A");
+				block.innerHTML = "V"+index + " = " + reg;
+				break;
+			case "B":
+				block = document.getElementById("B");
+				block.innerHTML = "V"+index + " = " + reg;
+				break;
+			case "C":
+				block = document.getElementById("C");
+				block.innerHTML = "V"+index + " = " + reg;
+				break;
+			case "D":
+				block = document.getElementById("D");
+				block.innerHTML = "V"+index + " = " + reg;
+				break;
+			case "E":
+				block = document.getElementById("E");
+				block.innerHTML = "V"+index + " = " + reg;
+				break;
+			case "F":
+				block = document.getElementById("F");
+				block.innerHTML = "V"+index + " = " + reg;
+				break;
+			case "I":
+				block = document.getElementById("I");
+				block.innerHTML =  "Address I = " + reg;
+				break;
+			case "O":
+				block = document.getElementById("sound");
+				block.innerHTML = "Sound Timer = " + reg;
+				break;
+			case "L":
+				block = document.getElementById("delay");
+				block.innerHTML = "Delay Timer = " + reg;
+				break;
+			case "S":
+				block = document.getElementById("S");
+				block.innerHTML = "Stack Pointer = " + reg;
+				break;
+			case "P":
+				block = document.getElementById("PC");
+				block.innerHTML = "Program Counter = " + reg;
+				break;
 		}
-	}
-	dispOther(I, pc, sp )
-	{
-		let holder;
-		let block = document.getElementById("inOther");
-		let text;
-		let breakLine;
-		block.innerHTML = "";
-		text = document.createTextNode("I: "+I.toString(16).toUpperCase() );
-		block.appendChild(text);
-		breakLine = document.createElement('br');
-		block.appendChild(breakLine);
-		text = document.createTextNode("PC: "+pc.toString(16).toUpperCase() );
-		block.appendChild(text);
-		breakLine = document.createElement('br');
-		block.appendChild(breakLine);
-		text = document.createTextNode("SP: "+sp.toString(16).toUpperCase() );
-		block.appendChild(text);
-		breakLine = document.createElement('br');
-		block.appendChild(breakLine);
+
 	}
 
 
