@@ -1,7 +1,7 @@
 # CHIP8 EMULATOR - JAVASCRIPT
 
 ## Description
-This project consists of building a **chip8 emulator**, a **visualizer** that shows various steps of program execution, a **tool** for chip8 developers, and **2 original chip8 games**.
+This project consists of building a **chip8 emulator**, a **visualizer** that shows various steps of program execution, an **assembler** as a tool for chip8 development, and **2 original chip8 games**: **mazerunner** and **tic-tac-toe**.
 
 #### Team Members:
   1. Jiho Shin
@@ -41,23 +41,15 @@ An original chip8 game where the user must reach the end of the maze by correctl
 A two player game in which users play tic-tac-toe against each other. 
 
 
-## Testing Manual
+## Testing MANUAL
 We created a file called "test.html", which will take one opcode as an input to the emulator, here's a detailed step on how the testing works:
 1. Open test.html file.
 2. click on "Start".
 3. Enter an opcode with prefix "0x".
 4. the screen will then display the opcode, what has changed to the register and memory.
 
-# Connect 4 2 Player game
- *CONNECT4 USED FOR TESTING PURPOSES FOUND AT https://www.zophar.net/pdroms/chip8.html*
- 1.Align 4 of your tokens to win.
- 2.Turns will alternate between solid and empty.
- 3.Q to move left and E to move right.
- 4.W to place token.
-
-# Running Editor
-1. open Editor.html
-2. click on choose file 
-3. Select any Chip 8 program
-4. Right click in the web browser, and click inspect to see the console
-5. The opcode will be displayed in sentence form
+## Using The Editor
+1. open **Editor.html**
+2. click on **choose file**
+3. Select any Chip8 program
+4. The right most column defines all opcodes in sentence form.
