@@ -45,12 +45,30 @@ This project consists of building a **chip8 emulator**, a **visualizer** that sh
  3. 2nd player: press Q again to select and draw in the current box.
  5. Align 3 of your tokens to win.
 
+#Maze Runner:
+1. W to move up, S to move down, A to move left, D to move right.
+2. The Runner will never stop after moving once in the beginning of the game
+2. Touching the wall will result in a startover.
+3. Navigate your way to the end
 
 #Running Editor
 1. open Editor.html
-2. click on choose file
-3. Select any Chip 8 program
-4. Right click in the web browser, and click inspect to see the console
-5. The opcode will be displayed in sentence form
+2. click on choose file on the top left
+3. Select any Chip 8 program in binary file format
+4. The list of opcodes will be displayed in the left box
 
+	To Edit: 1. in the left text box, Click on the opcode you wish to change.
+			 2. The description of this selceted opcode will be displayed, as well as the 4 digit opcode.
+			 3. In the center textbox with 4 digit opcode, write a different opcode you wish to change to.
+			 4. Click the edit button
+			 5. The selected opcode will be edited to whatever you changed it to
+	
+	To Add:  1.In the left textbox, all opcodes will have a number in their sequence
+			 2. Click on the opcode where you wish to add a new opcode. (e.g click on the 5th if you want to add an opcode there)
+			 4. Press add button.
+			 5. A new opcode will be inserted to where you have clicked.
+			 
+	To Delete: 1. In the left textbox, click on the opcode you wish to delete.
+			   2. Press delete button
+			 
 *this is just a generic readme. we will update and be more specific as we go along...*
