@@ -155,7 +155,7 @@ class CPU {
       if (this._stateStack.length != 1) {
       this.revert();
       } else {
-        alert("Cannot Step Further Back");
+        alert("Cannot Step Further Back - Memory Efficiency (200 max stack length)");
         }
     }
 
