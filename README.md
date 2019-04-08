@@ -78,19 +78,19 @@ This project has *node_modules* dependencies.
 3. Select any Chip8 program in binary file format
 4. The list of opcodes will be displayed in the left box
 
-#### To Edit:
-1. in the left text box, click on the opcode you wish to change.
-2. The description of this selceted opcode will be displayed, as well as the 4 digit opcode.
-3. In the center textbox with 4 digit opcode, write a different opcode you wish to change to.
-4. Click the edit button
-5. The selected opcode will be edited to whatever you changed it to
+	#### To Edit:
+	1. in the left text box, click on the opcode you wish to change.
+	2. The description of this selceted opcode will be displayed, as well as the 4 digit opcode.
+	3. In the center textbox with 4 digit opcode, write a different opcode you wish to change to. You many also click on the list of opcodes on the right table and then change it.
+	4. Click the edit button
+	5. The selected opcode will be edited to whatever you changed it to
 
-#### To Add:
-1. In the left textbox, all opcodes will have a number in their sequence
-2. Click on the opcode where you wish to add a new opcode. (e.g click on the 5th if you want to add an opcode there)
-4. Press add button.
-5. A new opcode will be inserted to where you have clicked.
+	#### To Add:
+	1. In the left textbox, all opcodes will have a number in their sequence
+	2. Click on the opcode where you wish to add a new opcode. (e.g click on the 5th if you want to add an opcode there)
+	4. Press add button.
+	5. A new opcode will be inserted to where you have clicked.
 
-#### To Delete:
-1. In the left textbox, click on the opcode you wish to delete.
-2. Press delete button
+	#### To Delete:
+	1. In the left textbox, click on the opcode you wish to delete.
+	2. Press delete button
