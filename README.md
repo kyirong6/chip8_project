@@ -2,7 +2,7 @@
 
 ## Description
 This project consists of building a **chip8 emulator**, a **visualizer** that shows various steps of program execution, an **assembler** as a tool for chip8 development, and **2 original chip8 games**: **mazerunner** and **tic-tac-toe**.
-*this project has node_modules dependencies*
+This project has *node_modules* dependencies.
 
 #### Team Members:
   1. Jiho Shin
