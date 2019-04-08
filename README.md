@@ -13,6 +13,7 @@ This project consists of building a **chip8 emulator**, a **visualizer** that sh
 
 ## The Emulator
 #### Begin Here:
+*chip8_project/src
 1. Open **index.html** file.
 2. Click on **choose file** and select a chip8 ROM of your choice or select a game from the folder **chip8_project/src/components/games**
 3. Click on **start** to run the emulator.
@@ -33,6 +34,7 @@ This project consists of building a **chip8 emulator**, a **visualizer** that sh
 
 
 ## The Games
+*chip8_project/src/components/games
 #### Tic-Tac-Toe:
  1. **W** to move up, **S** to move down, **A** to move left, **D** to move right.
  2. Turns will alternate between **O** and **X**.
@@ -48,6 +50,7 @@ This project consists of building a **chip8 emulator**, a **visualizer** that sh
 
 
 ## Testing Manual
+*chip8_project/src
 1. Open **test.html** file.
 2. For Unit testing:
     1)click **START UNIT TESTING**, If the page shows **success**, It passes all test cases, otherwise shows **fail**.
@@ -74,6 +77,7 @@ This project consists of building a **chip8 emulator**, a **visualizer** that sh
 4. The list of opcodes will be displayed in the left box
 
 #### To Edit:
+*chip8_project/src
 1. in the left text box, click on the opcode you wish to change.
 2. The description of this selceted opcode will be displayed, as well as the 4 digit opcode.
 3. In the center textbox with 4 digit opcode, write a different opcode you wish to change to.
