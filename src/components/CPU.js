@@ -66,6 +66,31 @@ class CPU {
         document.getElementById("inMem").innerHTML = "";
         document.getElementById("inLog").innerHTML = "";
 
+        document.getElementById("0").innerHtml = "V0 =";
+        document.getElementById("1").innerHtml = "V1 =";
+        document.getElementById("2").innerHtml = "V2 =";
+        document.getElementById("3").innerHtml = "V3 =";
+        document.getElementById("4").innerHtml = "V4 =";
+        document.getElementById("5").innerHtml = "V5 =";
+        document.getElementById("6").innerHtml = "V6 =";
+        document.getElementById("7").innerHtml = "V7 =";
+        document.getElementById("8").innerHtml = "V8 =";
+        document.getElementById("9").innerHtml = "V9 =";
+        document.getElementById("A").innerHtml = "VA =";
+        document.getElementById("B").innerHtml = "VB =";
+        document.getElementById("C").innerHtml = "VC =";
+        document.getElementById("D").innerHtml = "VD =";
+        document.getElementById("E").innerHtml = "VE =";
+        document.getElementById("F").innerHtml = "VF =";
+
+        document.getElementById("I").innerHtml = "Adress I =";
+        document.getElementById("PC").innerHtml = "Program Counter =";
+        document.getElementById("S").innerHtml = "Stack Pointer =";
+        document.getElementById("sound").innerHtml = "Sound Timer =";
+        document.getElementById("delay").innerHtml = "Delay Timer =";
+
+
+
         /*
         defining new arrays so there is no need for the following:
         // Clear display
