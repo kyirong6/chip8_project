@@ -10,9 +10,7 @@ class Assembler {
     constructor() {
 
 
-        this._memory = new Memory();
-		
-		
+        this._memory = new Memory();		
         this._pc = 0x200;                    //program counter
         this._sp = 0;                        //stack pointer also for subroutine
         this.Counter = 0;   //Will be used to get out of perm iteration until op code is all done
@@ -20,8 +18,6 @@ class Assembler {
         this.SequenceCounter = 0;
         this.SequenceString = "";
         this.Sequence = new Array(4096);
-        
-
         this.selectedAction = ""; 
         this.selectedSequenceNumber = 0;
 
@@ -51,7 +47,7 @@ class Assembler {
          
        }
 
-    //update the display based on which opcode is clicked from Reader/Writer
+    //updates the display based on opcode selection
     displaySelected(sequenceNumber){
         document.getElementById("editorTextBox").innerHTML =  document.getElementById(sequenceNumber).innerText;
         document.getElementById("opcode").value = this.Sequence[sequenceNumber].getOpcode().toString(16).toUpperCase();
@@ -59,6 +55,12 @@ class Assembler {
         this.selectedSequenceNumber = sequenceNumber;
         console.log(this.selectedSequenceNumber);
         console.log(this.Sequence[sequenceNumber].getOpcode().toString(16));
+    }
+
+    //update display based on clicking on pre determined opcodes (e.g clicking on 2NNN, 3NNN, etc)
+    writerSelected(selected){
+        document.getElementById("editorTextBox").innerHTML =  document.getElementById(selected).innerText;
+        document.getElementById("opcode").innerHTML = selected;
     }
 
     //update the downloadable content 
@@ -78,6 +80,7 @@ class Assembler {
         return data;
     }
 
+    //Add an opcode function
     addOpcode(){
        
         console.log("adding...");
@@ -85,23 +88,24 @@ class Assembler {
         this.selectedAction = "add";
 
         for(var i = this.SequenceCounter; i > this.selectedSequenceNumber; i--){
-            //Add to Sequence Class by incrementing by one
             var e = parseInt(i) - 1;
             this.Sequence[i].set(i, this.Sequence[e].getOpcode().toString(16), this.Sequence[e].getString() );
 
 
             if(document.getElementById(i) == null){
-                //create a room to add in HTML
+                //make extra room for another opcode in the list in HTML List
                 document.getElementById("programsequence").innerHTML += 
                 '<li onclick="onClickReader(this.id)">'  + i.toString() + ". 0x" + this.Sequence[e].getOpcode().toString(16).toUpperCase() + ": " + this.Sequence[e].getString() +  '</li>'; 
                 //assign ID to new sequence
                 document.getElementsByTagName("li")[this.SequenceCounter].id = this.SequenceCounter.toString(); 
             }
             else{
+                //Increment all opcode by one
                 document.getElementById(i).innerText = (i.toString() + ". 0x" + this.Sequence[e].getOpcode().toString(16).toUpperCase() + ": " + this.Sequence[e].getString());
             }
         }
 
+        //read opcode that was added
         this.SequenceCounter++;
         console.log("Determining opcode...")
         var e =  parseInt(document.getElementById("opcode").value,16);
@@ -111,6 +115,7 @@ class Assembler {
        
     }
 
+    //delete the seleceted opcode function
     deleteOpcode(){
         this.SequenceCounter--;
         console.log("Deleting...");
@@ -129,16 +134,15 @@ class Assembler {
         document.getElementById(this.SequenceCounter).innerText = "";
     }
 
+    //edit the selected opcode
     editOpcode(){
         
         this.selectedAction = "edit";
         var e =  parseInt(document.getElementById("opcode").value,16);
         this.read(e);
-       
-
-       
     }
 
+    //used to first read a chosen file
     cycle() {
         let opcode = this._memory.readIn(this._pc) << 8 | this._memory.readIn(this._pc + 1);
         this.read(opcode);
@@ -209,7 +213,6 @@ class Assembler {
                 break;
 
             case 0x8000:
-                console.log("Beep");
                 switch (opcode & 0x000F) {
                     // 8xy0; Set Vx = Vy
                     case 0x0000:
@@ -302,7 +305,7 @@ class Assembler {
 
             // BNNN sets the pc to nnn + v0
             case 0xB000:
-                this.SequenceString = "Set pc to 0x" + (opcode & 0x0FFF).toString(16).toUpperCase() + " + v[0]";
+                this.SequenceString = "Jump to 0x" + (opcode & 0x0FFF).toString(16).toUpperCase() + " + v[0]";
                 break;
 
             //Cxkk generates random number between 0 and 255
@@ -310,21 +313,21 @@ class Assembler {
                 this.SequenceString = "generate random number between 0 to 255"
                 break;
 
-            //Dxyn draws display; todo:come back to this
+            //Dxyn draws display
             case 0xD000:
-                this.SequenceString = "Draw display at coordinates v[" + x + "] and v[" + y + "] that has width of 8 pixels and height of " + (opcode & 0x000F).toString(16);
+                this.SequenceString = "Draw display at coordinates v[" + x + "] and v[" + y + "] that has width of 8 pixels and height of " + (opcode & 0x000F).toString(16).toUpperCase();
                 break;
 
             case 0xE000:
                 switch (opcode & 0x000F) {
                     //Ex9E skips next instruction if key found at vx todo:once rest is running
                     case 0x000E:
-                        this.SequenceString = "Skip next instruction if key is found at v[" + x +"]";
+                        this.SequenceString = "Skip next instruction if input matches v[" + x +"]";
                         break;
 
                     //ExA1 checks if key is stored skips if not todo:once rest is running
                     case 0x0001:
-                        this.SequenceString = "Skip next instruction if key isnt found at v[" + x +"]";
+                        this.SequenceString = "Skip next instruction if input doesnt match at v[" + x +"]";
                         break;
                 }
                 break;
@@ -364,17 +367,17 @@ class Assembler {
 
                     //Fx33 converts binary to decimal then stores the three digits
                     case 0x0033:
-                    this.SequenceString = "convert v[" + x + "] to decimal and store the three digits in I";
+                    this.SequenceString = "Convert v[" + x + "] to decimal and store the three digits in I";
                         break;
 
                     //Fx55 stores v0 to vx in memory
                     case 0x0055:
-                    this.SequenceString = "store v[0] to v[" + x + "] in memory";
+                    this.SequenceString = "Store v[0] to v[" + x + "] in memory starting at address I";
                         break;
 
                     //Fx65 stores memory in v0 to vx
                     case 0x0065:
-                    this.SequenceString = "store memory from v[0] to v[" + x + "]";
+                    this.SequenceString = "Fill memory from v[0] to v[" + x + "] starting at address I";
                         break;
                 }
                 break;
@@ -385,17 +388,22 @@ class Assembler {
         
         
         if(this.selectedAction == "edit"){
-   
+            
+            //update the values in the sequence class
             this.Sequence[this.selectedSequenceNumber].set(this.selectedSequenceNumber.toString(), opcode.toString(16).toUpperCase() , this.SequenceString);
 
+            //edit the text 
             document.getElementById(this.selectedSequenceNumber).innerText =  (this.selectedSequenceNumber.toString() + ". 0x" + opcode.toString(16).toUpperCase() + ": " + this.SequenceString);
             document.getElementById("editorTextBox").innerText =  (this.selectedSequenceNumber.toString() + ". 0x" + opcode.toString(16).toUpperCase() + ": " + this.SequenceString);
         }
 
         if(this.selectedAction == "add"){
-            console.log("Almost done add");
             var SQN = this.selectedSequenceNumber;
+
+            //update the value in sequence class
             this.Sequence[SQN].set(SQN.toString(), opcode.toString(16).toUpperCase() , this.SequenceString);
+
+            //update the text in list
             document.getElementById(SQN).innerText = (SQN.toString() + ". 0x" + opcode.toString(16).toUpperCase() + ": " + this.SequenceString);
         }
 
@@ -405,7 +413,7 @@ class Assembler {
              if(this._pc < this.Counter)
              {
              this.Sequence[this.SequenceCounter] = new sequence();
-
+                //check if opcode is valid or starts with 0
                 if((opcode < 0x00FF) && (opcode != 0x00EE) && (opcode != 0x00E0)){                   
                     this.SequenceString = "---------";
                     this.Sequence[this.SequenceCounter].set((this.SequenceCounter).toString(10), 0 , this.SequenceString);

@@ -7,43 +7,17 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="chip8.js"></script>
     <script src="components/Memory.js"></script>
-    <script src="components/Input.js"></script>
-    <script src="components/Display.js"></script>
-    <script src="components/CPU.js"></script>
     <script src="components/Sequence.js"></script>
     <script src="components/Assembler.js"></script>
 
 
 
     <script>
-    	function tableCreate(){
-    		let rows =32;
-            let cols=64;
-            let table = document.getElementById('tbl');
-			for (let r = 0; r<rows; r++){
-                let row = table.insertRow(-1);
-  				for (let c = 0; c<cols; c++){
-                    let cell = row.insertCell(-1);
-    				cell.setAttribute('id', "cell"+r+"-"+c );
-
-  			    	}
-			    }
-      }
-   
       function onLoad() {
         window.assembler = new Assembler();
       }
-    
-      
-
-      
-      
-  
     </script>
-
-
 
     <style>
       table.reader{
@@ -95,7 +69,7 @@
 
 
 
-<body onload="tableCreate(); onLoad();">
+<body onload=" onLoad();">
 
 <input type="file" id="game" name="myFile" oninput="onSelection();">
 <button onclick="createNew()" type="button">New File</button>
@@ -105,24 +79,22 @@
 </form>
 
 <script type="text/javascript">
+
+  //For updating download of the file
   var input = document.querySelector( "button[ type = 'button'] ");
   var download = document.querySelector("a[ download ]");
   var downloadUrl = null;
-
   updateDownloadHref();
 
       function onSelection() {
-        alert("selected");
         const games = document.getElementById('game').files;
         game = games[0];
         assembler.readProgram(game);
         setTimeout(function(){assembler.cycle(); },1000);
-  
         setTimeout(function(){updateDownloadHref(); },1000);
       }
 
       function createNew(){
-        alert("creating new file");
         const games = [0x00 , 0xE0];
         var blob = new Blob(games)
         assembler.readProgram(blob);
@@ -169,11 +141,13 @@
         downloadUrl = URL.createObjectURL(blob);
         download.setAttribute("href", downloadUrl);
     }
+
+    function onClickWriter(selected){
+        assembler.writerSelected(selected);
+    }
+
 </script>
 
-<script type="text/javascript">
-
-  </script>
   
 <table class="main">
 
@@ -224,40 +198,40 @@
     <tr>
       <td><ul id="writer">
 
-            <li id="00E0"><b>00E0:</b> Clear screen</li>
-            <li id="00EE"><b>00EE:</b> Return from subroutine</li>
-            <li id="1NNN"><b>1NNN:</b> Jump to NNN</li>
-            <li id="2NNN"><b>2NNN:</b> Call subroutine at NNN</li>
-            <li id="3XNN"><b>3XNN:</b> Skip next if V[X] = NN</li>
-            <li id="4XNN"><b>4XNN:</b> Skip next if V[X] != NN</li>
-            <li id="5XY0"><b>5XY0:</b> Skip next if V[X] = V[Y]</li>
-            <li id="6XNN"><b>6XNN:</b> Set V[X] to NN</li>
-            <li id="7XNN"><b>7XNN:</b> Add NN to V[X]</li>
-            <li id="8XY0"><b>8XY0:</b> Set V[X] to V[Y] value</li>
-            <li id="8XY1"><b>8XY1:</b> Set V[X] to V[X] OR(|) V[y]</li>
-            <li id="8XY2"><b>8XY2:</b> Set V[X] to V[X] AND(&) V[y]</li>
-            <li id="8XY3"><b>8XY3:</b> Set V[X] to V[X] XOR(^) V[y]</li>
-            <li id="8XY4"><b>8XY4:</b> Add V[Y] to V[X]. V[F] set to 1 if there's a carry, 0 if not.</li>
-            <li id="8XY5"><b>8XY5:</b> V[X] set to V[X] - V[Y]. VF is set to 0 when there's a borrow, and 1 when there isn't.</li>
-            <li id="8XY6"><b>8XY6:</b> Store least significant bit of VX in VF and shifts VX to the right by 1</li>
-            <li id="8XY7"><b>8XY7:</b> Set V[X] to V[Y] - V[X]</li>
-            <li id="8XYE"><b>8XYE:</b> Store most significant bit of V[X] in V[F] and then shifts VX to the left by 1</li>
-            <li id="9XY0"><b>9XY0:</b> Skip next if V[X] != V[Y]</li>
-            <li id="ANNN"><b>ANNN:</b> Sets I to NNN.</li>
-            <li id="BNNN"><b>BNNN:</b> Jumps to NNN plus V[0]</li>
-            <li id="CXNN"><b>CXNN:</b> V[X] to result of a bitwise and operation on a random number and NN</li>
-            <li id="DXYN"><b>DXYN:</b> Draws a sprite at coordinate (V[X], V[Y])</li>
-            <li id="EX9E"><b>EX9E:</b> Skip next if the key stored in V[X] is pressed</li>
-            <li id="EXA1"><b>EXA1:</b> Skip next if the key stored in V[X] isn't pressed</li>
-            <li id="FX07"><b>FX07:</b> Set V[X] to value of delay timer</li>
-            <li id="FX0A"><b>FX0A:</b> Wait key press. Then store it in V[X]</li>
-            <li id="FX15"><b>FX15:</b> Set delay timer to V[X]</li>
-            <li id="FX18"><b>FX18:</b> Set sound timer to V[X]</li>
-            <li id="FX1E"><b>FX1E:</b> Add V[X] to I</li>
-            <li id="FX29"><b>FX29:</b> Sets I to the location of the sprite for the character in V[X]</li>
-            <li id="FX33"><b>FX33:</b> Stores the binary-coded decimal representation of V[X]</li>
-            <li id="FX55"><b>FX55:</b> Stores V[0] to V[X] in memory starting at address I. The offset from I is increased by 1 for each value written</li>
-            <li id="FX65"><b>FX65:</b> Fills V[0] to V[X] with values from memory starting at address I. The offset from I is increased by 1 for each value written</li>
+            <li id="00E0" onclick="onClickWriter('00E0')"><b>00E0:</b> Clear Display</li>
+            <li id="00EE" onclick="onClickWriter('00EE')"><b>00EE:</b> Return from subroutine</li>
+            <li id="1NNN" onclick="onClickWriter('1NNN')"><b>1NNN:</b> Jump to NNN</li>
+            <li id="2NNN" onclick="onClickWriter('2NNN')"><b>2NNN:</b> Call subroutine at NNN</li>
+            <li id="3XNN" onclick="onClickWriter('3XNN')"><b>3XNN:</b> Skip next instruction if V[X] = NN</li>
+            <li id="4XNN" onclick="onClickWriter('4XNN')"><b>4XNN:</b> Skip next instruction if V[X] != NN</li>
+            <li id="5XY0" onclick="onClickWriter('5XY0')"><b>5XY0:</b> Skip next instruction if V[X] = V[Y]</li>
+            <li id="6XNN" onclick="onClickWriter('6XNN')"><b>6XNN:</b> Set V[X] to NN</li>
+            <li id="7XNN" onclick="onClickWriter('7XNN')"><b>7XNN:</b> Set V[X] to V[X] + NN</li>
+            <li id="8XY0" onclick="onClickWriter('8XY0')"><b>8XY0:</b> Set V[X] = V[Y] </li>
+            <li id="8XY1" onclick="onClickWriter('8XY1')"><b>8XY1:</b> Set V[X] = V[X] OR V[y]</li>
+            <li id="8XY2" onclick="onClickWriter('8XY2')"><b>8XY2:</b> Set V[X] = V[X] AND V[y]</li>
+            <li id="8XY3" onclick="onClickWriter('8XY3')"><b>8XY3:</b> Set V[X] = V[X] XOR V[y]</li>
+            <li id="8XY4" onclick="onClickWriter('8XY4')"><b>8XY4:</b> Set V[X] = V[X] + V[Y] and set V[F] to 1 when there is carry</li>
+            <li id="8XY5" onclick="onClickWriter('8XY5')"><b>8XY5:</b> Set V[X] = V[X] - V[Y] and set V[F] to 0 when there is borrow</li>
+            <li id="8XY6" onclick="onClickWriter('8XY6')"><b>8XY6:</b> Store least significant bit of V[X] in V[F] and shifts V[X] to the right by 1</li>
+            <li id="8XY7" onclick="onClickWriter('8XY7')"><b>8XY7:</b> Set V[X] = V[Y] - V[X] and set V[F] to 0 when there is borrow</li>
+            <li id="8XYE" onclick="onClickWriter('8XYE')"><b>8XYE:</b> Store most significant bit of V[X] in V[F] and then shifts V[X] to the left by 1</li>
+            <li id="9XY0" onclick="onClickWriter('9XY0')"><b>9XY0:</b> Skip next instruction if V[X] != V[Y]</li>
+            <li id="ANNN" onclick="onClickWriter('ANNN')"><b>ANNN:</b> Sets I to address NNN</li>
+            <li id="BNNN" onclick="onClickWriter('BNNN')"><b>BNNN:</b> Jump to NNN + V[0]</li>
+            <li id="CXNN" onclick="onClickWriter('CXNN')"><b>CXNN:</b> V[X] to result of a bitwise and operation on a random number and NN</li>
+            <li id="DXYN" onclick="onClickWriter('DXYN')"><b>DXYN:</b> "Draw display at coordinates V[X] and V[Y] that has width of 8 pixels and height of N</li>
+            <li id="EX9E" onclick="onClickWriter('EX9E')"><b>EX9E:</b> Skip next if input matches V[X]</li>
+            <li id="EXA1" onclick="onClickWriter('EXA1')"><b>EXA1:</b> Skip next if input doesnt match V[X]</li>
+            <li id="FX07" onclick="onClickWriter('FX07')"><b>FX07:</b> Set V[X] to delay timer</li>
+            <li id="FX0A" onclick="onClickWriter('FX0A')"><b>FX0A:</b> Wait key press. Then store it in V[X]</li>
+            <li id="FX15" onclick="onClickWriter('FX15')"><b>FX15:</b> Set delay timer to V[X]</li>
+            <li id="FX18" onclick="onClickWriter('FX18')"><b>FX18:</b> Set sound timer to V[X]</li>
+            <li id="FX1E" onclick="onClickWriter('FX1E')"><b>FX1E:</b> Set I to V[X] + I</li>
+            <li id="FX29" onclick="onClickWriter('FX29')"><b>FX29:</b> Set I to location of sprite in V[X]</li>
+            <li id="FX33" onclick="onClickWriter('FX33')"><b>FX33:</b> Convert V[X] to decimal and store the three digits in I</li>
+            <li id="FX55" onclick="onClickWriter('FX55')"><b>FX55:</b> Store V[0] to V[X] in memory starting at address I</li>
+            <li id="FX65" onclick="onClickWriter('FX65')"><b>FX65:</b> Fill V[0] to V[X] with values from memory starting at address I</li>
             
           </ul>
       </td>
