@@ -13,6 +13,7 @@ This project has *node_modules* dependencies.
 
 
 ## The Emulator
+*chip8_project/src*
 #### Begin Here:
 *chip8_project/src*
 1. Open **index.html** file.
