@@ -12,6 +12,7 @@ This project consists of building a **chip8 emulator**, a **visualizer** that sh
 
 
 ## The Emulator
+*chip8_project/src*
 #### Begin Here:
 1. Open **index.html** file.
 2. Click on **choose file** and select a chip8 ROM of your choice or select a game from the folder **chip8_project/src/components/games**
@@ -33,6 +34,7 @@ This project consists of building a **chip8 emulator**, a **visualizer** that sh
 
 
 ## The Games
+*chip8_project/src/components/games*
 #### Tic-Tac-Toe:
  1. **W** to move up, **S** to move down, **A** to move left, **D** to move right.
  2. Turns will alternate between **O** and **X**.
@@ -48,6 +50,7 @@ This project consists of building a **chip8 emulator**, a **visualizer** that sh
 
 
 ## Testing Manual
+*chip8_project/src*
 1. Open **test.html** file.
 2. For Unit testing:
     1)click **START UNIT TESTING**, If the page shows **success**, It passes all test cases, otherwise shows **fail**.
@@ -68,6 +71,7 @@ This project consists of building a **chip8 emulator**, a **visualizer** that sh
 
 
 ## Running Editor
+*chip8_project/src*
 1. open **Editor.html**
 2. click on **choose file** on the top left
 3. Select any Chip8 program in binary file format
